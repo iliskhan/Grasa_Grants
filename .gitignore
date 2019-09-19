@@ -1,3 +1,6 @@
 *.xml
 *.sig
 *.zip
+__pycache__/
+*.pyc
+env/
