@@ -38,7 +38,7 @@ img {
 
 .logo {
   margin: 0;
-  display: inline-block;
+  display: none;
   font-size: 36px;
   vertical-align: middle;
   cursor: pointer;
@@ -47,15 +47,12 @@ img {
 .navbar-items {
   padding: 0;
   margin: 0;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: right;
+
 }
 
 .navbar-items li {
   padding: 5px 20px;
-  display: inline-block;
-  font-size: 24px;
+  display: block;
   /* border-radius: 5rem; */
   transition: all 0.1s linear 0s;
 }
@@ -63,8 +60,6 @@ img {
 .navbar-items li:hover,
 .navbar-items li:active {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
-  /* background-color: white; */
   border-bottom: 4px solid white;
-  /* color: black; */
   cursor: pointer;
 }
