@@ -6,7 +6,7 @@ from ftplib import FTP
 from zipfile import ZipFile  
 
 
-def get_44_fz(ftp, FOLDER):
+def get_44_fz(ftp, folder):
 
 	files = ftp.nlst()
 
@@ -14,22 +14,24 @@ def get_44_fz(ftp, FOLDER):
 	
 	print("\nПолучение файлов 44 фз")
 	for file in tqdm(files):
-		splited_name = file.split('_')
-		
-		start_date = splited_name[-3]
-		end_date = splited_name[-2]
+		if file.endswith('.xml.zip'):
+			splited_name = file.split('_')
+			
+			start_date = splited_name[-3]
+			end_date = splited_name[-2]
 
-		if yesterday == start_date and today == end_date:
+			if yesterday == start_date and today == end_date:
 
-			with open(f'{FOLDER}{file}','wb') as f:
-				ftp.retrbinary(f'RETR {file}',f.write)
+				with open(f'{folder}{file}','wb') as f:
+					ftp.retrbinary(f'RETR {file}',f.write)
 
 def clean_dir(path):
 
 	print("\nОчистка устаревших данных")
 
 	for file in tqdm(os.listdir(path)):
-		os.remove(os.path.join(path, file))
+		if file != '.gitignore':
+			os.remove(os.path.join(path, file))
 
 def correct_dates():
 	date = datetime.date.today()
@@ -54,12 +56,14 @@ def extract_files(folder):
 			os.remove(zip_file)
 
 def main():
+	fz44 = '../data/44/'
+	fz223 = '../data/223/'
+
 	URL = 'ftp.zakupki.gov.ru'
 	
 	LOG_PASS = 'free'
 
-	fz44 = '../data/44/'
-	NOTIFICATIONS = 'fcs_regions/Chechenskaja_Resp/notifications/currMonth/'
+	fz44_notifications = 'fcs_regions/Chechenskaja_Resp/notifications/currMonth/'
 
 	clean_dir(fz44)
 
@@ -67,7 +71,7 @@ def main():
 
 		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
-		ftp.cwd(NOTIFICATIONS)
+		ftp.cwd(fz44_notifications)
 
 		get_44_fz(ftp, fz44)
 
