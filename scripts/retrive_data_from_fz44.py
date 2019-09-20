@@ -1,9 +1,76 @@
 import os
-import xmltodict
-import pandas as pd 
+import json
 
 import xml.etree.ElementTree as ET
-from lxml import objectify
+
+def retrieve(path, ns):
+
+	data = dict()
+
+	xmlData = ET.parse(path)
+			
+	root = xmlData.getroot()
+
+	fcsNotificationEF = root.find('ns2:fcsNotificationEF',ns)
+
+	data['id'] = fcsNotificationEF.find('xmlns:id',ns).text
+
+	data['link'] = fcsNotificationEF.find('xmlns:href',ns).text
+
+	data['purchaseNumber'] = fcsNotificationEF.find('xmlns:purchaseNumber',ns).text
+
+	data['purchaseObject'] = fcsNotificationEF.find('xmlns:purchaseObjectInfo',ns).text
+
+	data['orgName'] = fcsNotificationEF.find('xmlns:purchaseResponsible/'
+											 'xmlns:responsibleOrg/'
+											 'xmlns:fullName',ns).text
+
+	data['placingWay'] = fcsNotificationEF.findtext('xmlns:placingWay/'
+													'xmlns:name',
+													namespaces=ns)
+
+	procedureInfo = fcsNotificationEF.find('xmlns:procedureInfo/'
+										   'xmlns:collecting',
+										   ns)
+
+	data['startDate'] = procedureInfo.find('xmlns:startDate',ns).text
+
+	data['endDate'] = procedureInfo.find('xmlns:endDate',ns).text 
+
+	data['place'] = procedureInfo.find('xmlns:place',ns).text
+
+	lot = fcsNotificationEF.find('xmlns:lot',ns)
+
+	data['maxPrice'] = lot.find('xmlns:maxPrice',ns).text
+
+	data['currency'] = lot.find('xmlns:currency/'
+								'xmlns:code',ns).text
+
+	data['financeSource'] = lot.find('xmlns:financeSource',ns).text
+
+	customerRequirement = lot.find('xmlns:customerRequirements/'
+								   'xmlns:customerRequirement',ns)
+
+	data['applicationGuarantee'] = customerRequirement.findtext('xmlns:applicationGuarantee/'
+																'xmlns:amount',
+																namespaces=ns)
+
+	data['contractGuarantee'] = customerRequirement.findtext('xmlns:contractGuarantee/'
+															 'xmlns:amount',
+															 namespaces=ns)
+
+	data['delivery'] = customerRequirement.findtext('xmlns:kladrPlaces/'
+												'xmlns:kladrPlace/'
+												'xmlns:kladr/'
+												'xmlns:fullName',
+												namespaces=ns)
+
+	data['deliveryPlace'] = customerRequirement.findtext('xmlns:kladrPlaces/'
+													 'xmlns:kladrPlace/'
+													 'xmlns:deliveryPlace',
+													 namespaces=ns)
+
+	return data
 
 def main():
 
@@ -12,41 +79,19 @@ def main():
 	ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
 		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
 
+	data = []
 	for i in os.listdir(path):
-		print(i)
-		if i.endswith('.xml') and i.startswith('fcsNotificationEA44'):
-			
-			file_path = os.path.join(path,i)
+
+		file_path = os.path.join(path,i)
 		
-			xmlData = ET.parse(file_path)
-			
-			root = xmlData.getroot()
+		if i.endswith('.xml') and i.startswith('fcsNotificationEA44'):
 
-			fcsNotificationEF = root.find('ns2:fcsNotificationEF', ns)
+			data.append(retrieve(file_path, ns))
 
-			id = fcsNotificationEF.find('xmlns:id', ns).text
+		if i != '.gitkeep':
+			os.remove(file_path)
 
-			purchaseNumber = fcsNotificationEF.find('xmlns:purchaseNumber', ns).text
-
-			purchaseObject = fcsNotificationEF.find('xmlns:purchaseObjectInfo', ns).text
-
-			orgName = fcsNotificationEF.find('xmlns:purchaseResponsible',ns)\
-									   .find('xmlns:responsibleOrg',ns)\
-									   .find('xmlns:fullName',ns).text
-
-			placingWay = fcsNotificationEF.find('xmlns:placingWay',ns)\
-										  .find('xmlns:name',ns).text
-
-			startDate = fcsNotificationEF.find('xmlns:procedureInfo',ns)\
-										 .find('xmlns:collecting',ns)\
-										 .find('xmlns:startDate',ns).text
-
-			endDate = fcsNotificationEF.find('xmlns:')
-			print(orgName)
-			break
-
-
-			
-
+	with open(f'{path}/info.json','w',encoding='utf8') as f:
+		json.dump(data, f, ensure_ascii=False, indent=4) 
 if __name__ == '__main__':
 	main()
