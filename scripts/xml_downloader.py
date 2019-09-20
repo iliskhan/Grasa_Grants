@@ -30,7 +30,7 @@ def clean_dir(path):
 	print("\nОчистка устаревших данных")
 
 	for file in tqdm(os.listdir(path)):
-		if file != '.gitignore':
+		if file != '.gitkeep':
 			os.remove(os.path.join(path, file))
 
 def correct_dates():
