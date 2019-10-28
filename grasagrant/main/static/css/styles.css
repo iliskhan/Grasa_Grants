@@ -19,6 +19,13 @@ body {
   text-decoration: none !important;
 }
 
+.clear-btn {
+  text-decoration: none;
+  border: none;
+  display: inline-block;
+
+}
+
 img {
   display: inline-block;
 }
@@ -49,8 +56,8 @@ img {
   justify-content: space-around;
 }
 
-.mnavbar-items li {
-  padding: 5px 20px;
+.mnavbar-items__item {
+  padding: 5px 10px;
   transition: all 0.1s linear 0s;
   list-style: none;
   border-bottom: 1px solid #101010;
@@ -61,4 +68,23 @@ img {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
   border-bottom: 1px solid white;
   cursor: pointer;
+}
+
+.dropdown-menu {
+  font-size: 1.6rem;
+}
+
+.content {
+  padding: 10px;
+  width: 100%;
+  height: 900px;
+}
+
+.info-card {
+  color: black;
+  background-color: #BDC3C7;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+  padding: 5px 20px;
+  border-radius: 12px;
+  border: 2px solid #bdc3c7;
 }
