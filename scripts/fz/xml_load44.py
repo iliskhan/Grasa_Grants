@@ -1,27 +1,26 @@
 import os
 import datetime
+import shutil
 
 from tqdm import tqdm
 from ftplib import FTP
-from zipfile import ZipFile  
+from zipfile import ZipFile
 
 
 def get_44_fz(ftp, folder):
 
 	files = ftp.nlst()
-
 	yesterday, today = correct_dates()
-	
+
 	print("\nПолучение файлов 44 фз")
 	for file in tqdm(files):
 		if file.endswith('.xml.zip'):
 			splited_name = file.split('_')
-			
+
 			start_date = splited_name[-3]
 			end_date = splited_name[-2]
 
 			if yesterday == start_date and today == end_date:
-
 				with open(f'{folder}{file}','wb') as f:
 					ftp.retrbinary(f'RETR {file}',f.write)
 
@@ -56,11 +55,10 @@ def extract_files(folder):
 			os.remove(zip_file)
 
 def main():
-	fz44 = '../data/44/'
-	fz223 = '../data/223/'
+	fz44 = '../../data/44/all_files/'
 
 	URL = 'ftp.zakupki.gov.ru'
-	
+
 	LOG_PASS = 'free'
 
 	fz44_notifications = 'fcs_regions/Chechenskaja_Resp/notifications/currMonth/'
@@ -77,6 +75,5 @@ def main():
 
 		extract_files(fz44)
 
-	
 if __name__ == '__main__':
 	main()
