@@ -25,6 +25,8 @@ def content_finder(url):
                     headline_lead = chunk.find("span", class_="headline_lead")
                     if headline_lead:
                         print(headline_lead.text)
+
+                    print(chunk.find("a", class_="headline__link")['href'])
             else:
                 break
         else:
