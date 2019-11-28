@@ -24,9 +24,10 @@ def content_finder(url, main_url):
                 
                 headline = news_block.find_all("div", class_="headline")
 
-                current_content = {}
-
                 for chunk in headline:
+                    
+                    current_content = {}
+
                     current_content['time'] = chunk.find("time").text
                     current_content['card_name'] = chunk.find("a").text
                     current_content['title'] = chunk.find("span", class_="headline_title_link").text
