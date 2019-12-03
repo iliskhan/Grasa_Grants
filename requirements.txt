@@ -12,3 +12,4 @@ sqlparse==0.3.0
 tqdm==4.36.1
 urllib3==1.25.7
 webencodings==0.5.1
+requests-html==0.10.0
