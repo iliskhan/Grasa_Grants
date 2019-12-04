@@ -73,4 +73,4 @@ class Grants(models.Model):
 class Links(models.Model):
 
     link = models.CharField(max_length=300)
-    grant_id = model.ForeignKey(Grants, on_delete=models.CASCADE, related_name="links")
+    grant_id = models.ForeignKey(Grants, on_delete=models.CASCADE, related_name="links")
