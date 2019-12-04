@@ -8,8 +8,7 @@ import xml.etree.ElementTree as ET
 
 
 def get_223_fz(ftp, folder):
-    # Получить список файлов в директории
-	# загоняем в переменную files список содержимого директории
+    
 	files = ftp.nlst()
 
 	today_date = datetime.date.today()
@@ -22,7 +21,7 @@ def get_223_fz(ftp, folder):
 			splited_name = file.split('_')
 
 			date = splited_name[-6]
-			date = datetime.date(int(date[0:4]), int(date[4:6]), int(date[6:8]))
+			date = datetime.datetime.strptime(date, '%Y%m%d').date()
 
 			if date >= lastdate and date <= today_date:
 			    with open(f'{folder}{file}', 'wb') as f:
@@ -47,7 +46,6 @@ def get_relevant_files(path_folder):
 
 	for i in tqdm(os.listdir(path_folder)):
 		file_path = os.path.join(path_folder, i)
-		file_size = os.path.getsize(file_path)
 
 		if i.endswith('.xml') and i.startswith('purchase'):
 
@@ -62,11 +60,11 @@ def get_relevant_files(path_folder):
 			                      'ns2:item/'
 								  f'ns2:{notice}Data/'
 								  'ns2:submissionCloseDateTime', ns).text
-
-			date_from_xml, time = closeData.split('T')
-
+				  
+			date_from_xml = closeData.split('T')[0].replace('-', '')
+			
 			today = datetime.date.today()
-			date = datetime.date(int(date_from_xml[0:4]), int(date_from_xml[5:7]), int(date_from_xml[8:10]))
+			date = datetime.datetime.strptime(date_from_xml, '%Y%m%d').date()
 
 			if (date < today):
 				os.remove(file_path)

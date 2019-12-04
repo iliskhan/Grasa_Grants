@@ -3,11 +3,10 @@ import json
 
 import xml.etree.ElementTree as ET
 
-# Закупка у единственного поставщика
 # Запрос котировок
 # Запрос предложений
 # Электоронный аукцион
-def retrieve_EA44_EP_ZK_ZP(file_path):
+def retrieve_EA44_ZK_ZP(file_path):
 
 	ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
 		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
@@ -21,8 +20,6 @@ def retrieve_EA44_EP_ZK_ZP(file_path):
 	name = file_path.split('_')[1].split('/')[1]
 	if name == 'fcsNotificationEA44':
 		fcsNotification = root.find('ns2:fcsNotificationEF', ns)
-	if name == 'fcsNotificationEP44':
-		fcsNotification = root.find('ns2:fcsNotificationEP', ns)
 	if name == 'fcsNotificationZK44':
 		fcsNotification = root.find('ns2:fcsNotificationZK', ns)
 	if name == 'fcsNotificationZP44':
@@ -68,7 +65,7 @@ def retrieve_EA44_EP_ZK_ZP(file_path):
 
 
 # Открытый конкурс
-#  извещение по статье 111 44-ФЗ
+#  Извещение по статье 111 44-ФЗ
 def retrive_INM111_OK(file_path):
 
 	ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
@@ -145,14 +142,12 @@ def main():
 	path_OK44 = '../../data/44/data_OK/'
 	path_ZK44 = '../../data/44/data_ZK/'
 	path_ZP44 = '../../data/44/data_ZP/'
-	path_EP44 = '../../data/44/data_EP/'
 	path_INM111 = '../../data/44/data_INM111/'
 
 	data_EA44 = []
 	data_OK44 = []
 	data_ZK44 = []
 	data_ZP44 = []
-	data_EP44 = []
 	data_INM111 = []
 
 
@@ -161,19 +156,16 @@ def main():
 		file_path = os.path.join(path, file)
 
 		if file.endswith('.xml') and file.startswith('fcsNotificationEA44'):
-			data_EA44.append(retrieve_EA44_EP_ZK_ZP(file_path))
+			data_EA44.append(retrieve_EA44_ZK_ZP(file_path))
 
 		if file.endswith('.xml') and file.startswith('fcsNotificationOK44'):
 			data_OK44.append(retrive_INM111_OK(file_path))
 
 		if file.endswith('.xml') and file.startswith('fcsNotificationZK44'):
-			data_ZK44.append(retrieve_EA44_EP_ZK_ZP(file_path))
+			data_ZK44.append(retrieve_EA44_ZK_ZP(file_path))
 
 		if file.endswith('.xml') and file.startswith('fcsNotificationZP44'):
-			data_ZP44.append(retrieve_EA44_EP_ZK_ZP(file_path))
-
-		if file.endswith('.xml') and file.startswith('fcsNotificationEP44'):
-			data_EP44.append(retrieve_EA44_EP_ZK_ZP(file_path))
+			data_ZP44.append(retrieve_EA44_ZK_ZP(file_path))
 
 		if file.endswith('.xml') and file.startswith('fcsNotificationINM111'):
 			data_INM111.append(retrive_INM111_OK(file_path))
@@ -193,9 +185,6 @@ def main():
 
 	with open(f'{path_ZP44}/infoZP.json','w',encoding='utf8') as f:
 		json.dump(data_ZP44, f, ensure_ascii=False, indent=4)
-
-	with open(f'{path_EP44}/infoEP.json','w',encoding='utf8') as f:
-		json.dump(data_EP44, f, ensure_ascii=False, indent=4)
 
 	with open(f'{path_INM111}/infoINM111.json','w',encoding='utf8') as f:
 		json.dump(data_INM111, f, ensure_ascii=False, indent=4)

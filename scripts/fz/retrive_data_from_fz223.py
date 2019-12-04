@@ -13,7 +13,7 @@ def retrieve(file_path):
     xmlData223 = ET.parse(file_path)
 
     root = xmlData223.getroot()
-
+    
     name = file_path.split('_')[1].split('/')[1]
 
     item = root.find('ns2:body/'
@@ -51,10 +51,6 @@ def retrieve(file_path):
     data['fullName'] = purchaseNotice.find('ns2:customer/'
                                          'xmlns:mainInfo/'
                                          'xmlns:fullName', ns).text
-
-    data['shortName'] = purchaseNotice.find('ns2:customer/'
-                                         'xmlns:mainInfo/'
-                                         'xmlns:shortName', ns).text
 
     data['legalAddress'] = purchaseNotice.find('ns2:customer/'
                                          'xmlns:mainInfo/'
