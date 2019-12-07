@@ -14,7 +14,7 @@ def edu_parse(url):
 
         response.html.render()
 
-        soup = BS(response.html.html)
+        soup = BS(response.html.html, features="lxml")
 
         doc_list = soup.find_all("div", class_="section page-main__searchresult-item")
 
@@ -24,7 +24,7 @@ def edu_parse(url):
             content['time'] = doc.find('div', class_='date page-main__searchresult-item-meta-date mr-2 pr-2').text.strip()
             content['text'] = doc.find('a').text.strip()
             content['link'] = doc.find('a')['href']
-            content['lable'] = doc.find('div', class_='d-flex').find_all('div')[1].text.strip()
+            content['label'] = doc.find('div', class_='d-flex').find_all('div')[1].text.strip()
 
             data.append(content)
 

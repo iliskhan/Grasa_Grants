@@ -5,22 +5,26 @@ import shutil
 from tqdm import tqdm
 from ftplib import FTP
 from zipfile import ZipFile
+import xml.etree.ElementTree as ET
 
 
 def get_44_fz(ftp, folder):
 
 	files = ftp.nlst()
-	yesterday, today = correct_dates()
+
+	today_date = datetime.date.today()
+	lastdate = today_date - datetime.timedelta(days=20)
 
 	print("\nПолучение файлов 44 фз")
 	for file in tqdm(files):
 		if file.endswith('.xml.zip'):
 			splited_name = file.split('_')
 
-			start_date = splited_name[-3]
-			end_date = splited_name[-2]
+			start_date = splited_name[-3][0:8]
 
-			if yesterday == start_date and today == end_date:
+			date = datetime.datetime.strptime(start_date, '%Y%m%d').date()
+
+			if date >= lastdate and date <= today_date:
 				with open(f'{folder}{file}','wb') as f:
 					ftp.retrbinary(f'RETR {file}',f.write)
 
@@ -32,15 +36,63 @@ def clean_dir(path):
 		if file != '.gitkeep':
 			os.remove(os.path.join(path, file))
 
-def correct_dates():
-	date = datetime.date.today()
 
-	today = date.strftime('%Y%m%d00')
-	yesterday = date.day - 1
-	yesterday = date.replace(day=yesterday)
-	yesterday = yesterday.strftime('%Y%m%d00')
+def get_relevant_files(folder_path):
 
-	return yesterday, today
+	ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
+		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
+
+	print('Удаление не актуальных файлов\n')
+
+	for i in tqdm(os.listdir(folder_path)):
+		file_path = os.path.join(folder_path, i)
+
+		today = datetime.date.today()
+
+		names = ['fcsNotificationEA44', 'fcsNotificationZK44', 'fcsNotificationZP44', 'fcsNotificationOK44']
+		
+		if i.endswith('xml') and i.split('_')[0] in names:
+			
+			xml_file = ET.parse(file_path)
+			root = xml_file.getroot()
+			
+			name_file = i.split('_')[0]
+
+			if name_file == 'fcsNotificationEA44':
+				fcsNotification = root.find('ns2:fcsNotificationEF', ns)
+			if name_file == 'fcsNotificationZK44':
+				fcsNotification = root.find('ns2:fcsNotificationZK', ns)
+			if name_file == 'fcsNotificationZP44':
+				fcsNotification = root.find('ns2:fcsNotificationZP', ns)
+			if name_file == 'fcsNotificationOK44':
+				fcsNotification = root.find('ns2:fcsNotificationOK', ns)
+
+			endDate = fcsNotification.find('xmlns:procedureInfo/'
+										   'xmlns:collecting/'
+										    'xmlns:endDate', ns).text
+
+			date_from_xml = endDate.split('T')[0].replace('-', '')
+			
+			date = datetime.datetime.strptime(date_from_xml, '%Y%m%d').date()
+
+			if (date < today):
+				os.remove(file_path)								
+
+		if i.endswith('xml') and i.startswith('fcsNotificationINM111'):
+			
+			xml_file = ET.parse(file_path)
+			root = xml_file.getroot()
+
+			endDate = root.find('ns2:fcsNotification111/'
+								'xmlns:procedureInfo/'
+								'xmlns:collectingEndDate', ns).text
+			
+			date_from_xml = endDate.split('T')[0].replace('-', '')
+			
+			date = datetime.datetime.strptime(date_from_xml, '%Y%m%d').date()
+
+			if (date < today):
+				os.remove(file_path)
 
 def extract_files(folder):
 
@@ -61,19 +113,25 @@ def main():
 
 	LOG_PASS = 'free'
 
-	fz44_notifications = 'fcs_regions/Chechenskaja_Resp/notifications/currMonth/'
+	paths = {'fz44_notifications_currM': 'fcs_regions/Chechenskaja_Resp/notifications/currMonth/',
+			'fz44_notifications_prevM': 'fcs_regions/Chechenskaja_Resp/notifications/prevMonth/'}
 
 	clean_dir(fz44)
 
-	with FTP(URL) as ftp:
+	for path in paths.values():
 
-		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+		with FTP(URL) as ftp:
 
-		ftp.cwd(fz44_notifications)
+			ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
-		get_44_fz(ftp, fz44)
+			ftp.cwd(path)
 
-		extract_files(fz44)
+			get_44_fz(ftp, fz44)
+
+			extract_files(fz44)
+
+	get_relevant_files(fz44)
+
 
 if __name__ == '__main__':
 	main()
