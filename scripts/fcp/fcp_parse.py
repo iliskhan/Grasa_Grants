@@ -32,8 +32,9 @@ def content_finder(url, main_url):
                     current_content['card_name'] = chunk.find("a").text
                     current_content['title'] = chunk.find("span", class_="headline_title_link").text
                     headline_lead = chunk.find("span", class_="headline_lead")
-                    if headline_lead:
-                        current_content['lead'] = headline_lead.text
+                    
+                    current_content['lead'] = headline_lead.text if headline_lead else None
+
 
                     url_chunk = chunk.find("a", class_="headline__link")['href']
                     current_content['link'] = main_url + url_chunk
