@@ -6,6 +6,8 @@ class Category(models.Model):
 
     tab_name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return f'{self.tab_name}'
 
 class Type(models.Model):
 
@@ -34,7 +36,7 @@ class Fz223(models.Model):
 
     def __str__(self):
         return f'{self.fz.__str__()}:{self.name}'
-    
+
 
 class Fz44(models.Model):
 
