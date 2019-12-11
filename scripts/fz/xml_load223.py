@@ -93,7 +93,7 @@ def extract_files(folder):
 
 def main():
 
-    fz223 = '../../data/223/all_files/'
+    fz223 = '../../data/223/'
 
     URL = 'ftp.zakupki.gov.ru'
 

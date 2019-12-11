@@ -107,7 +107,7 @@ def extract_files(folder):
 			os.remove(zip_file)
 
 def main():
-	fz44 = '../../data/44/all_files/'
+	fz44 = '../../data/44/'
 
 	URL = 'ftp.zakupki.gov.ru'
 

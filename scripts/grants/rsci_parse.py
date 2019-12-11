@@ -1,14 +1,26 @@
 import requests
-import json
-from bs4 import BeautifulSoup as BS 
+from bs4 import BeautifulSoup as BS
+import sys
+import os
+import datetime
+
+sys.path.append('../../grasagrant')
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
+import django
+django.setup()
+
+from main.models import Category, Type, Grant, Link
 
 def rsci_parse(url):
-
-    data = []
 
     response = requests.get(url)
 
     if response.status_code == 200:
+
+        type_grant = Type.objects.get(name='rsci')
+
+        Grant.objects.filter(grant_name=type_grant).delete()
 
         soup = BS(response.text, features='html5lib')
 
@@ -16,32 +28,33 @@ def rsci_parse(url):
         
         for post in posts:
 
-            content = {}
-            content['time'] = ''.join(f"{post.find_all('span')[0].text}.{post.find_all('span')[1].text}")
-            content['text'] = post.find('div', 'info-card-deskription').find('h4', class_='text-title').text  
-            content['link'] = 'http://www.rsci.ru' + post.find('div', 'info-card-deskription').find('a')['href']
+            grant = Grant()
+
+            grant.grant_name = type_grant
+
+            time = ''.join(f"{post.find_all('span')[0].text}.{post.find_all('span')[1].text}")
+            time = datetime.datetime.strptime(time, '%d.%m.%Y').date()
+            time = time.strftime('%Y-%m-%d')
+
+            grant.time = datetime.datetime.strptime(time, '%Y-%m-%d').date()
+            grant.text = post.find('div', 'info-card-deskription').find('h4', class_='text-title').text  
+            grant.link = 'http://www.rsci.ru' + post.find('div', 'info-card-deskription').find('a')['href']
             
             fond = post.find('div', class_='info-title')
             if fond:
-                content['fond'] = fond.text.strip().replace('\t', '')
+                grant.fond = fond.text.strip().replace('\t', '')
             
             fond_link = post.find('div', class_='info-title').find('a')
             if fond_link:
-                content['fond_link'] = 'http://www.rsci.ru' + fond_link['href']
+                grant.fond_link = 'http://www.rsci.ru' + fond_link['href']
                 
-            data.append(content)
-        
-    return data         
+            grant.save()         
 
 def main():
 
     url = 'http://www.rsci.ru/grants/'
 
     rsci_parse(url)
-
-    with open("data_rsci.json", "w", encoding='utf-8') as f:
-        json.dump(rsci_parse(url), f, ensure_ascii=False, indent=4)
-
 
 if __name__ == '__main__':
     main()    
