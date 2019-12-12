@@ -1,17 +1,33 @@
 import json
 import requests
 
+
+#in order to work with django
+import os
+import sys
+sys.path.append('../../grasagrant/')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "grasagrant.settings")
+import django
+django.setup()
+
+
+
+from datetime import datetime, date
+import locale
+locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
+
 from tqdm import tqdm
 
-from bs4 import BeautifulSoup as BS 
+from bs4 import BeautifulSoup as BS
 
+from main.models import Type, Fcp, Category
 
 def content_finder(url, main_url):
 
     data = []
 
     page_number = 1
-    
+
     while True:
 
         response = requests.get(f"{url}?page={page_number}&ajax=feed")
@@ -21,18 +37,18 @@ def content_finder(url, main_url):
 
             news_block = soup.find(class_="news-block")
             if news_block:
-                
+
                 headline = news_block.find_all("div", class_="headline")
 
                 for chunk in headline:
-                    
+
                     current_content = {}
 
                     current_content['time'] = chunk.find("time").text
                     current_content['card_name'] = chunk.find("a").text
                     current_content['title'] = chunk.find("span", class_="headline_title_link").text
                     headline_lead = chunk.find("span", class_="headline_lead")
-                    
+
                     current_content['lead'] = headline_lead.text if headline_lead else None
 
 
@@ -44,7 +60,7 @@ def content_finder(url, main_url):
                 break
         else:
             break
-        
+
         page_number+=1
 
     title = requests.get(url)
@@ -53,8 +69,8 @@ def content_finder(url, main_url):
         title = BS(title.text, features="html5lib")
 
         title = title.find("p", class_="vcard_name vcard_name_selection").text
-        return {title: data}
-    
+        return {'type_name': title, 'data': data}
+
 
 
 def main():
@@ -76,10 +92,28 @@ def main():
     main_url = "http://government.ru"
     data = [content_finder(url, main_url) for url in tqdm(urls)]
 
-    with open("data.json", "w", encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    category = Category.objects.filter(tab_name='fcp').first()
+    for t in data:
+        try:
+            type = Type.objects.get(name=t['type_name'])
+        except:
+            type = Type(name=t['type_name'], category=category)
+            type.save()
+
+        for d in t['data']:
+            if not Fcp.objects.filter(link=d['link']).first():
+                fcp = Fcp(
+                            gp_name=type,
+                            time=datetime.strptime(d['time'], "%d %B %Y").date(),
+                            card_name=d['card_name'],
+                            title=d['title'],
+                            lead=d['lead'],
+                            link=d['link'],
+                         )
+                fcp.save()
+
+    # with open("data.json", "w", encoding='utf-8') as f:
+    #     json.dump(data, f, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
     main()
-
-    
