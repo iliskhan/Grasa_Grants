@@ -37,7 +37,7 @@ class Fz223(models.Model):
 
     def __str__(self):
         return f'{self.fz.__str__()}: {self.name}'
-    
+
 class Fz44(models.Model):
 
     fz = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz44")
@@ -65,10 +65,13 @@ class Fcp(models.Model):
 
     gp_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fcp")
     time = models.DateField()
-    card_name = models.CharField(max_length=300)
-    title = models.CharField(max_length=300)
-    lead = models.TextField()
-    link = models.CharField(max_length=300)
+    card_name = models.CharField(max_length=300, null=True)
+    title = models.CharField(max_length=300, null=True)
+    lead = models.TextField(null=True)
+    link = models.CharField(max_length=300, null=True)
+
+    def __str__(self):
+        return f'{self.gp_name.__str__()}: {self.title}'
 
 class Grant(models.Model):
     grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grants")
@@ -93,4 +96,3 @@ class Link(models.Model):
 
     def __str__(self):
         return self.grant_id.__str__()
-

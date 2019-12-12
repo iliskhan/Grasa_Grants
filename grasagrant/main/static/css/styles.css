@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
 }
 
@@ -11,7 +11,7 @@ body {
   margin: 0;
   padding: 0;
   color: white;
-}
+} */
 
 .clear-link {
   color: inherit !important;
@@ -29,61 +29,26 @@ img {
   display: inline-block;
 }
 
-.mnavbar {
-  background-color: #101010;
-  padding: 1rem 0rem;
-  box-shadow: 0 0 4px black;
-  font-weight: bold;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-around;
-}
-
-.mlogo {
-  margin: 0;
-  display: none;
-  font-size: 36px;
-  vertical-align: middle;
-  cursor: pointer;
-}
-
-.mnavbar-items {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-}
-
-.mnavbar-items__item {
-  padding: 5px 10px;
-  transition: all 0.1s linear 0s;
-  list-style: none;
-  border-bottom: 1px solid #101010;
-}
-
-.mnavbar-items li:hover,
-.mnavbar-items li:active {
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
-  border-bottom: 1px solid white;
-  cursor: pointer;
-}
-
 .dropdown-menu {
-  font-size: 1.6rem;
+  font-size: 1rem;
 }
 
-.content {
+/* .content {
   padding: 10px;
   width: 100%;
   height: 900px;
-}
+} */
 
 .info-card {
   color: black;
+  font-size: 1rem;
   background-color: #BDC3C7;
   box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
   padding: 5px 20px;
   border-radius: 12px;
   border: 2px solid #bdc3c7;
+}
+
+.navbar-brand {
+  font-size: 20px;
 }
