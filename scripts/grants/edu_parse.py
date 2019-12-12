@@ -17,13 +17,13 @@ def edu_parse(url):
 
     session = HTMLSession()
 
-    response = session.get('https://docs.edu.gov.ru/')
+    response = session.get(url)
 
     if response.status_code == 200:
 
         type_grant = Type.objects.get(name='edu')
 
-        Grant.objects.filter(grant_name=type_grant)
+        Grant.objects.filter(grant_name=type_grant).delete()
 
         response.html.render()
 
