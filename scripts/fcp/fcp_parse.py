@@ -92,7 +92,7 @@ def main():
     main_url = "http://government.ru"
     data = [content_finder(url, main_url) for url in tqdm(urls)]
 
-    category = Category.objects.filter(tab_name='fcp').first()
+    category = Category.objects.filter(tab_name='Fcp').first()
     for t in data:
         try:
             type = Type.objects.get(name=t['type_name'])
