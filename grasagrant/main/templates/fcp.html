@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="container">
+  {% if fcp.card_name %}
+  <h2>{{ fcp.card_name }}</h2>
+  {% endif %}
+  {% if fcp.title %}
+  <h2>{{ fcp.title }}</h2>
+  {% endif %}
+  {% if fcp.lead %}
+  <h2>{{ fcp.lead }}</h2>
+  {% endif %}
+  {% if fcp.time %}
+  <h2>{{ fcp.time }}</h2>
+  {% endif %}
+  {% if fcp.fond_link %}
+  <h2>{{ fcp.fond_link }}</h2>
+  {% endif %}
+</section>
+{% endblock %}

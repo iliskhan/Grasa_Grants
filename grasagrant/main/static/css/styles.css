@@ -4,14 +4,13 @@
 
 html {
   font-size: 62.5%;
-}
+} */
 
 body {
-  font-size: 1.6rem;
+  /* font-size: 1.6rem; */
   margin: 0;
   padding: 0;
-  color: white;
-} */
+}
 
 .clear-link {
   color: inherit !important;
@@ -40,13 +39,18 @@ img {
 } */
 
 .info-card {
+  margin-top: 10px;
   color: black;
   font-size: 1rem;
   background-color: #BDC3C7;
   box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
   padding: 5px 20px;
   border-radius: 12px;
-  border: 2px solid #bdc3c7;
+  /* border: 2px solid #bdc3c7; */
+}
+
+.info-card:hover {
+  cursor: pointer;
 }
 
 .navbar-brand {

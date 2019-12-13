@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="container">
+  {% if grant.label %}
+  <h2>{{ grant.label }}</h2>
+  {% endif %}
+  {% if grant.text %}
+  <h2>{{ grant.text }}</h2>
+  {% endif %}
+  {% if grant.fond %}
+  <h2>{{ grant.fond }}</h2>
+  {% endif %}
+  {% if grant.org %}
+  <h2>{{ grant.org }}</h2>
+  {% endif %}
+  {% if grant.time %}
+  <h2>{{ grant.time }}</h2>
+  {% endif %}
+  {% if grant.days %}
+  <h2>{{ grant.days }}</h2>
+  {% endif %}
+  {% if grant.rouble %}
+  <h2>{{ grant.rouble }}</h2>
+  {% endif %}
+  {% if grant.fond %}
+  <h2>{{ grant.fond }}</h2>
+  {% endif %}
+  {% if grant.fond_link %}
+  <h2>{{ grant.fond_link }}</h2>
+  {% endif %}
+</section>
+{% endblock %}

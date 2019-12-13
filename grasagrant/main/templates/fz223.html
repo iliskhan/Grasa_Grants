@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="container">
+  {% if fz.registration_number %}
+  <h2>{{ fz.registration_number }}</h2>
+  {% endif %}
+  {% if fz.create_date %}
+  <h2>{{ fz.create_date }}</h2>
+  {% endif %}
+  {% if fz.url_EIS %}
+  <h2>{{ fz.url_EIS }}</h2>
+  {% endif %}
+  {% if fz.url_VSRZ %}
+  <h2>{{ fz.url_VSRZ }}</h2>
+  {% endif %}
+  {% if fz.name %}
+  <h2>{{ fz.name }}</h2>
+  {% endif %}
+  {% if fz.full_name %}
+  <h2>{{ fz.full_name }}</h2>
+  {% endif %}
+  {% if fz.legal_address %}
+  <h2>{{ fz.legal_address }}</h2>
+  {% endif %}
+  {% if fz.purchase_code_name %}
+  <h2>{{ fz.purchase_code_name }}</h2>
+  {% endif %}
+  {% if fz.place %}
+  <h2>{{ fz.place }}</h2>
+  {% endif %}
+  {% if fz.currency %}
+  <h2>{{ fz.currency }}</h2>
+  {% endif %}
+  {% if fz.initial_sum %}
+  <h2>{{ fz.initial_sum }}</h2>
+  {% endif %}
+  {% if fz.submission_start_date %}
+  <h2>{{ fz.submission_start_date }}</h2>
+  {% endif %}
+  {% if fz.submission_close_date %}
+  <h2>{{ fz.submission_close_date }}</h2>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="container">
+  {% for type in types %}
+  <div class="info-card" onclick="location.href='{% url query_to type.id %}'">
+    <h2>{{type.name}}</h2>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}
