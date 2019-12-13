@@ -24,7 +24,7 @@ class Fz223(models.Model):
     registration_number = models.CharField(max_length=100)
     create_date = models.DateField()
     url_EIS = models.TextField(null=True)
-    ulr_VSRZ = models.TextField(null=True)
+    url_VSRZ = models.TextField(null=True)
     name = models.CharField(max_length=300)
     full_name = models.CharField(max_length=300)
     legal_address = models.CharField(max_length=300)
