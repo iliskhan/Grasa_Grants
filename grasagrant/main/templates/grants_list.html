@@ -6,10 +6,8 @@
 <section class="container">
   {% for grant in grants %}
   <div class="info-card" onclick="location.href='{% url 'grant_detailed' grant.id %}'">
-    <h2>{{grant.label}}</h2>
-    <h3>{{grant.link}}</h3>
-    <h3>{{grant.time}}</h3>
-    <h3>{{grant.days}}</h3>
+    <h2>{{grant.text}}</h2>
+    <h3>{{grant.time|date:"d-m-Y"}}</h3>
   </div>
   {% endfor %}
 </section>
