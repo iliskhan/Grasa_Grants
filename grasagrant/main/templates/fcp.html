@@ -5,19 +5,19 @@
 {% block content %}
 <section class="container">
   {% if fcp.card_name %}
-  <h2>{{ fcp.card_name }}</h2>
+  <h2><strong>Категория </strong>{{ fcp.card_name }}</h2>
   {% endif %}
   {% if fcp.title %}
-  <h2>{{ fcp.title }}</h2>
+  <h2><strong>Заглавие </strong>{{ fcp.title }}</h2>
   {% endif %}
   {% if fcp.lead %}
-  <h2>{{ fcp.lead }}</h2>
+  <h2><strong>Описание </strong>{{ fcp.lead }}</h2>
   {% endif %}
   {% if fcp.time %}
-  <h2>{{ fcp.time }}</h2>
+  <h2><strong>Опубликовано </strong>{{ fcp.time }}</h2>
   {% endif %}
   {% if fcp.fond_link %}
-  <h2>{{ fcp.fond_link }}</h2>
+  <h2><strong>URL фонда </strong>{{ fcp.fond_link }}</h2>
   {% endif %}
 </section>
 {% endblock %}

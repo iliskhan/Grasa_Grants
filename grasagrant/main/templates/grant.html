@@ -5,31 +5,31 @@
 {% block content %}
 <section class="container">
   {% if grant.label %}
-  <h2>{{ grant.label }}</h2>
+  <h2><strong>Категория </strong>{{ grant.label }}</h2>
   {% endif %}
   {% if grant.text %}
-  <h2>{{ grant.text }}</h2>
+  <h2><strong>Описание </strong>{{ grant.text }}</h2>
   {% endif %}
   {% if grant.fond %}
   <h2>{{ grant.fond }}</h2>
   {% endif %}
   {% if grant.org %}
-  <h2>{{ grant.org }}</h2>
+  <h2><strong>Организация </strong>{{ grant.org }}</h2>
   {% endif %}
   {% if grant.time %}
-  <h2>{{ grant.time }}</h2>
+  <h2><strong>Опубликовано </strong>{{ grant.time }}</h2>
   {% endif %}
   {% if grant.days %}
-  <h2>{{ grant.days }}</h2>
+  <h2><strong>До окончания </strong>{{ grant.days }}</h2>
   {% endif %}
   {% if grant.rouble %}
-  <h2>{{ grant.rouble }}</h2>
+  <h2><strong>Сумма финансирования </strong>{{ grant.rouble }}</h2>
   {% endif %}
   {% if grant.fond %}
-  <h2>{{ grant.fond }}</h2>
+  <h2><strong>Наименование фонда </strong>{{ grant.fond }}</h2>
   {% endif %}
   {% if grant.fond_link %}
-  <h2>{{ grant.fond_link }}</h2>
+  <h2><strong>URL фонда </strong>{{ grant.fond_link }}</h2>
   {% endif %}
 </section>
 {% endblock %}
