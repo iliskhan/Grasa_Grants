@@ -111,9 +111,11 @@ def retrieve(file_path):
 
     fz223.initial_sum = lot.find('xmlns:initialSum', ns).text
 
-    fz223.submission_start_date = purchaseNotice.findtext('ns2:applSubmisionStartDate', namespaces=ns)
+    start_date = purchaseNotice.findtext('ns2:applSubmisionStartDate', namespaces=ns)
+    if start_date: fz223.submission_start_date = start_date.split('T')[0]
 
-    fz223.submission_close_date = purchaseNotice.findtext('ns2:submissionCloseDateTime', namespaces=ns)
+    close_date = purchaseNotice.findtext('ns2:submissionCloseDateTime', namespaces=ns)
+    if close_date: fz223.submission_close_date = close_date.split('T')[0]
 
     fz223.save()
 

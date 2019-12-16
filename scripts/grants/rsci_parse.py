@@ -42,7 +42,7 @@ def rsci_parse(url):
             
             fond = post.find('div', class_='info-title')
             if fond:
-                grant.fond = fond.text.strip().replace('\t', '')
+                grant.fond = fond.text
             
             fond_link = post.find('div', class_='info-title').find('a')
             if fond_link:

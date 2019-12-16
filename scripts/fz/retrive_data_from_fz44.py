@@ -50,12 +50,16 @@ def retrieve_EA44_ZK_ZP(file_path):
 											 	'xmlns:fullName', ns).text
 	fz44.placing_way = fcsNotification.findtext('xmlns:placingWay/'
 													   'xmlns:name', namespaces=ns)
-	fz44.start_date = fcsNotification.findtext('xmlns:procedureInfo/'
+	startDate = fcsNotification.findtext('xmlns:procedureInfo/'
 										   			  'xmlns:collecting/'
 										   			  'xmlns:startDate', namespaces=ns)
-	fz44.end_date = fcsNotification.findtext('xmlns:procedureInfo/'
+	if startDate: fz44.start_date = startDate.split('T')[0] 
+
+	endDate = fcsNotification.findtext('xmlns:procedureInfo/'
 										 			'xmlns:collecting/'
 										 			'xmlns:endDate', namespaces=ns)
+	if endDate: fz44.end_date = endDate.split('T')[0]
+
 	fz44.place = fcsNotification.findtext('xmlns:procedureInfo/'
 									   			  'xmlns:collecting/'
 									   			  'xmlns:place', namespaces=ns)
@@ -91,7 +95,7 @@ def retrive_INM111_OK(file_path):
 
 	root = xmlData.getroot()
 	
-	name = file_path.split('_')[1].split('/')[1]
+	name = file_path.split('_')[0].split('/')[-1]
 	if name == 'fcsNotificationOK44':
 		fcsNotification = root.find('ns2:fcsNotificationOK', ns)
 	if name == 'fcsNotificationINM111':
@@ -118,24 +122,30 @@ def retrive_INM111_OK(file_path):
 													'xmlns:name', namespaces=ns)
 
 	if name == 'fcsNotificationOK44':
-		fz44.start_date = fcsNotification.findtext('xmlns:procedureInfo/'
+		startDate = fcsNotification.findtext('xmlns:procedureInfo/'
 										   			 'xmlns:collecting/'
 										   			 'xmlns:startDate', namespaces=ns)
-		fz44.end_date = fcsNotification.findtext('xmlns:procedureInfo/'
+		if startDate: fz44.start_date = startDate.split('T')[0] 
+
+		endDate = fcsNotification.findtext('xmlns:procedureInfo/'
 										 		   'xmlns:collecting/'
 										 	   	   'xmlns:endDate', namespaces=ns)
+		if endDate: fz44.end_date = endDate.split('T')[0]
+
 		fz44.place = fcsNotification.findtext('xmlns:procedureInfo/'
 									   			 'xmlns:collecting/'
 									   			 'xmlns:place', namespaces=ns)
 	if name == 'fcsNotificationINM111':
-		fz44.end_date = fcsNotification.find('xmlns:procedureInfo/'
-											   'xmlns:collectingEndDate', ns).text
+		endDate = fcsNotification.findtext('xmlns:procedureInfo/'
+											   'xmlns:collectingEndDate', namespaces=ns)
+		if endDate: fz44.end_date = endDate.split('T')[0]
+
 	lot = fcsNotification.find('xmlns:lots/'
 								 'xmlns:lot', ns)
 	fz44.max_price = lot.find('xmlns:maxPrice',ns).text
 	fz44.currency = lot.find('xmlns:currency/'
 								'xmlns:code', ns).text
-	fz44.finance_source = lot.findtext('xmlns:financeSource',namespaces=ns)
+	fz44.finance_source = lot.findtext('xmlns:financeSource', namespaces=ns)
 
 	fz44.aplication_guarantee = fcsNotification.findtext('xmlns:customerRequirements/'
 								   								'xmlns:customerRequirement/'
