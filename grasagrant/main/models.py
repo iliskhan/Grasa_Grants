@@ -52,7 +52,7 @@ class Fz44(models.Model):
     place = models.TextField(null=True)
     max_price = models.CharField(max_length=100)
     currency = models.CharField(max_length=100)
-    finance_source = models.CharField(max_length=100)
+    finance_source = models.CharField(max_length=100, null=True)
     aplication_guarantee = models.CharField(max_length=100, null=True)
     contract_guarantee = models.CharField(max_length=100, null=True)
     delivery = models.CharField(max_length=300, null=True)
