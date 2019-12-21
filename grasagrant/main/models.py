@@ -1,6 +1,12 @@
 from django.db import models
 
 # Create your models here.
+class Region(models.Model):
+
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
 
 class Category(models.Model):
 
@@ -35,6 +41,8 @@ class Fz223(models.Model):
     submission_start_date = models.CharField(max_length=100, null=True)
     submission_close_date = models.CharField(max_length=100, null=True)
 
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+
     def __str__(self):
         return f'{self.fz.__str__()}: {self.name}'
 
@@ -57,6 +65,8 @@ class Fz44(models.Model):
     contract_guarantee = models.CharField(max_length=100, null=True)
     delivery = models.CharField(max_length=300, null=True)
     delivery_place = models.CharField(max_length=300, null=True)
+
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.fz.__str__()}: {self.purchase_object}'
