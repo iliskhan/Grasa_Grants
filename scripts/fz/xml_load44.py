@@ -106,6 +106,16 @@ def extract_files(folder):
 				zip_obj.extractall(path=folder)
 			os.remove(zip_file)
 
+def get_names_regions(url, LOG_PASS):
+
+	ftp = FTP(url)
+	ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+	ftp.cwd('fcs_regions/')
+	list_regions = ftp.nlst()[:87]
+	list_regions.remove('PG-PZ')
+
+	return list_regions
+
 def main():
 	fz44 = '../../data/44/'
 
@@ -113,25 +123,31 @@ def main():
 
 	LOG_PASS = 'free'
 
-	paths = {'fz44_notifications_currM': 'fcs_regions/Chechenskaja_Resp/notifications/currMonth/',
-			'fz44_notifications_prevM': 'fcs_regions/Chechenskaja_Resp/notifications/prevMonth/'}
-
+	list_regions = get_names_regions(URL, LOG_PASS)
+	
 	clean_dir(fz44)
 
-	for path in paths.values():
+	paths = dict()
+	
+	for region in list_regions:
 
-		with FTP(URL) as ftp:
+		paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
+		paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'
 
-			ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+		for path in paths.values():
+			
+			with FTP(URL) as ftp:
 
-			ftp.cwd(path)
+				ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
-			get_44_fz(ftp, fz44)
+				ftp.cwd(path)
 
-			extract_files(fz44)
+				get_44_fz(ftp, fz44)
+
+				extract_files(fz44)
 
 	get_relevant_files(fz44)
 
 
 if __name__ == '__main__':
-	main()
+    main()

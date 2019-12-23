@@ -9,7 +9,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
 import django
 django.setup()
 
-from main.models import Category, Type, Fz223
+from main.models import Category, Type, Fz223, Region
 
 def retrieve(file_path):
 
@@ -105,17 +105,49 @@ def retrieve(file_path):
     lot = purchaseNotice.find('ns2:lots/'
                               'xmlns:lot/'
                               'xmlns:lotData', ns)
-
+                  
     fz223.currency = lot.find('xmlns:currency/'
                                 'xmlns:code', ns).text
 
-    fz223.initial_sum = lot.find('xmlns:initialSum', ns).text
+    fz223.initial_sum = lot.findtext('xmlns:initialSum', namespaces=ns)
 
     start_date = purchaseNotice.findtext('ns2:applSubmisionStartDate', namespaces=ns)
     if start_date: fz223.submission_start_date = start_date.split('T')[0]
 
     close_date = purchaseNotice.findtext('ns2:submissionCloseDateTime', namespaces=ns)
     if close_date: fz223.submission_close_date = close_date.split('T')[0]
+    
+    region_name = purchaseNotice.find('ns2:customer/'
+                                         'xmlns:mainInfo/'
+                                         'xmlns:legalAddress', ns).text
+    
+    region_list = Region.objects.all()
+    region_list = [i.name for i in region_list]
+    region_orm = ''
+
+    reg_name = region_name.split(',')[1].strip().title()
+    
+    for reg in region_list:
+        if reg_name in reg:
+            region_orm = reg
+    
+    if region_orm == '':
+        reg_name = region_name.split(',')[1].strip().split()[1].title()
+
+        for reg in region_list:
+            if reg_name in reg:
+                region_orm = reg
+
+    if region_orm == '':
+        reg_name = region_name.split(',')[1].strip().split()[0].title()
+
+        for reg in region_list:
+            if reg_name in reg:
+                region_orm = reg    
+
+    region = Region.objects.get(name=region_orm)
+
+    fz223.region = region
 
     fz223.save()
 
@@ -123,7 +155,7 @@ def retrieve(file_path):
 def main():
     path = '../../data/223/'
 
-    Fz223.objects.all().delete()
+    #Fz223.objects.all().delete()
 
     for i in os.listdir(path):
 

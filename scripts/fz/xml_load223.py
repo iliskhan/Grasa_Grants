@@ -9,23 +9,45 @@ import xml.etree.ElementTree as ET
 
 def get_223_fz(ftp, folder):
     
-	files = ftp.nlst()
+	files = []
+	ftp.retrlines("LIST", files.append)
+	
+	files = [file.split(None, 8) for file in files]
+	
+	files_name = [file[-1] for file in files]
+	files_size = [file[4] for file in files]
+
+	#files = ftp.nlst()
 
 	today_date = datetime.date.today()
 	lastdate = today_date - datetime.timedelta(days=20)
 
 	print("\nПолучение файлов 223 фз")
 
-	for file in tqdm(files):
-		if file.endswith('.xml.zip'):
-			splited_name = file.split('_')
+	for i in tqdm(range(len(files_name))):
+
+		if files_name[i].endswith('.xml.zip') and int(files_size[i]) >= 1000:
+			
+			splited_name = files_name[i].split('_')
 
 			date = splited_name[-6]
 			date = datetime.datetime.strptime(date, '%Y%m%d').date()
 
 			if date >= lastdate and date <= today_date:
-			    with open(f'{folder}{file}', 'wb') as f:
-				    ftp.retrbinary(f'RETR {file}', f.write)
+			    with open(f'{folder}{files_name[i]}', 'wb') as f:
+				    ftp.retrbinary(f'RETR {files_name[i]}', f.write)
+
+
+	# for file in tqdm(files):
+	# 	if file.endswith('.xml.zip'):
+	# 		splited_name = file.split('_')
+
+	# 		date = splited_name[-6]
+	# 		date = datetime.datetime.strptime(date, '%Y%m%d').date()
+
+	# 		if date >= lastdate and date <= today_date:
+	# 		    with open(f'{folder}{file}', 'wb') as f:
+	# 			    ftp.retrbinary(f'RETR {file}', f.write)
 
 def del_empty_files(path_folder):
 
@@ -91,39 +113,54 @@ def extract_files(folder):
 				zip_obj.extractall(path=folder)
 			os.remove(zip_file)
 
+def get_names_regions(url, LOG_PASS):
+
+	ftp = FTP(url)
+	ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+	ftp.cwd('out/published')
+	list_regions = ftp.nlst()[:87]
+	list_regions.remove('Irkutskaya_obl_Ust-Ordynskii_Buriatskii_okrug')
+
+	return list_regions
+
 def main():
 
-    fz223 = '../../data/223/'
+	fz223 = '../../data/223/'
 
-    URL = 'ftp.zakupki.gov.ru'
+	URL = 'ftp.zakupki.gov.ru'
 
-    LOG_PASS = 'fz223free'
+	LOG_PASS = 'fz223free'
 
-    folder_path = dict()
-    folder_path['fz223_notice'] = 'out/published/Chechenskaya_Resp/purchaseNotice/daily'
-    folder_path['fz223_noticeAE'] = 'out/published/Chechenskaya_Resp/purchaseNoticeAE/daily/'
-    folder_path['fz223_noticeAESMBO'] = 'out/published/Chechenskaya_Resp/purchaseNoticeAESMBO/daily/'
-    folder_path['fz223_noticeKESMBO'] = 'out/published/Chechenskaya_Resp/purchaseNoticeKESMBO/daily/'
-    folder_path['fz223_noticeOA'] = 'out/published/Chechenskaya_Resp/purchaseNoticeOA/daily/'
-    folder_path['fz223_noticeOK'] = 'out/published/Chechenskaya_Resp/purchaseNoticeOK/daily/'
-    folder_path['fz223_noticeZK'] = 'out/published/Chechenskaya_Resp/purchaseNoticeZK/daily/'
-    folder_path['fz223_noticeZKESMBO'] = 'out/published/Chechenskaya_Resp/purchaseNoticeZKESMBO/daily/'
-    folder_path['fz223_noticeZPESMBO'] = 'out/published/Chechenskaya_Resp/purchaseNoticeZPESMBO/daily/'
+	list_regions = get_names_regions(URL, LOG_PASS)
+	
+	clean_dir(fz223)
 
-    clean_dir(fz223)
+	folder_path = dict()
 
-    for i in folder_path.items():
+	for region in list_regions:
+		
+		folder_path['fz223_notice'] = f'out/published/{region}/purchaseNotice/daily'
+		folder_path['fz223_noticeAE'] = f'out/published/{region}/purchaseNoticeAE/daily/'
+		folder_path['fz223_noticeAESMBO'] = f'out/published/{region}/purchaseNoticeAESMBO/daily/'
+		folder_path['fz223_noticeKESMBO'] = f'out/published/{region}/purchaseNoticeKESMBO/daily/'
+		folder_path['fz223_noticeOA'] = f'out/published/{region}/purchaseNoticeOA/daily/'
+		folder_path['fz223_noticeOK'] = f'out/published/{region}/purchaseNoticeOK/daily/'
+		folder_path['fz223_noticeZK'] = f'out/published/{region}/purchaseNoticeZK/daily/'
+		folder_path['fz223_noticeZKESMBO'] = f'out/published/{region}/purchaseNoticeZKESMBO/daily/'
+		folder_path['fz223_noticeZPESMBO'] = f'out/published/{region}/purchaseNoticeZPESMBO/daily/'
 
-        with FTP(URL) as ftp:
-            ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+		for i in folder_path.values():
 
-            ftp.cwd(i[1])
+			with FTP(URL) as ftp:
+				ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
-            get_223_fz(ftp, fz223)
-            extract_files(fz223)
+				ftp.cwd(i)
 
-    del_empty_files(fz223)
-    get_relevant_files(fz223)
+				get_223_fz(ftp, fz223)
+				extract_files(fz223)
+
+	del_empty_files(fz223)
+	get_relevant_files(fz223)
 
 if __name__ == '__main__':
     main()

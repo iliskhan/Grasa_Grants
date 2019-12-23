@@ -8,7 +8,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
 import django
 django.setup()
 
-from main.models import Category, Type, Fz44
+from main.models import Category, Type, Fz44, Region
 
 # Запрос котировок
 # Запрос предложений
@@ -64,7 +64,7 @@ def retrieve_EA44_ZK_ZP(file_path):
 									   			  'xmlns:collecting/'
 									   			  'xmlns:place', namespaces=ns)
 	lot = fcsNotification.find('xmlns:lot', ns)
-	fz44.max_price = lot.find('xmlns:maxPrice', ns).text
+	fz44.max_price = lot.findtext('xmlns:maxPrice', namespaces=ns)
 	fz44.currency = lot.find('xmlns:currency/'
 								'xmlns:code', ns).text
 	fz44.finance_source = lot.find('xmlns:financeSource', ns).text
@@ -81,6 +81,32 @@ def retrieve_EA44_ZK_ZP(file_path):
 	fz44.delivery_place = customerRequirement.findtext('xmlns:kladrPlaces/'
 													 'xmlns:kladrPlace/'
 													 'xmlns:deliveryPlace', namespaces=ns)
+
+	region_name = fcsNotification.find('xmlns:purchaseResponsible/'
+											 'xmlns:responsibleOrg/'
+											 'xmlns:factAddress', ns).text
+	
+	region_list = Region.objects.all()
+	region_list = [i.name for i in region_list]
+	region_orm = ''
+	
+	reg_name = region_name.split(',')[2].strip().split(' ')[0]
+	
+	for reg in region_list:
+		if reg_name in reg:
+			region_orm = reg
+			
+	if region_orm == '':
+		
+		reg_name = region_name.split(',')[1].strip().split(' ')[0]
+	
+		for reg in region_list:
+			if reg_name in reg:
+				region_orm = reg
+
+	region = Region.objects.get(name=region_orm)
+	
+	fz44.region = region
 
 	fz44.save()												 
 
@@ -142,9 +168,9 @@ def retrive_INM111_OK(file_path):
 
 	lot = fcsNotification.find('xmlns:lots/'
 								 'xmlns:lot', ns)
-	fz44.max_price = lot.find('xmlns:maxPrice',ns).text
-	fz44.currency = lot.find('xmlns:currency/'
-								'xmlns:code', ns).text
+	fz44.max_price = lot.findtext('xmlns:maxPrice', namespaces=ns)
+	fz44.currency = lot.findtext('xmlns:currency/'
+								'xmlns:code', namespaces=ns)
 	fz44.finance_source = lot.findtext('xmlns:financeSource', namespaces=ns)
 
 	fz44.aplication_guarantee = fcsNotification.findtext('xmlns:customerRequirements/'
@@ -167,13 +193,38 @@ def retrive_INM111_OK(file_path):
 													 	'xmlns:kladrPlace/'
 													 	'xmlns:deliveryPlace', namespaces=ns)
 
+	region_name = fcsNotification.find('xmlns:purchaseResponsible/'
+											 'xmlns:responsibleOrg/'
+											 'xmlns:factAddress', ns).text
+	region_list = Region.objects.all()
+	region_list = [i.name for i in region_list]
+	region_orm = ''
+	
+	reg_name = region_name.split(',')[2].strip().split(' ')[0]
+	
+	for reg in region_list:
+		if reg_name in reg:
+			region_orm = reg
+			
+	if region_orm == '':
+		
+		reg_name = region_name.split(',')[1].strip().split(' ')[0]
+	
+		for reg in region_list:
+			if reg_name in reg:
+				region_orm = reg
+
+	region = Region.objects.get(name=region_orm)
+	
+	fz44.region = region	
+
 	fz44.save()
 
 def main():
 
 	path = '../../data/44/'
 
-	Fz44.objects.all().delete()
+	#Fz44.objects.all().delete()
 
 	for file in os.listdir(path):
 
