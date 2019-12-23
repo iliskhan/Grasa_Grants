@@ -98,7 +98,6 @@ def extract_files(folder):
 
 	print("\nРазархивирование файлов")
 
-	for file_name in tqdm(os.listdir(folder)):
 		if file_name.endswith('.zip'):
 
 			zip_file = os.path.join(folder, file_name)
@@ -108,11 +107,11 @@ def extract_files(folder):
 
 def get_names_regions(url, LOG_PASS):
 
-	ftp = FTP(url)
-	ftp.login(user=LOG_PASS, passwd=LOG_PASS)
-	ftp.cwd('fcs_regions/')
-	list_regions = ftp.nlst()[:87]
-	list_regions.remove('PG-PZ')
+	with FTP(url) as ftp:
+		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+		ftp.cwd('fcs_regions/')
+		list_regions = ftp.nlst()[:87]
+		list_regions.remove('PG-PZ')
 
 	return list_regions
 
