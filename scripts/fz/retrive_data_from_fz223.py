@@ -155,7 +155,7 @@ def retrieve(file_path):
 def main():
     path = '../../data/223/'
 
-    #Fz223.objects.all().delete()
+    Fz223.objects.all().delete()
 
     for i in os.listdir(path):
 

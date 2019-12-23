@@ -224,7 +224,7 @@ def main():
 
 	path = '../../data/44/'
 
-	#Fz44.objects.all().delete()
+	Fz44.objects.all().delete()
 
 	for file in os.listdir(path):
 
