@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class Region(models.Model):
 
     name = models.CharField(max_length=200)
@@ -37,7 +36,7 @@ class Fz223(models.Model):
     purchase_code_name = models.CharField(max_length=300)
     place = models.CharField(max_length=300, null=True)
     currency = models.CharField(max_length=100)
-    initial_sum = models.CharField(max_length=100)
+    initial_sum = models.CharField(max_length=100, null=True)
     submission_start_date = models.CharField(max_length=100, null=True)
     submission_close_date = models.CharField(max_length=100, null=True)
 
@@ -58,8 +57,8 @@ class Fz44(models.Model):
     start_date = models.CharField(max_length=100, null=True)
     end_date = models.CharField(max_length=100, null=True)
     place = models.TextField(null=True)
-    max_price = models.CharField(max_length=100)
-    currency = models.CharField(max_length=100)
+    max_price = models.CharField(max_length=100, null=True)
+    currency = models.CharField(max_length=100, null=True)
     finance_source = models.CharField(max_length=100, null=True)
     aplication_guarantee = models.CharField(max_length=100, null=True)
     contract_guarantee = models.CharField(max_length=100, null=True)
@@ -82,6 +81,18 @@ class Fcp(models.Model):
 
     def __str__(self):
         return f'{self.gp_name.__str__()}: {self.title}'
+
+class DigitalEconomy(models.Model):
+    
+    type_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name='digital_economy')
+    document_number = models.CharField(mas_length=50, null=True)
+    label = models.CharField(max_length=150, null=True)
+    date = models.DateField(null=True)
+    text = models.TextField()
+    link = models.CharField(max_length=300)
+
+    def __str__(self):
+        return f'{self.type_name.__str__()}: {self.text}'
 
 class Grant(models.Model):
     grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grants")
