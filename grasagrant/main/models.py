@@ -85,7 +85,7 @@ class Fcp(models.Model):
 class DigitalEconomy(models.Model):
     
     type_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name='digital_economy')
-    document_number = models.CharField(mas_length=50, null=True)
+    document_number = models.CharField(max_length=50, null=True)
     label = models.CharField(max_length=150, null=True)
     date = models.DateField(null=True)
     text = models.TextField()
