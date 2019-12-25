@@ -16,4 +16,5 @@ urlpatterns = [
     path('fz223_types/', views.fz223_types_list, name='fz223s'),
     path('fz223_types/<int:pk>/', views.fz223_list, name='fz223_list'),
     path('fz223/<int:pk>/', views.fz223_detailed, name='fz223_detailed'),
+    path('api/suggestions/regions/', views.get_regions_api, name='suggestion_regions'),
 ]

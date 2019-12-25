@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from main.models import Type, Grant, Fcp, Fz44, Fz223, Category
-from django.http import Http404
+from main.models import Type, Grant, Fcp, Fz44, Fz223, Category, Region
+from django.http import HttpResponse, Http404
+from django.core import serializers
 
 
 # Create your views here.
@@ -125,3 +126,18 @@ def fz223_detailed(request, pk):
         'fz223.html',
         context = {'fz': fz},
     )
+
+def regions_list(request):
+    regions = Region.objects.all()
+    return render(
+        request,
+        'regions_list.html',
+        context = {'reigons': regions},
+    )
+
+def get_regions_api(request):
+    # print(request.GET['data'])
+    data = request.GET['data'][0]
+    regions = list(Region.objects.all())
+    regions = [reg for reg in regions if data in reg.name]
+    return HttpResponse(serializers.serialize("json", regions))
