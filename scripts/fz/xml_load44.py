@@ -44,28 +44,29 @@ def get_relevant_files(folder_path):
 
 	print('Удаление не актуальных файлов\n')
 
+	file_names = {
+		'fcsNotificationEA44': 'ns2:fcsNotificationEF',
+		'fcsNotificationZK44': 'ns2:fcsNotificationZK',
+		'fcsNotificationZP44': 'ns2:fcsNotificationZP',
+		'fcsNotificationOK44': 'ns2:fcsNotificationOK',
+	}
+
 	for i in tqdm(os.listdir(folder_path)):
 		file_path = os.path.join(folder_path, i)
 
 		today = datetime.date.today()
 
-		names = ['fcsNotificationEA44', 'fcsNotificationZK44', 'fcsNotificationZP44', 'fcsNotificationOK44']
+		file_name = i.split('_')[0]
 		
-		if i.endswith('xml') and i.split('_')[0] in names:
+		if i.endswith('xml') and file_name in file_names.keys():
 			
 			xml_file = ET.parse(file_path)
 			root = xml_file.getroot()
-			
-			name_file = i.split('_')[0]
 
-			if name_file == 'fcsNotificationEA44':
-				fcsNotification = root.find('ns2:fcsNotificationEF', ns)
-			if name_file == 'fcsNotificationZK44':
-				fcsNotification = root.find('ns2:fcsNotificationZK', ns)
-			if name_file == 'fcsNotificationZP44':
-				fcsNotification = root.find('ns2:fcsNotificationZP', ns)
-			if name_file == 'fcsNotificationOK44':
-				fcsNotification = root.find('ns2:fcsNotificationOK', ns)
+			name_space = file_names.get(file_name)
+
+			if name_space:
+				fcsNotification = root.find(name_space, ns)
 
 			endDate = fcsNotification.find('xmlns:procedureInfo/'
 										   'xmlns:collecting/'
@@ -98,12 +99,12 @@ def extract_files(folder):
 
 	print("\nРазархивирование файлов")
 
-		if file_name.endswith('.zip'):
+	if file_name.endswith('.zip'):
 
-			zip_file = os.path.join(folder, file_name)
-			with ZipFile(zip_file,'r') as zip_obj:
-				zip_obj.extractall(path=folder)
-			os.remove(zip_file)
+		zip_file = os.path.join(folder, file_name)
+		with ZipFile(zip_file,'r') as zip_obj:
+			zip_obj.extractall(path=folder)
+		os.remove(zip_file)
 
 def get_names_regions(url, LOG_PASS):
 
