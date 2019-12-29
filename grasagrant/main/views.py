@@ -136,8 +136,11 @@ def regions_list(request):
     )
 
 def get_regions_api(request):
-    # print(request.GET['data'])
     data = request.GET['data'][0]
+
+    # Это происходит потому что sqllite не может utf-8
+    # https://www.sqlite.org/faq.html#q18
     regions = list(Region.objects.all())
     regions = [reg for reg in regions if data in reg.name]
+    
     return HttpResponse(serializers.serialize("json", regions))
