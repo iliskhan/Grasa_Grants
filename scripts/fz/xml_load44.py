@@ -1,12 +1,16 @@
 import os
-import datetime
 import shutil
+import datetime
 
 from tqdm import tqdm
 from ftplib import FTP
 from zipfile import ZipFile
+
 import xml.etree.ElementTree as ET
 
+
+ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
+		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
 
 def get_44_fz(ftp, folder):
 
@@ -38,9 +42,6 @@ def clean_dir(path):
 
 
 def get_relevant_files(folder_path):
-
-	ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
-		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
 
 	print('Удаление не актуальных файлов\n')
 
@@ -99,19 +100,28 @@ def extract_files(folder):
 
 	print("\nРазархивирование файлов")
 
-	if file_name.endswith('.zip'):
+	for file_name in tqdm(os.listdir(folder)):
 
-		zip_file = os.path.join(folder, file_name)
-		with ZipFile(zip_file,'r') as zip_obj:
-			zip_obj.extractall(path=folder)
-		os.remove(zip_file)
+		if file_name.endswith('.zip'):
+
+			zip_file = os.path.join(folder, file_name)
+
+			with ZipFile(zip_file, 'r') as zip_obj:
+				zip_obj.extractall(path=folder)
+
+			os.remove(zip_file)
+
 
 def get_names_regions(url, LOG_PASS):
 
 	with FTP(url) as ftp:
+		print("connected")
 		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+		print('logined')
 		ftp.cwd('fcs_regions/')
+		print('change dir')
 		list_regions = ftp.nlst()[:87]
+		print('get list regions')
 		list_regions.remove('PG-PZ')
 
 	return list_regions
@@ -123,30 +133,44 @@ def main():
 
 	LOG_PASS = 'free'
 
-	list_regions = get_names_regions(URL, LOG_PASS)
-	
 	clean_dir(fz44)
 
 	paths = dict()
-	
-	for region in list_regions:
+	with FTP(URL) as ftp:
+		print('connect with ftp')
 
-		paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
-		paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'
+		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
-		for path in paths.values():
-			
-			with FTP(URL) as ftp:
+		print('logined')
 
-				ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+		# ftp.retrlines("LIST", files.append)
 
-				ftp.cwd(path)
+		files = ftp.nlst('fcs_regions/')
 
-				get_44_fz(ftp, fz44)
+		print('get list regions')
+		for name in files[:87]:
+			print(name)
 
-				extract_files(fz44)
+			print("------------------------------------------------------")
 
-	get_relevant_files(fz44)
+		# list_regions.remove('PG-PZ')
+
+		# for region in list_regions[:5]:
+
+		# 	paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
+		# 	paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'
+
+		# 	for path in paths.values():
+
+		# 		ftp.cwd(path)
+		# 		get_44_fz(ftp, fz44)
+
+		# 		ftp.cwd('../../../..')
+
+
+	# extract_files(fz44)
+
+	# get_relevant_files(fz44)
 
 
 if __name__ == '__main__':
