@@ -52,10 +52,10 @@ def get_relevant_files(folder_path):
 		'fcsNotificationOK44': 'ns2:fcsNotificationOK',
 	}
 
+	today = datetime.date.today()
+
 	for i in tqdm(os.listdir(folder_path)):
 		file_path = os.path.join(folder_path, i)
-
-		today = datetime.date.today()
 
 		file_name = i.split('_')[0]
 		
@@ -115,13 +115,13 @@ def extract_files(folder):
 def get_names_regions(url, LOG_PASS):
 
 	with FTP(url) as ftp:
-		print("connected")
+
 		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
-		print('logined')
+
 		ftp.cwd('fcs_regions/')
-		print('change dir')
+
 		list_regions = ftp.nlst()[:87]
-		print('get list regions')
+
 		list_regions.remove('PG-PZ')
 
 	return list_regions
@@ -137,35 +137,36 @@ def main():
 
 	paths = dict()
 	with FTP(URL) as ftp:
-		print('connect with ftp')
 
 		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
-		print('logined')
+		list_regions = []
+		unnecessary_folders = ["PG-PZ", "_logs", "control99docs", "fcs_undefined"]
 
-		# ftp.retrlines("LIST", files.append)
+		def folder_name_selector(some_str):
+			if some_str.startswith('d'):
+				folder_name = some_str.split()[-1]
+				if folder_name not in unnecessary_folders:
+					list_regions.append(folder_name)
 
-		files = ftp.nlst('fcs_regions/')
+		
+		ftp.dir('fcs_regions/', folder_name_selector)
 
-		print('get list regions')
-		for name in files[:87]:
-			print(name)
+		print(list_regions)
 
-			print("------------------------------------------------------")
+		print(len(list_regions))
 
-		# list_regions.remove('PG-PZ')
+		for region in list_regions[:5]:
 
-		# for region in list_regions[:5]:
+			paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
+			paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'
 
-		# 	paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
-		# 	paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'
+			for path in paths.values():
 
-		# 	for path in paths.values():
+				ftp.cwd(path)
+				get_44_fz(ftp, fz44)
 
-		# 		ftp.cwd(path)
-		# 		get_44_fz(ftp, fz44)
-
-		# 		ftp.cwd('../../../..')
+				ftp.cwd('../../../..')
 
 
 	# extract_files(fz44)
