@@ -4,10 +4,10 @@
 
 {% block content %}
 <section class="container">
-  {% for fcp in fcps %}
-  <div class="info-card" onclick="location.href='{% url 'detailed' fcp.id %}'">
-    <h3>{{fcp.card_name}}</h3>
-    <h2>{{fcp.time|date:"d-m-Y"}}</h2>
+  {% for region in regions %}
+  
+  <div class="info-card" onclick="location.href='{% url 'types' tab_name %}'"> 
+    {{region}}
   </div>
   {% endfor %}
 </section>

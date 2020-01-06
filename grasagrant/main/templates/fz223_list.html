@@ -5,7 +5,7 @@
 {% block content %}
 <section class="container">
   {% for fz in fzs %}
-  <div class="info-card" onclick="location.href='{% url 'fz223_detailed' fz.id %}'">
+  <div class="info-card" onclick="location.href='{% url 'detailed' fz.id %}'">
     <h2>{{fz.name}}</h2>
     <h3>{{fz.create_date|date:"d-m-Y"}}</h3>
   </div>

@@ -4,32 +4,32 @@
 
 {% block content %}
 <section class="container">
-  {% if grant.label %}
-  <h2><strong>Категория </strong>{{ grant.label }}</h2>
+  {% if data.label %}
+  <h2><strong>Категория </strong>{{ data.label }}</h2>
   {% endif %}
-  {% if grant.text %}
-  <h2><strong>Описание </strong>{{ grant.text }}</h2>
+  {% if data.text %}
+  <h2><strong>Описание </strong>{{ data.text }}</h2>
   {% endif %}
-  {% if grant.fond %}
-  <h2>{{ grant.fond }}</h2>
+  {% if data.fond %}
+  <h2>{{ data.fond }}</h2>
   {% endif %}
-  {% if grant.org %}
-  <h2><strong>Организация </strong>{{ grant.org }}</h2>
+  {% if data.org %}
+  <h2><strong>Организация </strong>{{ data.org }}</h2>
   {% endif %}
-  {% if grant.time %}
-  <h2><strong>Опубликовано </strong>{{ grant.time }}</h2>
+  {% if data.time %}
+  <h2><strong>Опубликовано </strong>{{ data.time }}</h2>
   {% endif %}
-  {% if grant.days %}
-  <h2><strong>До окончания </strong>{{ grant.days }}</h2>
+  {% if data.days %}
+  <h2><strong>До окончания </strong>{{ data.days }}</h2>
   {% endif %}
-  {% if grant.rouble %}
-  <h2><strong>Сумма финансирования </strong>{{ grant.rouble }}</h2>
+  {% if data.rouble %}
+  <h2><strong>Сумма финансирования </strong>{{ data.rouble }}</h2>
   {% endif %}
-  {% if grant.fond %}
-  <h2><strong>Наименование фонда </strong>{{ grant.fond }}</h2>
+  {% if data.fond %}
+  <h2><strong>Наименование фонда </strong>{{ data.fond }}</h2>
   {% endif %}
-  {% if grant.fond_link %}
-  <h2><strong>URL фонда </strong>{{ grant.fond_link }}</h2>
+  {% if data.fond_link %}
+  <h2><strong>URL фонда </strong>{{ data.fond_link }}</h2>
   {% endif %}
 </section>
 {% endblock %}
