@@ -25,7 +25,7 @@ class Type(models.Model):
 
 class Fz223(models.Model):
 
-    fz = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz223")
+    fz223_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz223")
     registration_number = models.CharField(max_length=100)
     create_date = models.DateField()
     url_EIS = models.TextField(null=True)
@@ -47,7 +47,7 @@ class Fz223(models.Model):
 
 class Fz44(models.Model):
 
-    fz = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz44")
+    fz44_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz44")
     fz44id = models.CharField(max_length=100)
     link = models.TextField()
     purchase_number = models.CharField(max_length=100)
@@ -72,7 +72,7 @@ class Fz44(models.Model):
 
 class Fcp(models.Model):
 
-    gp_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fcp")
+    fcp_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fcp")
     time = models.DateField()
     card_name = models.CharField(max_length=300, null=True)
     title = models.CharField(max_length=300, null=True)
@@ -84,7 +84,7 @@ class Fcp(models.Model):
 
 class DigitalEconomy(models.Model):
     
-    type_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name='digital_economy')
+    digitaleconomy_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name='digital_economy')
     document_number = models.CharField(max_length=50, null=True)
     date = models.DateField(null=True)
     text = models.TextField()
@@ -94,7 +94,7 @@ class DigitalEconomy(models.Model):
         return f'{self.type_name.__str__()}: {self.text}'
 
 class Grant(models.Model):
-    grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grants")
+    grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grant")
     time = models.DateField()
     label = models.CharField(max_length=100, null=True)
     text = models.TextField()

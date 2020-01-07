@@ -6,11 +6,10 @@ from django.http import HttpResponse, Http404
 from django.core import serializers
 
 # Create your views here.
-
 global_variables = globals()
 
 def index(request):
-    return redirect('types', tab_name='Grant')
+    return redirect('types', tab_name='Fcp')
 
 class TypesList(View):
 
@@ -32,37 +31,16 @@ def detailed(request, tab_name, pk):
         context = {'data': data},
     )
 
-# def grants_list(request, pk):
-#     grants = Grant.objects.filter(grant_name=pk)
-#     return render(
-#         request,
-#         'grants_list.html',
-#         context = {'grants': grants},
-#     )
+def category_list(request, tab_name, pk):
+    subcategory_name = f"{tab_name.lower()}_name"
+    kwargs = {subcategory_name: pk}
+    subcategory = global_variables[tab_name].objects.filter(**kwargs)
 
-# def fcp_list(request, pk):
-#     fcps = Fcp.objects.filter(gp_name=pk)
-#     return render(
-#         request,
-#         'fcps_list.html',
-#         context = {'fcps': fcps},
-#     )
-
-# def fz44_list(request, pk):
-#     fzs = Fz44.objects.filter(fz=pk)
-#     return render(
-#         request,
-#         'fz44_list.html',
-#         context = {'fzs': fzs},
-#     )
-
-# def fz223_list(request, pk):
-#     fzs = Fz223.objects.filter(fz=pk)
-#     return render(
-#         request,
-#         'fz223_list.html',
-#         context = {'fzs': fzs},
-#     )
+    return render(
+        request,
+        f'{tab_name.lower()}_list.html',
+        context={f"{tab_name.lower()}s": subcategory, "tab_name": tab_name},
+    )
 
 def regions_list(request, tab_name):
     regions = Region.objects.all()
