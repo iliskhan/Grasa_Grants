@@ -50,31 +50,31 @@ def retrieve(file_path):
     fz223 = Fz223()
 
     if name == 'purchaseNotice':
-       fz223.fz = types.get(name='Извещение о закупке "Иной способ"')
+       fz223.fz223_name = types.get(name='Извещение о закупке "Иной способ"')
 
     if name == 'purchaseNoticeAE':
-        fz223.fz = types.get(name='Извещение о закупке "Открытый аукцион в электронной форме"')
+        fz223.fz223_name = types.get(name='Извещение о закупке "Открытый аукцион в электронной форме"')
 
     if name == 'purchaseNoticeOA':
-        fz223.fz = types.get(name='Извещение о закупке "Открытый Аукцион"')
+        fz223.fz223_name = types.get(name='Извещение о закупке "Открытый Аукцион"')
 
     if name == 'purchaseNoticeOK':
-        fz223.fz = types.get(name='Извещение о закупке "Открытый конкурс"')
+        fz223.fz223_name = types.get(name='Извещение о закупке "Открытый конкурс"')
 
     if name == 'purchaseNoticeZK':
-        fz223.fz = types.get(name='Извещение о закупке "Запрос котировок"')
+        fz223.fz223_name = types.get(name='Извещение о закупке "Запрос котировок"')
 
     if name == 'purchaseNoticeAESMBO':
-        fz223.fz = types.get(name='Извещение о закупке "Аукцион в ЭФ, участниками которого могут являться только субъекты МСП"')
+        fz223.fz223_name = types.get(name='Извещение о закупке "Аукцион в ЭФ, участниками которого могут являться только субъекты МСП"')
 
     if name == 'purchaseNoticeZKESMBO':
-        fz223.fz = types.get(name='Извещение о закупке "Запрос котировок в ЭФ, участниками которого могут являться только субъекты МСП"')
+        fz223.fz223_name = types.get(name='Извещение о закупке "Запрос котировок в ЭФ, участниками которого могут являться только субъекты МСП"')
 
     if name == 'purchaseNoticeKESMBO':
-        fz223.fz = types.get(name='Извещение о закупке "Конкурс в ЭФ, участниками которого могут являться только субъекты МСП"')
+        fz223.fz223_name = types.get(name='Извещение о закупке "Конкурс в ЭФ, участниками которого могут являться только субъекты МСП"')
 
     if name == 'purchaseNoticeZPESMBO':
-        fz223.fz = types.get(name='Извещение о закупке "Запрос предложений в ЭФ, участниками которого могут являться только субъекты МСП"')  
+        fz223.fz223_name = types.get(name='Извещение о закупке "Запрос предложений в ЭФ, участниками которого могут являться только субъекты МСП"')  
 
     fz223.registration_number = purchaseNotice.find('ns2:registrationNumber', ns).text
 
@@ -145,8 +145,9 @@ def retrieve(file_path):
             if reg_name in reg:
                 region_orm = reg    
 
+    print("region_name",region_name)
     region = Region.objects.get(name=region_orm)
-
+    print('region',region)
     fz223.region = region
 
     fz223.save()
@@ -158,7 +159,7 @@ def main():
     Fz223.objects.all().delete()
 
     for i in os.listdir(path):
-
+        print(i)
         file_path = os.path.join(path, i)
 
         if i.endswith('.xml') and i.startswith('purchaseNotice'):

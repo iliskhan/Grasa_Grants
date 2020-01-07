@@ -10,7 +10,5 @@ urlpatterns = [
     path('types/<str:tab_name>/<int:pk>/', views.category_list, name='category_list'),
     path('detailed/<str:tab_name>/<int:pk>/', views.detailed, name='detailed'),
 
-
-
     path('api/suggestions/regions/', views.get_regions_api, name='suggestion_regions'),
 ]

@@ -43,7 +43,7 @@ class Fz223(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.fz.__str__()}: {self.name}'
+        return f'{self.fz223_name.__str__()}: {self.name}'
 
 class Fz44(models.Model):
 
@@ -68,7 +68,7 @@ class Fz44(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.fz.__str__()}: {self.purchase_object}'
+        return f'{self.fz44_name.__str__()}: {self.purchase_object}'
 
 class Fcp(models.Model):
 
@@ -80,7 +80,7 @@ class Fcp(models.Model):
     link = models.CharField(max_length=300, null=True)
 
     def __str__(self):
-        return f'{self.gp_name.__str__()}: {self.title}'
+        return f'{self.fcp_name.__str__()}: {self.title}'
 
 class DigitalEconomy(models.Model):
     
@@ -91,7 +91,7 @@ class DigitalEconomy(models.Model):
     link = models.CharField(max_length=300)
 
     def __str__(self):
-        return f'{self.type_name.__str__()}: {self.text}'
+        return f'{self.digitaleconomy_name.__str__()}: {self.text}'
 
 class Grant(models.Model):
     grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grant")
