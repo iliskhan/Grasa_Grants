@@ -5,7 +5,7 @@
 {% block content %}
 <section class="container">
   {% for type in types %}
-  <div class="info-card" onclick="location.href='{% url 'category_list' tab_name type.id %}'">
+  <div class="info-card" onclick="location.href='{% url 'subtypes_list' tab_name type.id %}'">
     <h2>{{type.name}}</h2>
   </div>
   {% endfor %}

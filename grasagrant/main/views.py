@@ -9,7 +9,7 @@ from django.core import serializers
 global_variables = globals()
 
 def index(request):
-    return redirect('types', tab_name='Fcp')
+    return redirect('types_list', tab_name='Grant')
 
 class TypesList(View):
 
@@ -31,15 +31,15 @@ def detailed(request, tab_name, pk):
         context = {'data': data},
     )
 
-def category_list(request, tab_name, pk):
-    subcategory_name = f"{tab_name.lower()}_name"
-    kwargs = {subcategory_name: pk}
-    subcategory = global_variables[tab_name].objects.filter(**kwargs)
+def subtypes_list(request, tab_name, pk):
+    subtype_name = f"{tab_name.lower()}_name"
+    kwargs = {subtype_name: pk}
+    subtypes = global_variables[tab_name].objects.filter(**kwargs)
 
     return render(
         request,
         f'{tab_name.lower()}_list.html',
-        context={f"{tab_name.lower()}s": subcategory, "tab_name": tab_name},
+        context={f"{tab_name.lower()}s": subtypes, "tab_name": tab_name},
     )
 
 def regions_list(request, tab_name):

@@ -3,12 +3,17 @@
 {% block title %}Главная{% endblock %}
 
 {% block content %}
+
+<input id='user_input' type="text">
+
 <section class="container">
   {% for region in regions %}
-  
-  <div class="info-card" onclick="location.href='{% url 'types' tab_name %}'"> 
-    {{region}}
-  </div>
+    <div id='{{region|lower}}' class="info-card" onclick="location.href='{% url 'types_list' tab_name %}'"> 
+      {{region}}
+    </div>
   {% endfor %}
 </section>
+
+{% load static %}
+<script src="{% static 'js/regions_filter.js' %}"></script>
 {% endblock %}
