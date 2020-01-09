@@ -22,51 +22,57 @@ def science_parse(url):
 
         type_grant = Type.objects.get(name='4science')
 
-        Grant.objects.filter(grant_name=type_grant).delete()
+        all_grants = Grant.objects.filter(grant_name=type_grant)
+
+        for grant in all_grants:
+            Grant.clean_correct_days_4science(grant)
 
         soup = BS(response.text, features='html5lib')
 
         posts = soup.find('div', id='fin-supports-list-inner').find_all('a', class_='fin-list')
         
         for post in posts:
-            
-            grant = Grant()
-
-            grant.grant_name = type_grant
 
             time = post.find('span', class_='fin-list-date').text
-            grant.time = datetime.datetime.strptime(time, '%d.%m.%Y').date()
-
-            grant.label = post.find('div', class_='fin-list-label').text.strip()
-            
             div_text = post.find('div', class_='fin-list-title')
-            div_text.span.decompose()   
+            div_text.span.decompose()
+            text = div_text.text.strip()
 
-            grant.text = div_text.text.strip()                
-            grant.link = 'https://4science.ru' + post['href']
-
-            info = post.find('div', class_='fin-list-info')
-
-            org = info.find_all('div', class_='fin-list-info-in-last')
-            if org:
-                grant.org = org[0].text.strip()
-
-            for i in org:
-                i.decompose()    
-
-            days = info.find('div', class_='fin-list-location')
-            if days:
-                grant.days = days.text.strip()
-
-            days.decompose()
-
-            rouble = info.find('div', class_='fin-list-info-in')
-            
-            if rouble:
-                rouble.span.decompose()
-                grant.rouble = rouble.text.strip()
+            if Grant.objects.filter(text=text).exists() is not True:
                 
-            grant.save()
+                grant = Grant()
+
+                grant.grant_name = type_grant
+
+                grant.time = datetime.datetime.strptime(time, '%d.%m.%Y').date()
+
+                grant.label = post.find('div', class_='fin-list-label').text.strip()
+                
+                grant.text = text          
+                grant.link = 'https://4science.ru' + post['href']
+
+                info = post.find('div', class_='fin-list-info')
+
+                org = info.find_all('div', class_='fin-list-info-in-last')
+                if org:
+                    grant.org = org[0].text.strip()
+
+                for i in org:
+                    i.decompose()    
+
+                days = info.find('div', class_='fin-list-location')
+                if days:
+                    grant.days = days.text.strip()
+
+                days.decompose()
+
+                rouble = info.find('div', class_='fin-list-info-in')
+                
+                if rouble:
+                    rouble.span.decompose()
+                    grant.rouble = rouble.text.strip()
+                    
+                grant.save()
 
 
 def cbias_parse(url):
@@ -261,11 +267,11 @@ def date_conversion(date):
 def main():
 
     science_parse('https://4science.ru/finsupports')
-    cbias_parse('http://www.cbias.ru/')
-    fcpir_parse('http://www.fcpir.ru/events_and_publications/_contest/')
-    minobrnauki_parse('https://www.minobrnauki.gov.ru/ru/documents/docs/index.php')
-    rsci_parse('http://www.rsci.ru/grants/') 
-    edu_parse('https://docs.edu.gov.ru/')  
+    # cbias_parse('http://www.cbias.ru/')
+    # fcpir_parse('http://www.fcpir.ru/events_and_publications/_contest/')
+    # minobrnauki_parse('https://www.minobrnauki.gov.ru/ru/documents/docs/index.php')
+    # rsci_parse('http://www.rsci.ru/grants/') 
+    # edu_parse('https://docs.edu.gov.ru/')  
 
 if __name__ == '__main__':
     main()    
