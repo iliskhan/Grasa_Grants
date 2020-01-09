@@ -13,7 +13,7 @@ from main.models import Category, Type, Fz44, Region
 # Запрос котировок
 # Запрос предложений
 # Электоронный аукцион
-def retrieve_EA44_ZK_ZP(file_path):
+def retrieve_EA44_ZK_ZP(file_path, notification):
 
 	ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
 		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
@@ -23,23 +23,15 @@ def retrieve_EA44_ZK_ZP(file_path):
 	root = xmlData.getroot()
 	
 	name = file_path.split('_')[0].split('/')[-1]
-	if name == 'fcsNotificationEA44':
-		fcsNotification = root.find('ns2:fcsNotificationEF', ns)
-	if name == 'fcsNotificationZK44':
-		fcsNotification = root.find('ns2:fcsNotificationZK', ns)
-	if name == 'fcsNotificationZP44':
-		fcsNotification = root.find('ns2:fcsNotificationZP', ns)
+
+	fcsNotification = root.find(f'ns2:{notification.get(name)[0]}', ns)
 
 	pk = Category.objects.get(tab_name='Fz44').pk
 	types = Type.objects.filter(category=pk)
+	
 	fz44 = Fz44()	
 	
-	if name == 'fcsNotificationEA44':
-		fz44.fz = types.get(name='Извещение о закупке "Электронный аукцион"')
-	if name == 'fcsNotificationZK44':
-		fz44.fz = types.get(name='Извещение о закупке "Запрос котировок"')
-	if name == 'fcsNotificationZP44':
-		fz44.fz = types.get(name='Извещение о закупке "Запрос предложений"')
+	fz44.fz = types.get(name=notification.get(name)[1])
 
 	fz44.fz44id = fcsNotification.find('xmlns:id', ns).text
 	fz44.link = fcsNotification.find('xmlns:href', ns).text
@@ -112,7 +104,7 @@ def retrieve_EA44_ZK_ZP(file_path):
 
 # Открытый конкурс
 # Извещение по статье 111 44-ФЗ
-def retrive_INM111_OK(file_path):
+def retrive_INM111_OK(file_path, notification):
 
 	ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
 		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
@@ -122,21 +114,16 @@ def retrive_INM111_OK(file_path):
 	root = xmlData.getroot()
 	
 	name = file_path.split('_')[0].split('/')[-1]
-	if name == 'fcsNotificationOK44':
-		fcsNotification = root.find('ns2:fcsNotificationOK', ns)
-	if name == 'fcsNotificationINM111':
-		fcsNotification = root.find('ns2:fcsNotification111', ns)
 
+	fcsNotification = root.find(f'ns2:{notification.get(name)[0]}', ns)				
+	
 	pk = Category.objects.get(tab_name='Fz44').pk
 	types = Type.objects.filter(category=pk)
 	
 	fz44 = Fz44()	
-	
-	if name == 'fcsNotificationOK44':
-		fz44.fz = types.get(name='Извещение о закупке "Открытый конкурс"')
-	if name == 'fcsNotificationINM111':
-		fz44.fz = types.get(name='Извещение о закупке "Закрытый аукцион с учетом положений ст. 111 ФЗ-44"')
 
+	fz44.fz = types.get(name=notification.get(name)[1])
+	
 	fz44.fz44id = fcsNotification.find('xmlns:id', ns).text
 	fz44.link = fcsNotification.find('xmlns:href', ns).text
 	fz44.purchase_number = fcsNotification.find('xmlns:purchaseNumber', ns).text
@@ -222,7 +209,15 @@ def retrive_INM111_OK(file_path):
 
 def main():
 
-	path = '../../data/44/'
+	notification = {
+		'fcsNotificationEA44':['fcsNotificationEF', 'Извещение о закупке "Электронный аукцион"'],
+		'fcsNotificationZK44':['fcsNotificationZK', 'Извещение о закупке "Запрос котировок"'],
+		'fcsNotificationZP44':['fcsNotificationZP', 'Извещение о закупке "Запрос предложений"'],
+		'fcsNotificationOK44':['fcsNotificationOK', 'Извещение о закупке "Открытый конкурс"'],
+		'fcsNotificationINM111':['fcsNotification111', 'Извещение о закупке "Закрытый аукцион с учетом положений ст. 111 ФЗ-44"']
+	}
+
+	path = '../data/44/'
 
 	Fz44.objects.all().delete()
 
@@ -230,20 +225,13 @@ def main():
 
 		file_path = os.path.join(path, file)
 
-		if file.endswith('.xml') and file.startswith('fcsNotificationEA44'):
-			retrieve_EA44_ZK_ZP(file_path)
+		if file.endswith('.xml'):
 
-		if file.endswith('.xml') and file.startswith('fcsNotificationOK44'):
-			retrive_INM111_OK(file_path)
+			if file.startswith('fcsNotificationINM111') or file.startswith('fcsNotificationOK44'):
+				retrive_INM111_OK(file_path, notification)
 
-		if file.endswith('.xml') and file.startswith('fcsNotificationZK44'):
-			retrieve_EA44_ZK_ZP(file_path)
-
-		if file.endswith('.xml') and file.startswith('fcsNotificationZP44'):
-			retrieve_EA44_ZK_ZP(file_path)
-
-		if file.endswith('.xml') and file.startswith('fcsNotificationINM111'):
-			retrive_INM111_OK(file_path)
+			else:
+				retrieve_EA44_ZK_ZP(file_path, notification)
 
 		if file != '.gitkeep':
 			os.remove(file_path)
