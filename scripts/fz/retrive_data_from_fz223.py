@@ -13,6 +13,19 @@ from main.models import Category, Type, Fz223, Region
 
 def retrieve(file_path):
 
+    notice_type_dict = {
+        'purchaseNotice':'Извещение о закупке "Иной способ"',
+        'purchaseNoticeAE':'Извещение о закупке "Открытый аукцион в электронной форме"',
+        'purchaseNoticeOA':'Извещение о закупке "Открытый Аукцион"',
+        'purchaseNoticeOK':'Извещение о закупке "Открытый конкурс"',
+        'purchaseNoticeZK':'Извещение о закупке "Запрос котировок"',
+        'purchaseNoticeAESMBO':'Извещение о закупке "Аукцион в ЭФ, участниками которого могут являться только субъекты МСП"',
+        'purchaseNoticeZKESMBO':'Извещение о закупке "Запрос котировок в ЭФ, участниками которого могут являться только субъекты МСП"',
+        'purchaseNoticeKESMBO':'Извещение о закупке "Конкурс в ЭФ, участниками которого могут являться только субъекты МСП"',
+        'purchaseNoticeZPESMBO':'Извещение о закупке "Запрос предложений в ЭФ, участниками которого могут являться только субъекты МСП"'
+    }
+
+
     ns = {'xmlns':'http://zakupki.gov.ru/223fz/types/1',
           'ns2':'http://zakupki.gov.ru/223fz/purchase/1'}
     
@@ -20,64 +33,22 @@ def retrieve(file_path):
 
     root = xmlData223.getroot()
 
-    name = file_path.split('_')[0].split('/')[-1]
+    notice_type = str(root).split('}')[-1].split('\'')[0]
 
     item = root.find('ns2:body/'
                      'ns2:item', ns)
 
-    if name == 'purchaseNotice':
-        purchaseNotice = item.find('ns2:purchaseNoticeData', ns)
-    if name == 'purchaseNoticeAE':
-        purchaseNotice = item.find('ns2:purchaseNoticeAEData', ns)
-    if name == 'purchaseNoticeOA':
-        purchaseNotice = item.find('ns2:purchaseNoticeOAData', ns)
-    if name == 'purchaseNoticeOK':
-        purchaseNotice = item.find('ns2:purchaseNoticeOKData', ns)
-    if name == 'purchaseNoticeZK':
-        purchaseNotice = item.find('ns2:purchaseNoticeZKData', ns)
-    if name == 'purchaseNoticeAESMBO':
-        purchaseNotice = item.find('ns2:purchaseNoticeAESMBOData', ns)
-    if name == 'purchaseNoticeZKESMBO':
-        purchaseNotice = item.find('ns2:purchaseNoticeZKESMBOData', ns)
-    if name == 'purchaseNoticeKESMBO':
-        purchaseNotice = item.find('ns2:purchaseNoticeKESMBOData', ns)
-    if name == 'purchaseNoticeZPESMBO':
-        purchaseNotice = item.find('ns2:purchaseNoticeZPESMBOData', ns)
+    purchaseNotice = item.find(f'ns2:{notice_type}Data', ns)
 
     pk = Category.objects.get(tab_name='Fz223').pk   
     types = Type.objects.filter(category=pk)
 
     fz223 = Fz223()
 
-    if name == 'purchaseNotice':
-       fz223.fz223_name = types.get(name='Извещение о закупке "Иной способ"')
-
-    if name == 'purchaseNoticeAE':
-        fz223.fz223_name = types.get(name='Извещение о закупке "Открытый аукцион в электронной форме"')
-
-    if name == 'purchaseNoticeOA':
-        fz223.fz223_name = types.get(name='Извещение о закупке "Открытый Аукцион"')
-
-    if name == 'purchaseNoticeOK':
-        fz223.fz223_name = types.get(name='Извещение о закупке "Открытый конкурс"')
-
-    if name == 'purchaseNoticeZK':
-        fz223.fz223_name = types.get(name='Извещение о закупке "Запрос котировок"')
-
-    if name == 'purchaseNoticeAESMBO':
-        fz223.fz223_name = types.get(name='Извещение о закупке "Аукцион в ЭФ, участниками которого могут являться только субъекты МСП"')
-
-    if name == 'purchaseNoticeZKESMBO':
-        fz223.fz223_name = types.get(name='Извещение о закупке "Запрос котировок в ЭФ, участниками которого могут являться только субъекты МСП"')
-
-    if name == 'purchaseNoticeKESMBO':
-        fz223.fz223_name = types.get(name='Извещение о закупке "Конкурс в ЭФ, участниками которого могут являться только субъекты МСП"')
-
-    if name == 'purchaseNoticeZPESMBO':
-        fz223.fz223_name = types.get(name='Извещение о закупке "Запрос предложений в ЭФ, участниками которого могут являться только субъекты МСП"')  
+    fz223.fz = types.get(name=notice_type_dict.get(notice_type))
 
     fz223.registration_number = purchaseNotice.find('ns2:registrationNumber', ns).text
-
+    
     createdate = purchaseNotice.find('ns2:createDateTime', ns).text.split('T')[0]
     createdate = datetime.datetime.strptime(createdate, '%Y-%m-%d').date()
     
@@ -119,33 +90,32 @@ def retrieve(file_path):
     
     region_name = purchaseNotice.find('ns2:customer/'
                                          'xmlns:mainInfo/'
-                                         'xmlns:legalAddress', ns).text
+                                         'xmlns:legalAddress', ns).text.split(',')[1].strip()
     
     region_list = Region.objects.all()
     region_list = [i.name for i in region_list]
     region_orm = ''
 
-    reg_name = region_name.split(',')[1].strip().title()
+    reg_name = region_name.title()
     
     for reg in region_list:
         if reg_name in reg:
             region_orm = reg
     
     if region_orm == '':
-        reg_name = region_name.split(',')[1].strip().split()[1].title()
+        reg_name = region_name.split()[1].title()
 
         for reg in region_list:
             if reg_name in reg:
                 region_orm = reg
 
     if region_orm == '':
-        reg_name = region_name.split(',')[1].strip().split()[0].title()
+        reg_name = region_name.split()[0].title()
 
         for reg in region_list:
             if reg_name in reg:
                 region_orm = reg    
-
-    print("region_name",region_name)
+    
     region = Region.objects.get(name=region_orm)
     print('region',region)
     fz223.region = region
@@ -154,7 +124,7 @@ def retrieve(file_path):
 
 
 def main():
-    path = '../../data/223/'
+    path = '../data/223/'
 
     Fz223.objects.all().delete()
 
