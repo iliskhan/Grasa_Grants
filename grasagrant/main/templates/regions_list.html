@@ -4,9 +4,8 @@
 
 {% block content %}
 
-<input id='user_input' type="text">
-
 <section class="container">
+  <input class="form-control col-sm 3" id='user_input'  placeholder="Поиск по регионам" type="text">
   {% for region in regions %}
     <div id='{{region|lower}}' class="info-card" onclick="location.href='{% url 'types_list' tab_name %}'"> 
       {{region}}
