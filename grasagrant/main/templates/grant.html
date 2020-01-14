@@ -17,10 +17,10 @@
   <h2><strong>Организация </strong>{{ grant.org }}</h2>
   {% endif %}
   {% if grant.time %}
-  <h2><strong>Опубликовано </strong>{{ grant.time }}</h2>
+  <h2><strong>Опубликовано </strong>{{ grant.time|date:'d-m-Y' }}</h2>
   {% endif %}
   {% if grant.days %}
-  <h2><strong>До окончания </strong>{{ grant.days }}</h2>
+  <h2><strong>Дней до окончания </strong>{{ grant.days }}</h2>
   {% endif %}
   {% if grant.rouble %}
   <h2><strong>Сумма финансирования </strong>{{ grant.rouble }}</h2>
