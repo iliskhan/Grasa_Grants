@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+{% load humanize %}
+
 {% block title %}Главная{% endblock %}
 
 {% block content %}
@@ -8,7 +10,7 @@
   <h2><strong>Идентификатор </strong>{{ fz.fz44id }}</h2>
   {% endif %}
   {% if fz.link %}
-  <h2><strong>URL документа в ЕИС </strong>{{ fz.link }}</h2>
+  <h2><strong><a href="{{ fz.link }}"> URL документа в ЕИС </a></strong></h2>
   {% endif %}
   {% if fz.purchase_number %}
   <h2><strong>Номер закупки </strong>{{ fz.purchase_number }}</h2>
@@ -19,23 +21,15 @@
   {% if fz.org_name %}
   <h2><strong>Наименование организации </strong>{{ fz.org_name }}</h2>
   {% endif %}
-  {% if fz.placing_way %}
-  <h2><strong>Способ закупки </strong>{{ fz.placing_way }}</h2>
-  {% endif %}
   {% if fz.start_date %}
   <h2><strong>Дата начала подачи заявок </strong>{{ fz.start_date }}</h2>
   {% endif %}
   {% if fz.end_date %}
   <h2><strong>Дата окончания подачи заявок </strong>{{ fz.end_date }}</h2>
   {% endif %}
-  {% if fz.place %}
-  <h2><strong>Место предоставления документации </strong>{{ fz.place }}</h2>
-  {% endif %}
+  
   {% if fz.max_price %}
-  <h2><strong>Начальная цена договора </strong>{{ fz.max_price }}</h2>
-  {% endif %}
-  {% if fz.currency %}
-  <h2><strong>Валюта платежа </strong>{{ fz.currency }}</h2>
+  <h2><strong>Начальная цена договора </strong>{{ fz.max_price|intcomma }} {{ fz.currency|lower }}</h2>
   {% endif %}
   {% if fz.finance_source %}
   <h2><strong>Источник финансирования </strong>{{ fz.finance_source }}</h2>

@@ -1,47 +1,62 @@
 {% extends "layout.html" %}
 
+{% load humanize %}
+
 {% block title %}Главная{% endblock %}
 
 {% block content %}
 <section class="container">
   {% if fz.registration_number %}
-  <h2><strong>Регистрационный номер извещения </strong>{{ fz.registration_number }}</h2>
+    <h2><strong>Регистрационный номер извещения </strong>{{ fz.registration_number }}</h2>
   {% endif %}
+
   {% if fz.create_date %}
-  <h2><strong>Дата создания извещения </strong>{{ fz.create_date }}</h2>
+    <h2><strong>Дата создания извещения </strong>{{ fz.create_date }}</h2>
   {% endif %}
+
   {% if fz.url_EIS %}
-  <h2><strong>URL документа в ЕИС </strong>{{ fz.url_EIS }}</h2>
+    <h2>
+      <strong>
+        <a href="{{fz.url_EIS}}">
+          URL документа в ЕИС 
+        </a>
+      </strong>
+    </h2>
   {% endif %}
+
   {% if fz.url_VSRZ %}
-  <h2><strong>URL документа в ВСРЗ </strong>{{ fz.url_VSRZ }}</h2>
+    <h2>
+      <strong>
+        <a href="{{ fz.url_VSRZ }}">
+          URL документа в ВСРЗ
+        </a> 
+      </strong>
+    </h2>
   {% endif %}
+
   {% if fz.name %}
-  <h2><strong>Название закупки </strong>{{ fz.name }}</h2>
+    <h2><strong>Название закупки </strong>{{ fz.name }}</h2>
   {% endif %}
+
   {% if fz.full_name %}
-  <h2><strong>Наименование организации </strong>{{ fz.full_name }}</h2>
+    <h2><strong>Наименование организации </strong>{{ fz.full_name }}</h2>
   {% endif %}
+
   {% if fz.legal_address %}
-  <h2><strong>Юридический адрес </strong>{{ fz.legal_address }}</h2>
+    <h2><strong>Юридический адрес </strong>{{ fz.legal_address }}</h2>
   {% endif %}
-  {% if fz.purchase_code_name %}
-  <h2><strong>Способ закупки </strong>{{ fz.purchase_code_name }}</h2>
-  {% endif %}
-  {% if fz.place %}
-  <h2><strong>Место предоставления документации </strong>{{ fz.place }}</h2>
-  {% endif %}
-  {% if fz.currency %}
-  <h2><strong>Валюта платежа </strong>{{ fz.currency }}</h2>
-  {% endif %}
+
   {% if fz.initial_sum %}
-  <h2><strong>Начальная цена договора </strong>{{ fz.initial_sum }}</h2>
+    <h2><strong>Начальная цена договора </strong>{{ fz.initial_sum|intcomma }} {{ fz.currency|lower }}</h2>
   {% endif %}
+
   {% if fz.submission_start_date %}
-  <h2><strong>Дата начала подачи заявок </strong>{{ fz.submission_start_date }}</h2>
+    <h2><strong>Дата начала подачи заявок </strong>{{ fz.submission_start_date }}</h2>
   {% endif %}
+
   {% if fz.submission_close_date %}
-  <h2><strong>Дата окончания подачи заявок </strong>{{ fz.submission_close_date }}</h2>
+    <h2><strong>Дата окончания подачи заявок </strong>{{ fz.submission_close_date }}</h2>
   {% endif %}
+
 </section>
 {% endblock %}
