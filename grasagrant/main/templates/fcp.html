@@ -14,7 +14,7 @@
   <h2><strong>Описание </strong>{{ fcp.lead }}</h2>
   {% endif %}
   {% if fcp.time %}
-  <h2><strong>Опубликовано </strong>{{ fcp.time }}</h2>
+  <h2><strong>Опубликовано </strong>{{ fcp.time|date:'d-m-Y' }}</h2>
   {% endif %}
   {% if fcp.fond_link %}
   <h2><strong>URL фонда </strong>{{ fcp.fond_link }}</h2>
