@@ -18,7 +18,7 @@ def grant_types_list(request):
     )
 
 def grants_list(request, pk):
-    grants = Grant.objects.filter(grant_name=pk)
+    grants = Grant.objects.filter(grant_name=pk).order_by('-time')
     return render(
         request,
         'grants_list.html',
@@ -48,7 +48,7 @@ def fcp_types_list(request):
     )
 
 def fcps_list(request, pk):
-    fcps = Fcp.objects.filter(gp_name=pk)
+    fcps = Fcp.objects.filter(gp_name=pk).order_by('-time')
     return render(
         request,
         'fcps_list.html',

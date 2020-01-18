@@ -51,8 +51,7 @@ class CleanFZ():
 
                 date = datetime.datetime.strptime(fz.end_date, '%Y-%m-%d').date()
 
-                if date < datetime.date.today():
-                    
+                if date < datetime.date.today():                    
                     fz.delete()
     
     @staticmethod
@@ -66,8 +65,7 @@ class CleanFZ():
 
                 date = datetime.datetime.strptime(fz.submission_close_date, '%Y-%m-%d').date()
 
-                if date < datetime.date.today():
-                    
+                if date < datetime.date.today():                    
                     fz.delete()
             
 

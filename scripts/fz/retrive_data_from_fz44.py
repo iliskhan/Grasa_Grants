@@ -10,6 +10,8 @@ django.setup()
 
 from main.models import Category, Type, Fz44, Region
 
+from main.services import CleanFZ
+
 # Запрос котировок
 # Запрос предложений
 # Электоронный аукцион
@@ -59,7 +61,7 @@ def retrieve_EA44_ZK_ZP(file_path, notification):
 	fz44.max_price = lot.findtext('xmlns:maxPrice', namespaces=ns)
 	fz44.currency = lot.find('xmlns:currency/'
 								'xmlns:code', ns).text
-	fz44.finance_source = lot.find('xmlns:financeSource', ns).text
+	fz44.finance_source = lot.findtext('xmlns:financeSource', namespaces=ns)
 	customerRequirement = lot.find('xmlns:customerRequirements/'
 								   'xmlns:customerRequirement', ns)
 	fz44.aplication_guarantee = customerRequirement.findtext('xmlns:applicationGuarantee/'
@@ -76,31 +78,16 @@ def retrieve_EA44_ZK_ZP(file_path, notification):
 
 	region_name = fcsNotification.find('xmlns:purchaseResponsible/'
 											 'xmlns:responsibleOrg/'
-											 'xmlns:factAddress', ns).text
-	
-	region_list = Region.objects.all()
-	region_list = [i.name for i in region_list]
-	region_orm = ''
-	
-	reg_name = region_name.split(',')[2].strip().split(' ')[0]
-	
-	for reg in region_list:
-		if reg_name in reg:
-			region_orm = reg
-			
-	if region_orm == '':
-		
-		reg_name = region_name.split(',')[1].strip().split(' ')[0]
-	
-		for reg in region_list:
-			if reg_name in reg:
-				region_orm = reg
+											 'xmlns:factAddress', ns).text.split(',')[1:3]
 
-	region = Region.objects.get(name=region_orm)
+	region_list = [i.name for i in Region.objects.all()]
+	
+	region = Region.objects.get(name=region_definition(region_list, region_name))
 	
 	fz44.region = region
 
 	fz44.save()												 
+
 
 # Открытый конкурс
 # Извещение по статье 111 44-ФЗ
@@ -182,30 +169,37 @@ def retrive_INM111_OK(file_path, notification):
 
 	region_name = fcsNotification.find('xmlns:purchaseResponsible/'
 											 'xmlns:responsibleOrg/'
-											 'xmlns:factAddress', ns).text
-	region_list = Region.objects.all()
-	region_list = [i.name for i in region_list]
-	region_orm = ''
-	
-	reg_name = region_name.split(',')[2].strip().split(' ')[0]
-	
-	for reg in region_list:
-		if reg_name in reg:
-			region_orm = reg
-			
-	if region_orm == '':
-		
-		reg_name = region_name.split(',')[1].strip().split(' ')[0]
-	
-		for reg in region_list:
-			if reg_name in reg:
-				region_orm = reg
+											 'xmlns:factAddress', ns).text.split(',')[1:3]
 
-	region = Region.objects.get(name=region_orm)
+	region_list = [i.name for i in Region.objects.all()]
+
+	region = Region.objects.get(name=region_definition(region_list, region_name))
 	
 	fz44.region = region	
 
 	fz44.save()
+
+def region_definition(region_list, region_name):
+
+	region_orm = ''
+
+	region_name = [i.strip() for i in region_name if not i.strip().isdigit()]
+	region_name = [i.split() for i in region_name]
+	region_name = [item for sublist in region_name for item in sublist]
+	region_name = [i for i in region_name if 'Респ' not in i and 'Обл' not in i and 'Край' not in i]
+	
+	while not region_orm:
+		
+		for region in region_name:
+			
+			for reg in region_list:
+				
+				if region in reg:
+					region_orm = reg
+					break
+				
+	return region_orm
+
 
 def main():
 
@@ -219,7 +213,7 @@ def main():
 
 	path = '../data/44/'
 
-	Fz44.objects.all().delete()
+	CleanFZ.clean_fz44()
 
 	for file in os.listdir(path):
 

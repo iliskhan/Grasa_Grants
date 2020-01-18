@@ -25,7 +25,6 @@ def retrieve(file_path):
         'purchaseNoticeZPESMBO':'Извещение о закупке "Запрос предложений в ЭФ, участниками которого могут являться только субъекты МСП"'
     }
 
-
     ns = {'xmlns':'http://zakupki.gov.ru/223fz/types/1',
           'ns2':'http://zakupki.gov.ru/223fz/purchase/1'}
     
@@ -77,8 +76,8 @@ def retrieve(file_path):
                               'xmlns:lot/'
                               'xmlns:lotData', ns)
                   
-    fz223.currency = lot.find('xmlns:currency/'
-                                'xmlns:code', ns).text
+    fz223.currency = lot.findtext('xmlns:currency/'
+                                'xmlns:code', namespaces=ns)
 
     fz223.initial_sum = lot.findtext('xmlns:initialSum', namespaces=ns)
 
@@ -90,32 +89,23 @@ def retrieve(file_path):
     
     region_name = purchaseNotice.find('ns2:customer/'
                                          'xmlns:mainInfo/'
-                                         'xmlns:legalAddress', ns).text.split(',')[1].strip()
+                                         'xmlns:legalAddress', ns).text.split(',')[1].strip().title().split()
     
-    region_list = Region.objects.all()
-    region_list = [i.name for i in region_list]
+    region_name = [i for i in region_name if 'Респ' not in i and 'Обл' not in i and 'Край' not in i]
+    
+    region_list = [i.name for i in Region.objects.all()]
     region_orm = ''
-
-    reg_name = region_name.title()
     
-    for reg in region_list:
-        if reg_name in reg:
-            region_orm = reg
-    
-    if region_orm == '':
-        reg_name = region_name.split()[1].title()
+    while not region_orm:
+        
+        for region in region_name:
+            
+            for reg in region_list:
+                
+                if region in reg:
+                    region_orm = reg
+                    break
 
-        for reg in region_list:
-            if reg_name in reg:
-                region_orm = reg
-
-    if region_orm == '':
-        reg_name = region_name.split()[0].title()
-
-        for reg in region_list:
-            if reg_name in reg:
-                region_orm = reg    
-    
     region = Region.objects.get(name=region_orm)
 
     fz223.region = region
