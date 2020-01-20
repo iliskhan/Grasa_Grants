@@ -26,14 +26,16 @@ def retrieve_EA44_ZK_ZP(file_path, notification):
 	
 	name = file_path.split('_')[0].split('/')[-1]
 
-	fcsNotification = root.find(f'ns2:{notification.get(name)[0]}', ns)
-
 	pk = Category.objects.get(tab_name='Fz44').pk
 	types = Type.objects.filter(category=pk)
 	
 	fz44 = Fz44()	
 	
-	fz44.fz = types.get(name=notification.get(name)[1])
+	try:
+		fcsNotification = root.find(f'ns2:{notification.get(name)[0]}', ns)
+		fz44.fz = types.get(name=notification.get(name)[1])
+	except (Type.DoesNotExist, TypeError):
+		return
 
 	fz44.fz44id = fcsNotification.find('xmlns:id', ns).text
 	fz44.link = fcsNotification.find('xmlns:href', ns).text
