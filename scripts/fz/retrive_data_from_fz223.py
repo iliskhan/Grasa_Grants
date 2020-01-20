@@ -44,7 +44,7 @@ def retrieve(file_path):
 
     fz223 = Fz223()
 
-    fz223.fz = types.get(name=notice_type_dict.get(notice_type))
+    fz223.fz223_name = types.get(name=notice_type_dict.get(notice_type))
 
     fz223.registration_number = purchaseNotice.find('ns2:registrationNumber', ns).text
     

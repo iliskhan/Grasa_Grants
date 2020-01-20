@@ -1,5 +1,5 @@
 import os, sys
-import datetime
+from datetime import date, timedelta
 
 sys.path.append('../')
 
@@ -34,7 +34,7 @@ class CleanGrant():
         
         for grant in all_grants:
 
-            if grant.time + datetime.timedelta(days=183) < datetime.date.today():
+            if grant.time + timedelta(days=183) < date.today():
                 
                 grant.delete()
                 
@@ -47,11 +47,9 @@ class CleanFZ():
 
         for fz in all_fz:
             
-            if fz.end_date:
+            if fz.create_date:
 
-                date = datetime.datetime.strptime(fz.end_date, '%Y-%m-%d').date()
-
-                if date < datetime.date.today():                    
+                if fz.create_date + timedelta(days=183) < date.today():                    
                     fz.delete()
     
     @staticmethod
@@ -61,11 +59,9 @@ class CleanFZ():
 
         for fz in all_fz:
             
-            if fz.submission_close_date:
+            if fz.create_date:
 
-                date = datetime.datetime.strptime(fz.submission_close_date, '%Y-%m-%d').date()
-
-                if date < datetime.date.today():                    
+                if fz.create_date + timedelta(days=183) < date.today():                    
                     fz.delete()
             
 
@@ -80,7 +76,7 @@ class CleanDigitalEconomy():
 
             if digital.date:
 
-                if digital.date + datetime.timedelta(days=183) < datetime.date.today():
+                if digital.date + timedelta(days=183) < date.today():
                     
                     digital.delete()
           

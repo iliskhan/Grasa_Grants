@@ -122,7 +122,7 @@ def main():
             
             if not Fcp.objects.filter(link=d['link']).first():
                 fcp = Fcp(
-                            gp_name=type,
+                            fcp_name=type,
                             time=date_conversion(d['time']),
                             card_name=d['card_name'],
                             title=d['title'],

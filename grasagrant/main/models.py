@@ -25,7 +25,7 @@ class Type(models.Model):
 
 class Fz223(models.Model):
 
-    fz = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz223")
+    fz223_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz223")
     registration_number = models.CharField(max_length=100)
     create_date = models.DateField()
     url_EIS = models.TextField(null=True)
@@ -43,12 +43,13 @@ class Fz223(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.fz.__str__()}: {self.name}'
+        return f'{self.fz223_name.__str__()}: {self.name}'
 
 class Fz44(models.Model):
 
-    fz = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz44")
+    fz44_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz44")
     fz44id = models.CharField(max_length=100)
+    create_date = models.DateField()
     link = models.TextField()
     purchase_number = models.CharField(max_length=100)
     purchase_object = models.CharField(max_length=300)
@@ -68,11 +69,11 @@ class Fz44(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.fz.__str__()}: {self.purchase_object}'
+        return f'{self.fz44_name.__str__()}: {self.purchase_object}'
 
 class Fcp(models.Model):
 
-    gp_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fcp")
+    fcp_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fcp")
     time = models.DateField()
     card_name = models.CharField(max_length=300, null=True)
     title = models.CharField(max_length=300, null=True)
@@ -80,18 +81,18 @@ class Fcp(models.Model):
     link = models.CharField(max_length=300, null=True)
 
     def __str__(self):
-        return f'{self.gp_name.__str__()}: {self.title}'
+        return f'{self.fcp_name.__str__()}: {self.title}'
 
 class DigitalEconomy(models.Model):
     
-    type_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name='digital_economy')
+    digitaleconomy_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name='digital_economy')
     document_number = models.CharField(max_length=50, null=True)
     date = models.DateField(null=True)
     text = models.TextField()
     link = models.CharField(max_length=300)
 
     def __str__(self):
-        return f'{self.type_name.__str__()}: {self.text}'
+        return f'{self.digitaleconomy_name.__str__()}: {self.text}'
 
 class Grant(models.Model):
     grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grants")

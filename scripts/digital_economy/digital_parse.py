@@ -54,10 +54,10 @@ def digital_parse(url):
                             type_post = types.get(name=doc_info_arr[0].text.strip())
                             
                             digital_economy = DigitalEconomy()
-                            digital_economy.type_name = type_post
+                            digital_economy.digitaleconomy_name = type_post
                         
                             if len(doc_info_arr) == 2: digital_economy.date = date_conversion(doc_info_arr[1].text.strip())
-
+                            
                             if document_number: digital_economy.document_number = document_number.text.strip().replace(u'\xa0', " ")  
 
                             digital_economy.text = text
