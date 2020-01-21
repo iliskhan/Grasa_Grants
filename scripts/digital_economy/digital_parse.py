@@ -13,38 +13,65 @@ django.setup()
 
 from main.models import Category, Type, DigitalEconomy
 
+from main.services import CleanDigitalEconomy
+
 def digital_parse(url):
 
-    data = []
+    page_number = 1
+
+    while True:
     
-    response = requests.get(url)
-
-    if response.status_code == 200:
-
-        soup = BS(response.text, features='html5lib')
-
-        posts = soup.find('div', class_='col-md-8').find_all('div', class_='document-link-block')
+        response = requests.get(f'{url}?words=&type=&directions=&department=&start_date=&end_date=&page={page_number}')
         
-        for post in posts:
+        category = Category.objects.get(tab_name='DigitalEconomy').pk
+        types = Type.objects.filter(category=category)
 
-            current_data = {}
-            
-            document_number = post.find('span', class_='document-number')
-            
-            current_data['document_number'] = document_number.text.strip().replace(u'\xa0', " ") if document_number else None  
-            
-            doc_header = post.find('div', class_='document-link-block-header')    
-            doc_info_arr = doc_header.find_all('span', class_='document-info')
+        if response.status_code == 200:
 
-            current_data['label'] = doc_info_arr[0].text.strip()
-            current_data['date'] = date_conversion(doc_info_arr[1].text.strip()) if len(doc_info_arr) == 2 else None
+            soup = BS(response.text, features='html5lib')
 
-            current_data['text'] = post.find('a').text.strip()
-            current_data['link'] = 'https://digital.gov.ru' + post.find('a')['href']
+            posts = soup.find('div', class_='col-md-8').find_all('div', class_='document-link-block')
 
-            data.append(current_data)
+            if posts:
+        
+                for post in posts:
 
-    return data
+                    text = post.find('a').text.strip()
+                    link = 'https://digital.gov.ru' + post.find('a')['href']
+
+                    if DigitalEconomy.objects.filter(text=text, link=link).exists():
+                        return 
+
+                    document_number = post.find('span', class_='document-number')
+
+                    doc_header = post.find('div', class_='document-link-block-header')    
+                    doc_info_arr = doc_header.find_all('span', class_='document-info')
+
+                    if doc_info_arr:
+                        
+                        try:
+
+                            type_post = types.get(name=doc_info_arr[0].text.strip())
+                            
+                            digital_economy = DigitalEconomy()
+                            digital_economy.digitaleconomy_name = type_post
+                        
+                            if len(doc_info_arr) == 2: digital_economy.date = date_conversion(doc_info_arr[1].text.strip())
+                            
+                            if document_number: digital_economy.document_number = document_number.text.strip().replace(u'\xa0', " ")  
+
+                            digital_economy.text = text
+                            digital_economy.link = link
+                            digital_economy.save()
+
+                        except Type.DoesNotExist:
+                            pass
+            else:
+                break
+        else:
+            break
+        
+        page_number += 1
 
 def date_conversion(date):
 
@@ -65,27 +92,11 @@ def date_conversion(date):
 
 def main():
 
-    DigitalEconomy.objects.all().delete()
+    CleanDigitalEconomy.clean()
 
     url = 'https://digital.gov.ru/ru/documents/'
 
-    data = digital_parse(url)
-
-    category = Category.objects.get(tab_name='DigitalEconomy').pk
-    types = Type.objects.filter(category=category)
-
-    for d in data:
-
-        digital_economy = DigitalEconomy(
-            type_name = types.get(name=d['label']),
-            document_number = d['document_number'],
-            date = d['date'],
-            text = d['text'],
-            link = d['link'],
-
-        )
-
-        digital_economy.save()
+    digital_parse(url)
 
 if __name__ == '__main__':
     main()    

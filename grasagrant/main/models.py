@@ -49,6 +49,7 @@ class Fz44(models.Model):
 
     fz44_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz44")
     fz44id = models.CharField(max_length=100)
+    create_date = models.DateField()
     link = models.TextField()
     purchase_number = models.CharField(max_length=100)
     purchase_object = models.CharField(max_length=300)
@@ -108,18 +109,6 @@ class Grant(models.Model):
     def __str__(self):
         return f'{self.grant_name.__str__()}: {self.text}'
     
-    @staticmethod
-    def clean_correct_days_4science(grant):
-
-        if grant.days:
-            day = int(grant.days.split()[0])
-
-            if day - 1 < 0:
-                grant.delete()
-            else:
-                grant.days = day - 1
-                grant.save()
-
 class Link(models.Model):
 
     link = models.CharField(max_length=300)
