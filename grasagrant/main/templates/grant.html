@@ -16,11 +16,11 @@
   {% if data.org %}
   <h2><strong>Организация </strong>{{ data.org }}</h2>
   {% endif %}
-  {% if data.time %}
-  <h2><strong>Опубликовано </strong>{{ data.time }}</h2>
+  {% if grant.time %}
+  <h2><strong>Опубликовано </strong>{{ grant.time|date:'d-m-Y' }}</h2>
   {% endif %}
-  {% if data.days %}
-  <h2><strong>До окончания </strong>{{ data.days }}</h2>
+  {% if grant.days %}
+  <h2><strong>Дней до окончания </strong>{{ grant.days }}</h2>
   {% endif %}
   {% if data.rouble %}
   <h2><strong>Сумма финансирования </strong>{{ data.rouble }}</h2>
