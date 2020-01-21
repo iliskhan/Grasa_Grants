@@ -4,53 +4,53 @@
 
 {% block content %}
 <section class="container">
-  {% if fz.fz44id %}
-  <h2><strong>Идентификатор </strong>{{ fz.fz44id }}</h2>
+  {% if data.fz44id %}
+  <h2><strong>Идентификатор </strong>{{ data.fz44id }}</h2>
   {% endif %}
-  {% if fz.link %}
-  <h2><strong>URL документа в ЕИС </strong>{{ fz.link }}</h2>
+  {% if data.link %}
+  <h2><strong>URL документа в ЕИС </strong>{{ data.link }}</h2>
   {% endif %}
-  {% if fz.purchase_number %}
-  <h2><strong>Номер закупки </strong>{{ fz.purchase_number }}</h2>
+  {% if data.purchase_number %}
+  <h2><strong>Номер закупки </strong>{{ data.purchase_number }}</h2>
   {% endif %}
-  {% if fz.purchase_object %}
-  <h2><strong>Название закупки </strong>{{ fz.purchase_object }}</h2>
+  {% if data.purchase_object %}
+  <h2><strong>Название закупки </strong>{{ data.purchase_object }}</h2>
   {% endif %}
-  {% if fz.org_name %}
-  <h2><strong>Наименование организации </strong>{{ fz.org_name }}</h2>
+  {% if data.org_name %}
+  <h2><strong>Наименование организации </strong>{{ data.org_name }}</h2>
   {% endif %}
-  {% if fz.placing_way %}
-  <h2><strong>Способ закупки </strong>{{ fz.placing_way }}</h2>
+  {% if data.placing_way %}
+  <h2><strong>Способ закупки </strong>{{ data.placing_way }}</h2>
   {% endif %}
-  {% if fz.start_date %}
-  <h2><strong>Дата начала подачи заявок </strong>{{ fz.start_date }}</h2>
+  {% if data.start_date %}
+  <h2><strong>Дата начала подачи заявок </strong>{{ data.start_date }}</h2>
   {% endif %}
-  {% if fz.end_date %}
-  <h2><strong>Дата окончания подачи заявок </strong>{{ fz.end_date }}</h2>
+  {% if data.end_date %}
+  <h2><strong>Дата окончания подачи заявок </strong>{{ data.end_date }}</h2>
   {% endif %}
-  {% if fz.place %}
-  <h2><strong>Место предоставления документации </strong>{{ fz.place }}</h2>
+  {% if data.place %}
+  <h2><strong>Место предоставления документации </strong>{{ data.place }}</h2>
   {% endif %}
-  {% if fz.max_price %}
-  <h2><strong>Начальная цена договора </strong>{{ fz.max_price }}</h2>
+  {% if data.max_price %}
+  <h2><strong>Начальная цена договора </strong>{{ data.max_price }}</h2>
   {% endif %}
-  {% if fz.currency %}
-  <h2><strong>Валюта платежа </strong>{{ fz.currency }}</h2>
+  {% if data.currency %}
+  <h2><strong>Валюта платежа </strong>{{ data.currency }}</h2>
   {% endif %}
-  {% if fz.finance_source %}
-  <h2><strong>Источник финансирования </strong>{{ fz.finance_source }}</h2>
+  {% if data.finance_source %}
+  <h2><strong>Источник финансирования </strong>{{ data.finance_source }}</h2>
   {% endif %}
-  {% if fz.aplication_guarantee %}
-  <h2><strong>Обеспечение заявок </strong>{{ fz.aplication_guarantee }}</h2>
+  {% if data.aplication_guarantee %}
+  <h2><strong>Обеспечение заявок </strong>{{ data.aplication_guarantee }}</h2>
   {% endif %}
-  {% if fz.contract_guarantee %}
-  <h2><strong>Размер обеспечения исполнения контракта </strong>{{ fz.contract_guarantee }}</h2>
+  {% if data.contract_guarantee %}
+  <h2><strong>Размер обеспечения исполнения контракта </strong>{{ data.contract_guarantee }}</h2>
   {% endif %}
-  {% if fz.delivery %}
-  <h2><strong>Доставка </strong>{{ fz.delivery }}</h2>
+  {% if data.delivery %}
+  <h2><strong>Доставка </strong>{{ data.delivery }}</h2>
   {% endif %}
-  {% if fz.delivery_place %}
-  <h2><strong>Место доставки </strong>{{ fz.delivery_place }}</h2>
+  {% if data.delivery_place %}
+  <h2><strong>Место доставки </strong>{{ data.delivery_place }}</h2>
   {% endif %}
 </section>
 {% endblock %}

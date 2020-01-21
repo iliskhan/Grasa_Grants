@@ -138,6 +138,8 @@ def main():
 	folder_path = dict()
 
 	for region in list_regions:
+
+		print(region)
 		
 		folder_path['fz223_notice'] = f'out/published/{region}/purchaseNotice/daily'
 		folder_path['fz223_noticeAE'] = f'out/published/{region}/purchaseNoticeAE/daily/'
@@ -157,7 +159,8 @@ def main():
 				ftp.cwd(i)
 
 				get_223_fz(ftp, fz223)
-				extract_files(fz223)
+
+	extract_files(fz223)
 
 	del_empty_files(fz223)
 	get_relevant_files(fz223)

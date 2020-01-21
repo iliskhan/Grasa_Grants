@@ -4,20 +4,20 @@
 
 {% block content %}
 <section class="container">
-  {% if fcp.card_name %}
-  <h2><strong>Категория </strong>{{ fcp.card_name }}</h2>
+  {% if data.card_name %}
+  <h2><strong>Категория </strong>{{ data.card_name }}</h2>
   {% endif %}
-  {% if fcp.title %}
-  <h2><strong>Заглавие </strong>{{ fcp.title }}</h2>
+  {% if data.title %}
+  <h2><strong>Заглавие </strong>{{ data.title }}</h2>
   {% endif %}
-  {% if fcp.lead %}
-  <h2><strong>Описание </strong>{{ fcp.lead }}</h2>
+  {% if data.lead %}
+  <h2><strong>Описание </strong>{{ data.lead }}</h2>
   {% endif %}
-  {% if fcp.time %}
-  <h2><strong>Опубликовано </strong>{{ fcp.time|date:'d-m-Y' }}</h2>
+  {% if data.time %}
+  <h2><strong>Опубликовано </strong>{{ data.time|date:'d-m-Y' }}</h2>
   {% endif %}
-  {% if fcp.fond_link %}
-  <h2><strong>URL фонда </strong>{{ fcp.fond_link }}</h2>
+  {% if data.fond_link %}
+  <h2><strong>URL фонда </strong>{{ data.fond_link }}</h2>
   {% endif %}
 </section>
 {% endblock %}

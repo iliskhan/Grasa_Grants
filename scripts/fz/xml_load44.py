@@ -1,12 +1,16 @@
 import os
-import datetime
 import shutil
+import datetime
 
 from tqdm import tqdm
 from ftplib import FTP
 from zipfile import ZipFile
+
 import xml.etree.ElementTree as ET
 
+
+ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
+		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
 
 def get_44_fz(ftp, folder):
 
@@ -39,33 +43,31 @@ def clean_dir(path):
 
 def get_relevant_files(folder_path):
 
-	ns = {'xmlns':'http://zakupki.gov.ru/oos/types/1',
-		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
-
 	print('Удаление не актуальных файлов\n')
+
+	file_names = {
+		'fcsNotificationEA44': 'ns2:fcsNotificationEF',
+		'fcsNotificationZK44': 'ns2:fcsNotificationZK',
+		'fcsNotificationZP44': 'ns2:fcsNotificationZP',
+		'fcsNotificationOK44': 'ns2:fcsNotificationOK',
+	}
+
+	today = datetime.date.today()
 
 	for i in tqdm(os.listdir(folder_path)):
 		file_path = os.path.join(folder_path, i)
 
-		today = datetime.date.today()
-
-		names = ['fcsNotificationEA44', 'fcsNotificationZK44', 'fcsNotificationZP44', 'fcsNotificationOK44']
+		file_name = i.split('_')[0]
 		
-		if i.endswith('xml') and i.split('_')[0] in names:
+		if i.endswith('xml') and file_name in file_names.keys():
 			
 			xml_file = ET.parse(file_path)
 			root = xml_file.getroot()
-			
-			name_file = i.split('_')[0]
 
-			if name_file == 'fcsNotificationEA44':
-				fcsNotification = root.find('ns2:fcsNotificationEF', ns)
-			if name_file == 'fcsNotificationZK44':
-				fcsNotification = root.find('ns2:fcsNotificationZK', ns)
-			if name_file == 'fcsNotificationZP44':
-				fcsNotification = root.find('ns2:fcsNotificationZP', ns)
-			if name_file == 'fcsNotificationOK44':
-				fcsNotification = root.find('ns2:fcsNotificationOK', ns)
+			name_space = file_names.get(file_name)
+
+			if name_space:
+				fcsNotification = root.find(name_space, ns)
 
 			endDate = fcsNotification.find('xmlns:procedureInfo/'
 										   'xmlns:collecting/'
@@ -98,19 +100,28 @@ def extract_files(folder):
 
 	print("\nРазархивирование файлов")
 
+	for file_name in tqdm(os.listdir(folder)):
+
 		if file_name.endswith('.zip'):
 
 			zip_file = os.path.join(folder, file_name)
-			with ZipFile(zip_file,'r') as zip_obj:
+
+			with ZipFile(zip_file, 'r') as zip_obj:
 				zip_obj.extractall(path=folder)
+
 			os.remove(zip_file)
+
 
 def get_names_regions(url, LOG_PASS):
 
 	with FTP(url) as ftp:
+
 		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+
 		ftp.cwd('fcs_regions/')
+
 		list_regions = ftp.nlst()[:87]
+
 		list_regions.remove('PG-PZ')
 
 	return list_regions
@@ -122,30 +133,45 @@ def main():
 
 	LOG_PASS = 'free'
 
-	list_regions = get_names_regions(URL, LOG_PASS)
-	
 	clean_dir(fz44)
 
 	paths = dict()
-	
-	for region in list_regions:
+	with FTP(URL) as ftp:
 
-		paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
-		paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'
+		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
-		for path in paths.values():
-			
-			with FTP(URL) as ftp:
+		list_regions = []
+		unnecessary_folders = ["PG-PZ", "_logs", "control99docs", "fcs_undefined"]
 
-				ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+		def folder_name_selector(some_str):
+			if some_str.startswith('d'):
+				folder_name = some_str.split()[-1]
+				if folder_name not in unnecessary_folders:
+					list_regions.append(folder_name)
+
+		
+		ftp.dir('fcs_regions/', folder_name_selector)
+
+		print(list_regions)
+
+		print(len(list_regions))
+
+		for region in list_regions[:5]:
+
+			paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
+			paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'
+
+			for path in paths.values():
 
 				ftp.cwd(path)
-
 				get_44_fz(ftp, fz44)
 
-				extract_files(fz44)
+				ftp.cwd('../../../..')
 
-	get_relevant_files(fz44)
+
+	# extract_files(fz44)
+
+	# get_relevant_files(fz44)
 
 
 if __name__ == '__main__':

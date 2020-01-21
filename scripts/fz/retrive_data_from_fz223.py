@@ -106,8 +106,9 @@ def retrieve(file_path):
                     region_orm = reg
                     break
 
+    print("region_name",region_name)
     region = Region.objects.get(name=region_orm)
-
+    print('region',region)
     fz223.region = region
 
     fz223.save()
@@ -119,7 +120,7 @@ def main():
     Fz223.objects.all().delete()
 
     for i in os.listdir(path):
-
+        print(i)
         file_path = os.path.join(path, i)
 
         if i.endswith('.xml') and i.startswith('purchaseNotice'):

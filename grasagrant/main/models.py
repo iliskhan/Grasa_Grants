@@ -95,7 +95,7 @@ class DigitalEconomy(models.Model):
         return f'{self.digitaleconomy_name.__str__()}: {self.text}'
 
 class Grant(models.Model):
-    grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grants")
+    grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grant")
     time = models.DateField()
     label = models.CharField(max_length=100, null=True)
     text = models.TextField()
