@@ -1,4 +1,4 @@
-from main.models import Type, Grant, Fcp, Fz44, Fz223, Category, Region
+from main.models import Type, Grant, Fcp, Fz44, Fz223, Category, Region, DigitalEconomy
 
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404

@@ -3,6 +3,8 @@ import sys
 import xml.etree.ElementTree as ET
 import datetime
 
+from tqdm import tqdm
+
 sys.path.append('../../grasagrant')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
@@ -10,6 +12,7 @@ import django
 django.setup()
 
 from main.models import Category, Type, Fz223, Region
+from main.services import clean_fz223
 
 def retrieve(file_path):
 
@@ -96,22 +99,6 @@ def retrieve(file_path):
     region_list = [i.name for i in Region.objects.all()]
     region_orm = ''
     
-<<<<<<< HEAD
-    if region_orm == '':
-        reg_name = region_name.split()[1].title()
-
-        for reg in region_list:
-            if reg_name in reg:
-                region_orm = reg
-
-    if region_orm == '':
-        reg_name = region_name.split()[0].title()
-
-        for reg in region_list:
-            if reg_name in reg:
-                region_orm = reg    
-    
-=======
     while not region_orm:
         
         for region in region_name:
@@ -122,10 +109,7 @@ def retrieve(file_path):
                     region_orm = reg
                     break
 
-    print("region_name",region_name)
->>>>>>> 872526c96c3251e442e0c8be96866396f328a0f8
     region = Region.objects.get(name=region_orm)
-    print('region',region)
     fz223.region = region
 
     fz223.save()
@@ -134,10 +118,9 @@ def retrieve(file_path):
 def main():
     path = '../data/223/'
 
-    Fz223.objects.all().delete()
+    clean_fz223()
 
-    for i in os.listdir(path):
-        print(i)
+    for i in tqdm(os.listdir(path)):
         file_path = os.path.join(path, i)
 
         if i.endswith('.xml') and i.startswith('purchaseNotice'):

@@ -1,6 +1,8 @@
 import os
 import sys
 import xml.etree.ElementTree as ET
+
+from tqdm import tqdm
 from datetime import date
 
 sys.path.append('../../grasagrant')
@@ -11,7 +13,7 @@ django.setup()
 
 from main.models import Category, Type, Fz44, Region
 
-from main.services import CleanFZ
+from main.services import clean_fz44
 
 # Запрос котировок
 # Запрос предложений
@@ -226,9 +228,9 @@ def main():
 
 	path = '../data/44/'
 
-	CleanFZ.clean_fz44()
+	clean_fz44()
 
-	for file in os.listdir(path):
+	for file in tqdm(os.listdir(path)):
 
 		file_path = os.path.join(path, file)
 

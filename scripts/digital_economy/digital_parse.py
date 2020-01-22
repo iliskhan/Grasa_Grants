@@ -13,7 +13,7 @@ django.setup()
 
 from main.models import Category, Type, DigitalEconomy
 
-from main.services import CleanDigitalEconomy
+from main.services import clean_digitaleconomy
 
 def digital_parse(url):
 
@@ -92,7 +92,7 @@ def date_conversion(date):
 
 def main():
 
-    CleanDigitalEconomy.clean()
+    clean_digitaleconomy()
 
     url = 'https://digital.gov.ru/ru/documents/'
 

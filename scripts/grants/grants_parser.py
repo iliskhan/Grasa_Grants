@@ -14,14 +14,14 @@ django.setup()
 
 from main.models import Category, Type, Grant, Link
 
-from main.services import CleanGrant
+from main.services import clean_4science, clean_grant
 
 def science_parse(url):
 
     page_number = 1
 
     type_grant = Type.objects.get(name='4science')
-    CleanGrant.clean_4science(type_grant)
+    clean_4science(type_grant)
 
     while True:
 
@@ -87,7 +87,7 @@ def cbias_parse(url):
     page_number = 1
 
     type_grant = Type.objects.get(name='cbias')
-    CleanGrant.clean(type_grant)
+    clean_grant(type_grant)
 
     while True:
 
@@ -144,7 +144,7 @@ def fcpir_parse(url):
     page_number = 1
 
     type_grant = Type.objects.get(name='fcpir')
-    CleanGrant.clean(type_grant)
+    clean_grant(type_grant)
 
     while True:
 
@@ -186,12 +186,12 @@ def minobrnauki_parse(url):
     page_number = 1
 
     type_grant = Type.objects.get(name='minobrnauki')
-    CleanGrant.clean(type_grant)
+    clean_grant(type_grant)
 
     while True:
 
         response = requests.get(f'{url}?order_4=P_DATE&dir_4=DESC&page_4={page_number}', verify=False)
-        print(f'{url}?order_4=P_DATE&dir_4=DESC&page_4={page_number}')
+        
         if response.status_code == 200:
 
             soup = BS(response.text, features='html5lib') 
@@ -239,7 +239,7 @@ def rsci_parse(url):
     page_number = 1
 
     type_grant = Type.objects.get(name='rsci')
-    CleanGrant.clean(type_grant)
+    clean_grant(type_grant)
 
     today_date = datetime.date.today() - datetime.timedelta(days=1)
 
@@ -289,7 +289,7 @@ def edu_parse(url):
     response = session.get(url)
 
     type_grant = Type.objects.get(name='edu')
-    CleanGrant.clean(type_grant)
+    clean_grant(type_grant)
 
     today_date = datetime.date.today() - datetime.timedelta(days=1)
 
@@ -339,12 +339,12 @@ def date_conversion(date):
 
 def main():
 
-    # science_parse('https://4science.ru/finsupports') 
-    # cbias_parse('http://www.cbias.ru/category/news/')
-    # fcpir_parse('http://www.fcpir.ru/events_and_publications/_contest/')
-    # minobrnauki_parse('https://www.minobrnauki.gov.ru/ru/documents/docs/index.php')
-    # rsci_parse('http://www.rsci.ru/grants/')
-    # edu_parse('https://docs.edu.gov.ru/')  
+    science_parse('https://4science.ru/finsupports') 
+    cbias_parse('http://www.cbias.ru/category/news/')
+    fcpir_parse('http://www.fcpir.ru/events_and_publications/_contest/')
+    minobrnauki_parse('https://www.minobrnauki.gov.ru/ru/documents/docs/index.php')
+    rsci_parse('http://www.rsci.ru/grants/')
+    edu_parse('https://docs.edu.gov.ru/')  
 
 if __name__ == '__main__':
     main()    
