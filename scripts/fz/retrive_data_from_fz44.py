@@ -11,7 +11,7 @@ django.setup()
 
 from main.models import Category, Type, Fz44, Region
 
-from main.services import CleanFZ
+from main.services import clean_fz44
 
 # Запрос котировок
 # Запрос предложений
@@ -226,7 +226,7 @@ def main():
 
 	path = '../data/44/'
 
-	CleanFZ.clean_fz44()
+	clean_fz44()
 
 	for file in os.listdir(path):
 

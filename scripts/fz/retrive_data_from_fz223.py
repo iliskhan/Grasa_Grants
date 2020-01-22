@@ -10,6 +10,7 @@ import django
 django.setup()
 
 from main.models import Category, Type, Fz223, Region
+from main.services import clean_fz223
 
 def retrieve(file_path):
 
@@ -106,9 +107,7 @@ def retrieve(file_path):
                     region_orm = reg
                     break
 
-    print("region_name",region_name)
     region = Region.objects.get(name=region_orm)
-    print('region',region)
     fz223.region = region
 
     fz223.save()
@@ -117,10 +116,9 @@ def retrieve(file_path):
 def main():
     path = '../data/223/'
 
-    Fz223.objects.all().delete()
+    clean_fz223()
 
     for i in os.listdir(path):
-        print(i)
         file_path = os.path.join(path, i)
 
         if i.endswith('.xml') and i.startswith('purchaseNotice'):
