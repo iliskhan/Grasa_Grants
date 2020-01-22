@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="container">
+  {% for digitaleconomy in digitaleconomys %}
+  <div class="info-card" onclick="location.href='{% url 'detailed' tab_name digitaleconomy.id %}'">
+    <h3>{{digitaleconomy.text}}</h3>
+    <h2>{{digitaleconomy.date|date:"d-m-Y"}}</h2>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}
