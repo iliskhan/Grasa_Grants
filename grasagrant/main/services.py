@@ -61,17 +61,17 @@ def clean_fz223():
                 fz.delete()
         
 
-def clean_digitaleconomy():
+# def clean_digitaleconomy():
 
-    all_digital = DigitalEconomy.objects.all()
+#     all_digital = DigitalEconomy.objects.all()
 
-    for digital in all_digital:
+#     for digital in all_digital:
 
-        if digital.date:
+#         if digital.date:
             
-            if digital.date + timedelta(days=183) < date.today():
+#             if digital.date + timedelta(days=183) < date.today():
                 
-                digital.delete()
+#                 digital.delete()
           
 
 

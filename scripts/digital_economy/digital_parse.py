@@ -92,7 +92,7 @@ def date_conversion(date):
 
 def main():
 
-    clean_digitaleconomy()
+    # clean_digitaleconomy()
 
     url = 'https://digital.gov.ru/ru/documents/'
 
