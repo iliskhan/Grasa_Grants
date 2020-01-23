@@ -13,7 +13,7 @@ django.setup()
 
 from main.models import Category, Type, DigitalEconomy
 
-from main.services import clean_digitaleconomy
+# from main.services import clean_digitaleconomy
 
 def digital_parse(url):
 

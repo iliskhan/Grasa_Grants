@@ -3,6 +3,8 @@ import sys
 import xml.etree.ElementTree as ET
 import datetime
 
+from tqdm import tqdm
+
 sys.path.append('../../grasagrant')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
@@ -118,7 +120,7 @@ def main():
 
     clean_fz223()
 
-    for i in os.listdir(path):
+    for i in tqdm(os.listdir(path)):
         file_path = os.path.join(path, i)
 
         if i.endswith('.xml') and i.startswith('purchaseNotice'):

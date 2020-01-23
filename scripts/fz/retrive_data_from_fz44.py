@@ -1,6 +1,8 @@
 import os
 import sys
 import xml.etree.ElementTree as ET
+
+from tqdm import tqdm
 from datetime import date
 
 sys.path.append('../../grasagrant')
@@ -228,7 +230,7 @@ def main():
 
 	clean_fz44()
 
-	for file in os.listdir(path):
+	for file in tqdm(os.listdir(path)):
 
 		file_path = os.path.join(path, file)
 

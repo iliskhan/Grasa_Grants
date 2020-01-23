@@ -20,7 +20,7 @@ def get_223_fz(ftp, folder):
 	#files = ftp.nlst()
 
 	today_date = datetime.date.today()
-	lastdate = today_date - datetime.timedelta(days=20)
+	lastdate = today_date - datetime.timedelta(days=1)
 
 	print("\nПолучение файлов 223 фз")
 
@@ -125,7 +125,7 @@ def get_names_regions(url, LOG_PASS):
 
 def main():
 
-	fz223 = '../../data/223/'
+	fz223 = '../data/223/'
 
 	URL = 'ftp.zakupki.gov.ru'
 
@@ -163,7 +163,7 @@ def main():
 	extract_files(fz223)
 
 	del_empty_files(fz223)
-	get_relevant_files(fz223)
+	# get_relevant_files(fz223)
 
 if __name__ == '__main__':
     main()

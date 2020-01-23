@@ -1,47 +1,62 @@
 {% extends "layout.html" %}
 
+{% load humanize %}
+
 {% block title %}Главная{% endblock %}
 
 {% block content %}
 <section class="container">
   {% if data.registration_number %}
-  <h2><strong>Регистрационный номер извещения </strong>{{ data.registration_number }}</h2>
+    <h2><strong>Регистрационный номер извещения </strong>{{ data.registration_number }}</h2>
   {% endif %}
+
   {% if data.create_date %}
-  <h2><strong>Дата создания извещения </strong>{{ data.create_date }}</h2>
+    <h2><strong>Дата создания извещения </strong>{{ data.create_date }}</h2>
   {% endif %}
+
   {% if data.url_EIS %}
-  <h2><strong>URL документа в ЕИС </strong>{{ data.url_EIS }}</h2>
+    <h2>
+      <strong>
+        <a href="{{data.url_EIS}}">
+          URL документа в ЕИС 
+        </a>
+      </strong>
+    </h2>
   {% endif %}
+
   {% if data.url_VSRZ %}
-  <h2><strong>URL документа в ВСРЗ </strong>{{ data.url_VSRZ }}</h2>
+    <h2>
+      <strong>
+        <a href="{{ data.url_VSRZ }}">
+          URL документа в ВСРЗ
+        </a> 
+      </strong>
+    </h2>
   {% endif %}
+
   {% if data.name %}
-  <h2><strong>Название закупки </strong>{{ data.name }}</h2>
+    <h2><strong>Название закупки </strong>{{ data.name }}</h2>
   {% endif %}
+
   {% if data.full_name %}
-  <h2><strong>Наименование организации </strong>{{ data.full_name }}</h2>
+    <h2><strong>Наименование организации </strong>{{ data.full_name }}</h2>
   {% endif %}
+
   {% if data.legal_address %}
-  <h2><strong>Юридический адрес </strong>{{ data.legal_address }}</h2>
+    <h2><strong>Юридический адрес </strong>{{ data.legal_address }}</h2>
   {% endif %}
-  {% if data.purchase_code_name %}
-  <h2><strong>Способ закупки </strong>{{ data.purchase_code_name }}</h2>
-  {% endif %}
-  {% if data.place %}
-  <h2><strong>Место предоставления документации </strong>{{ data.place }}</h2>
-  {% endif %}
-  {% if data.currency %}
-  <h2><strong>Валюта платежа </strong>{{ data.currency }}</h2>
-  {% endif %}
+
   {% if data.initial_sum %}
-  <h2><strong>Начальная цена договора </strong>{{ data.initial_sum }}</h2>
+    <h2><strong>Начальная цена договора </strong>{{ data.initial_sum|intcomma }} {{ data.currency|lower }}</h2>
   {% endif %}
+
   {% if data.submission_start_date %}
-  <h2><strong>Дата начала подачи заявок </strong>{{ data.submission_start_date }}</h2>
+    <h2><strong>Дата начала подачи заявок </strong>{{ data.submission_start_date }}</h2>
   {% endif %}
+
   {% if data.submission_close_date %}
-  <h2><strong>Дата окончания подачи заявок </strong>{{ data.submission_close_date }}</h2>
+    <h2><strong>Дата окончания подачи заявок </strong>{{ data.submission_close_date }}</h2>
   {% endif %}
+
 </section>
 {% endblock %}

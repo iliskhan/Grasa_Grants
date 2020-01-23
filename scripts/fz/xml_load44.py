@@ -17,7 +17,7 @@ def get_44_fz(ftp, folder):
 	files = ftp.nlst()
 
 	today_date = datetime.date.today()
-	lastdate = today_date - datetime.timedelta(days=20)
+	lastdate = today_date - datetime.timedelta(days=1)
 
 	print("\nПолучение файлов 44 фз")
 	for file in tqdm(files):
@@ -127,7 +127,7 @@ def get_names_regions(url, LOG_PASS):
 	return list_regions
 
 def main():
-	fz44 = '../../data/44/'
+	fz44 = '../data/44/'
 
 	URL = 'ftp.zakupki.gov.ru'
 
@@ -156,7 +156,7 @@ def main():
 
 		print(len(list_regions))
 
-		for region in list_regions[:5]:
+		for region in list_regions:
 
 			paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
 			paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'
@@ -169,7 +169,7 @@ def main():
 				ftp.cwd('../../../..')
 
 
-	# extract_files(fz44)
+	extract_files(fz44)
 
 	# get_relevant_files(fz44)
 
