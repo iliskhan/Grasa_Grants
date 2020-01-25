@@ -1,12 +1,6 @@
 import os, sys
 from datetime import date, timedelta
 
-sys.path.append('../')
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
-import django
-django.setup()
-
 from main.models import Type, Grant, Fcp, Fz44, Fz223, DigitalEconomy, Category, Region
 
 
