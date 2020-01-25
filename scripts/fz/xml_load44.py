@@ -112,20 +112,6 @@ def extract_files(folder):
 			os.remove(zip_file)
 
 
-def get_names_regions(url, LOG_PASS):
-
-	with FTP(url) as ftp:
-
-		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
-
-		ftp.cwd('fcs_regions/')
-
-		list_regions = ftp.nlst()[:87]
-
-		list_regions.remove('PG-PZ')
-
-	return list_regions
-
 def main():
 	fz44 = '../data/44/'
 
@@ -168,11 +154,7 @@ def main():
 
 				ftp.cwd('../../../..')
 
-
 	extract_files(fz44)
-
-	# get_relevant_files(fz44)
-
 
 if __name__ == '__main__':
     main()

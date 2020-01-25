@@ -38,17 +38,6 @@ def get_223_fz(ftp, folder):
 				    ftp.retrbinary(f'RETR {files_name[i]}', f.write)
 
 
-	# for file in tqdm(files):
-	# 	if file.endswith('.xml.zip'):
-	# 		splited_name = file.split('_')
-
-	# 		date = splited_name[-6]
-	# 		date = datetime.datetime.strptime(date, '%Y%m%d').date()
-
-	# 		if date >= lastdate and date <= today_date:
-	# 		    with open(f'{folder}{file}', 'wb') as f:
-	# 			    ftp.retrbinary(f'RETR {file}', f.write)
-
 def del_empty_files(path_folder):
 
 	print('\nУдаление пустых файлов по 223фз')
@@ -135,35 +124,36 @@ def main():
 	
 	clean_dir(fz223)
 
-	folder_path = dict()
-
-	for region in list_regions:
-
-		print(region)
+	with FTP(URL) as ftp:
 		
-		folder_path['fz223_notice'] = f'out/published/{region}/purchaseNotice/daily'
-		folder_path['fz223_noticeAE'] = f'out/published/{region}/purchaseNoticeAE/daily/'
-		folder_path['fz223_noticeAESMBO'] = f'out/published/{region}/purchaseNoticeAESMBO/daily/'
-		folder_path['fz223_noticeKESMBO'] = f'out/published/{region}/purchaseNoticeKESMBO/daily/'
-		folder_path['fz223_noticeOA'] = f'out/published/{region}/purchaseNoticeOA/daily/'
-		folder_path['fz223_noticeOK'] = f'out/published/{region}/purchaseNoticeOK/daily/'
-		folder_path['fz223_noticeZK'] = f'out/published/{region}/purchaseNoticeZK/daily/'
-		folder_path['fz223_noticeZKESMBO'] = f'out/published/{region}/purchaseNoticeZKESMBO/daily/'
-		folder_path['fz223_noticeZPESMBO'] = f'out/published/{region}/purchaseNoticeZPESMBO/daily/'
+		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
-		for i in folder_path.values():
+		for region in list_regions:
 
-			with FTP(URL) as ftp:
-				ftp.login(user=LOG_PASS, passwd=LOG_PASS)
+			
+			folder_path = [
+				f'out/published/{region}/purchaseNotice/daily',
+				f'out/published/{region}/purchaseNoticeAE/daily/',
+				f'out/published/{region}/purchaseNoticeAESMBO/daily/',
+				f'out/published/{region}/purchaseNoticeKESMBO/daily/',
+				f'out/published/{region}/purchaseNoticeOA/daily/',
+				f'out/published/{region}/purchaseNoticeOK/daily/',
+				f'out/published/{region}/purchaseNoticeZK/daily/',
+				f'out/published/{region}/purchaseNoticeZKESMBO/daily/',
+				f'out/published/{region}/purchaseNoticeZPESMBO/daily/',
+			]
+				
+			for i in folder_path:
 
 				ftp.cwd(i)
 
 				get_223_fz(ftp, fz223)
+				
+				ftp.cwd('../../../../..')
 
 	extract_files(fz223)
 
 	del_empty_files(fz223)
-	# get_relevant_files(fz223)
 
 if __name__ == '__main__':
     main()
