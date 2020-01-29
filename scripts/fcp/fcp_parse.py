@@ -1,11 +1,12 @@
 import json
 import requests
+from os import path, environ
+import sys
 
 #in order to work with django
-import os
-import sys
-sys.path.append('../../grasagrant/')
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "grasagrant.settings")
+abs_path = path.join(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))), 'grasagrant')
+sys.path.append(abs_path)
+environ.setdefault("DJANGO_SETTINGS_MODULE", "grasagrant.settings")
 import django
 django.setup()
 

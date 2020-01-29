@@ -5,7 +5,8 @@ import datetime
 
 from tqdm import tqdm
 
-sys.path.append('../../grasagrant')
+abs_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'grasagrant')
+sys.path.append(abs_path)
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
 import django
@@ -116,7 +117,8 @@ def retrieve(file_path):
 
 
 def main():
-    path = '../data/223/'
+
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', '223', '')
 
     clean_fz223()
 

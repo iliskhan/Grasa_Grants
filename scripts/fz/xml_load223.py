@@ -114,8 +114,8 @@ def get_names_regions(url, LOG_PASS):
 
 def main():
 
-	fz223 = '../data/223/'
-
+	fz223 = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', '223', '')
+	
 	URL = 'ftp.zakupki.gov.ru'
 
 	LOG_PASS = 'fz223free'
