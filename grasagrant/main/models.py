@@ -9,7 +9,7 @@ class Region(models.Model):
 
 class Category(models.Model):
 
-    tab_name = models.CharField(max_length=100)
+    tab_name = models.CharField(max_length=99)
 
     def __str__(self):
         return self.tab_name
@@ -17,7 +17,7 @@ class Category(models.Model):
 
 class Type(models.Model):
 
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=250)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="type")
 
     def __str__(self):
@@ -26,19 +26,19 @@ class Type(models.Model):
 class Fz223(models.Model):
 
     fz223_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fz223")
-    registration_number = models.CharField(max_length=100)
+    registration_number = models.CharField(max_length=50)
     create_date = models.DateField()
     url_EIS = models.TextField(null=True)
     url_VSRZ = models.TextField(null=True)
-    name = models.CharField(max_length=300)
-    full_name = models.CharField(max_length=300)
-    legal_address = models.CharField(max_length=300)
-    purchase_code_name = models.CharField(max_length=300)
-    place = models.CharField(max_length=300, null=True)
-    currency = models.CharField(max_length=100)
-    initial_sum = models.CharField(max_length=100, null=True)
-    submission_start_date = models.CharField(max_length=100, null=True)
-    submission_close_date = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=700)
+    full_name = models.CharField(max_length=250)
+    legal_address = models.CharField(max_length=250)
+    purchase_code_name = models.CharField(max_length=250)
+    place = models.CharField(max_length=500, null=True)
+    currency = models.CharField(max_length=50)
+    initial_sum = models.CharField(max_length=50, null=True)
+    submission_start_date = models.CharField(max_length=50, null=True)
+    submission_close_date = models.CharField(max_length=50, null=True)
 
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
@@ -51,20 +51,20 @@ class Fz44(models.Model):
     fz44id = models.CharField(max_length=100)
     create_date = models.DateField()
     link = models.TextField()
-    purchase_number = models.CharField(max_length=100)
-    purchase_object = models.CharField(max_length=300)
-    org_name = models.CharField(max_length=100)
-    placing_way = models.CharField(max_length=100, null=True)
-    start_date = models.CharField(max_length=100, null=True)
-    end_date = models.CharField(max_length=100, null=True)
+    purchase_number = models.CharField(max_length=350)
+    purchase_object = models.CharField(max_length=900)
+    org_name = models.CharField(max_length=350)
+    placing_way = models.CharField(max_length=400, null=True)
+    start_date = models.CharField(max_length=350, null=True)
+    end_date = models.CharField(max_length=350, null=True)
     place = models.TextField(null=True)
-    max_price = models.CharField(max_length=100, null=True)
-    currency = models.CharField(max_length=100, null=True)
-    finance_source = models.CharField(max_length=100, null=True)
-    aplication_guarantee = models.CharField(max_length=100, null=True)
-    contract_guarantee = models.CharField(max_length=100, null=True)
-    delivery = models.CharField(max_length=300, null=True)
-    delivery_place = models.CharField(max_length=300, null=True)
+    max_price = models.CharField(max_length=350, null=True)
+    currency = models.CharField(max_length=350, null=True)
+    finance_source = models.CharField(max_length=300, null=True)
+    aplication_guarantee = models.CharField(max_length=350, null=True)
+    contract_guarantee = models.CharField(max_length=350, null=True)
+    delivery = models.CharField(max_length=350, null=True)
+    delivery_place = models.CharField(max_length=2000, null=True)
 
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
@@ -75,10 +75,10 @@ class Fcp(models.Model):
 
     fcp_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fcp")
     time = models.DateField()
-    card_name = models.CharField(max_length=300, null=True)
-    title = models.CharField(max_length=300, null=True)
+    card_name = models.CharField(max_length=350, null=True)
+    title = models.CharField(max_length=350, null=True)
     lead = models.TextField(null=True)
-    link = models.CharField(max_length=300, null=True)
+    link = models.CharField(max_length=350, null=True)
 
     def __str__(self):
         return f'{self.fcp_name.__str__()}: {self.title}'
@@ -86,7 +86,7 @@ class Fcp(models.Model):
 class DigitalEconomy(models.Model):
     
     digitaleconomy_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name='digital_economy')
-    document_number = models.CharField(max_length=50, null=True)
+    document_number = models.CharField(max_length=100, null=True)
     date = models.DateField(null=True)
     text = models.TextField()
     link = models.CharField(max_length=300)
@@ -97,7 +97,7 @@ class DigitalEconomy(models.Model):
 class Grant(models.Model):
     grant_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="grant")
     time = models.DateField()
-    label = models.CharField(max_length=100, null=True)
+    label = models.CharField(max_length=300, null=True)
     text = models.TextField()
     link = models.CharField(max_length=300, null=True)
     org = models.CharField(max_length=300, null=True)
@@ -111,7 +111,7 @@ class Grant(models.Model):
     
 class Link(models.Model):
 
-    link = models.CharField(max_length=300)
+    link = models.CharField(max_length=250)
     grant_id = models.ForeignKey(Grant, on_delete=models.CASCADE, related_name="links")
 
     def __str__(self):
