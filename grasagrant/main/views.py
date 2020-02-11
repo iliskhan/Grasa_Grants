@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core import serializers
 
+from django.utils.encoding import iri_to_uri
+
 # Create your views here.
 global_variables = globals()
 
@@ -32,6 +34,7 @@ def detailed(request, tab_name, pk):
     )
 
 def subtypes_list(request, tab_name, pk):
+
     subtype_name = f"{tab_name.lower()}_name"
     kwargs = {subtype_name: pk}
     subtypes = global_variables[tab_name].objects.filter(**kwargs)
@@ -42,20 +45,45 @@ def subtypes_list(request, tab_name, pk):
         context={f"{tab_name.lower()}s": subtypes, "tab_name": tab_name},
     )
 
+def region_subtypes_list(request, tab_name, region, pk):
+    category = Category.objects.get(tab_name=tab_name)
+    types = Type.objects.filter(category=category)
+    
+    region = region.replace('_', ' ')
+
+    subtype_name = f"{tab_name.lower()}_name"
+    
+    kwargs = {subtype_name: pk}
+    subtypes = global_variables[tab_name].objects.filter(**kwargs)
+
+    region = Region.objects.get(name=region)
+
+    subtypes = subtypes.filter(region=region)
+
+    return render(
+        request,
+        f'{tab_name.lower()}_list.html',
+        context={f"{tab_name.lower()}s": subtypes, "tab_name": tab_name},
+    )
+
+def region_types_list(request, tab_name, region):
+    
+    category = Category.objects.get(tab_name=tab_name)
+    types = Type.objects.filter(category=category)
+
+    return render(
+        request,
+        f'region_types_list.html',
+        context={f"types": types, "tab_name": tab_name, "region": region},
+    )
+
 def regions_list(request, tab_name):
     regions = Region.objects.all()
+    
+    regions = [(region, region.name.replace(' ','_')) for region in regions]
+    
     return render(
         request,
         'regions_list.html',
         context = {'regions': regions, 'tab_name': tab_name},
     )
-
-def get_regions_api(request):
-    data = request.GET['data'][0]
-
-    # Это происходит потому что sqllite не может utf-8
-    # https://www.sqlite.org/faq.html#q18
-    regions = list(Region.objects.all())
-    regions = [reg for reg in regions if data in reg.name]
-    
-    return HttpResponse(serializers.serialize("json", regions))
