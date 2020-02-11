@@ -108,7 +108,7 @@ class Grant(models.Model):
     def __str__(self):
         return f'{self.grant_name.__str__()}: {self.text}'
     
-    @staticmethod
+    @staticmethod 
     def clean_correct_days_4science(grant):
 
         if grant.days:

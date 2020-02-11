@@ -13,8 +13,8 @@
   {% if data.lead %}
   <h2><strong>Описание </strong>{{ data.lead }}</h2>
   {% endif %}
-  {% if data.time %}
-  <h2><strong>Опубликовано </strong>{{ data.time }}</h2>
+  {% if fcp.time %}
+  <h2><strong>Опубликовано </strong>{{ fcp.time|date:'d-m-Y' }}</h2>
   {% endif %}
   {% if data.fond_link %}
   <h2><strong>URL фонда </strong>{{ data.fond_link }}</h2>
