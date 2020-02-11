@@ -113,8 +113,9 @@ def extract_files(folder):
 
 
 def main():
-	fz44 = '../data/44/'
-
+	
+	fz44 = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', '44', '')
+	
 	URL = 'ftp.zakupki.gov.ru'
 
 	LOG_PASS = 'free'

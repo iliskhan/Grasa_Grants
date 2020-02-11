@@ -5,7 +5,8 @@ import xml.etree.ElementTree as ET
 from tqdm import tqdm
 from datetime import date
 
-sys.path.append('../../grasagrant')
+abs_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'grasagrant')
+sys.path.append(abs_path)
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
 import django
@@ -226,7 +227,7 @@ def main():
 		'fcsNotificationINM111':['fcsNotification111', 'Извещение о закупке "Закрытый аукцион с учетом положений ст. 111 ФЗ-44"']
 	}
 
-	path = '../data/44/'
+	path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', '44', '')
 
 	clean_fz44()
 

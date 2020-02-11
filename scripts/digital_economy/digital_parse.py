@@ -1,13 +1,14 @@
 import requests
 from bs4 import BeautifulSoup as BS
 import sys
-import os
+from os import path, environ
 import datetime
 import locale
 
-sys.path.append('../../grasagrant')
+abs_path = path.join(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))), 'grasagrant')
+sys.path.append(abs_path)
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
+environ['DJANGO_SETTINGS_MODULE'] = 'grasagrant.settings'
 import django
 django.setup()
 
