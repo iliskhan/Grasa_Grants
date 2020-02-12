@@ -4,8 +4,6 @@ from bs4 import BeautifulSoup as BS
 import sys
 from os import environ, path
 import datetime, time
-import locale
-
 
 abs_path = path.join(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))), 'grasagrant')
 sys.path.append(abs_path)
@@ -322,19 +320,21 @@ def edu_parse(url):
     session.close()    
      
 def date_conversion(date):
-
-    locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+    
+    dict_month = {
+        'января' : '1', 'февраля' : '2',
+        'марта' : '3', 'апреля' : '4', 
+        'мая' : '5', 'июня' : '6', 
+        'июля' : '7', 'августа' : '8', 
+        'сентября' : '9', 'октября' : '10', 
+        'ноября' : '11', 'декабря' : '12'
+    }
 
     date = date.lower().split(' ')
-    if date[1].startswith('м') and date[1].endswith('я'):
-                date[1] = date[1].replace('я', 'й')
-    elif date[1].endswith('а'):
-        date[1] = date[1][:-1]
-    else:
-        date[1] = date[1][:-1] + 'ь'
 
-    date = ' '.join(i for i in date)
-    date = datetime.datetime.strptime(date, '%d %B %Y').date()
+    date[1] = dict_month.get(date[1])
+    date = ' '.join(i for i in date)    
+    date = datetime.datetime.strptime(date, '%d %m %Y').date()
     
     return date
 
