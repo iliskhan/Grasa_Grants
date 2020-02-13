@@ -48,7 +48,7 @@ def subtypes_list(request, tab_name, pk):
     )
 
 
-@user_passes_test(lambda user: user.groups.filter(name='users').count() == 1, login_url='home')
+@user_passes_test(lambda user: user.groups.filter(name='subscribers').count() == 0, login_url='home')
 def regions_list(request, tab_name):
     regions = Region.objects.all()
     return render(

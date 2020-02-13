@@ -21,10 +21,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('staff status'),
         default=False,
     )
-    does_purchased = models.BooleanField(
-        _('purchase status'),
-        default=False,
-    )
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
