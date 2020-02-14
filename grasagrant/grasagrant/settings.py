@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'grasagrant.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'grassagrant',
-        'USER': '',
-        'PASSWORD': '',
+        'NAME': 'grasa',
+        'USER': 'grasa',
+        'PASSWORD': 'grasa',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
