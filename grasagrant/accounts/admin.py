@@ -13,9 +13,12 @@ class UserAdmin(auth_UserAdmin):
     fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'username', 'is_staff')}
+            'fields': ()}
         ),
+        ('Permissions', {
+            'fields': ('is_staff','groups', 'user_permissions', 'email', 'username',)}
+        )
+        
     )
-
 
 admin.site.register(User, UserAdmin)
