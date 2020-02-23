@@ -19,8 +19,7 @@ def get_44_fz(ftp, folder):
 	today_date = datetime.date.today()
 	lastdate = today_date - datetime.timedelta(days=1)
 
-	print("\nПолучение файлов 44 фз")
-	for file in tqdm(files):
+	for file in files:
 		if file.endswith('.xml.zip'):
 			splited_name = file.split('_')
 
@@ -34,16 +33,16 @@ def get_44_fz(ftp, folder):
 
 def clean_dir(path):
 
-	print("\nОчистка устаревших данных")
+	print("\nОчистка устаревших данных - fz44")
 
-	for file in tqdm(os.listdir(path)):
+	for file in os.listdir(path):
 		if file != '.gitkeep':
 			os.remove(os.path.join(path, file))
 
 
 def get_relevant_files(folder_path):
 
-	print('Удаление не актуальных файлов\n')
+	print('Удаление не актуальных файлов - fz44\n')
 
 	file_names = {
 		'fcsNotificationEA44': 'ns2:fcsNotificationEF',
@@ -54,7 +53,7 @@ def get_relevant_files(folder_path):
 
 	today = datetime.date.today()
 
-	for i in tqdm(os.listdir(folder_path)):
+	for i in os.listdir(folder_path):
 		file_path = os.path.join(folder_path, i)
 
 		file_name = i.split('_')[0]
@@ -98,9 +97,9 @@ def get_relevant_files(folder_path):
 
 def extract_files(folder):
 
-	print("\nРазархивирование файлов")
+	print("\nРазархивирование файлов - fz44")
 
-	for file_name in tqdm(os.listdir(folder)):
+	for file_name in os.listdir(folder):
 
 		if file_name.endswith('.zip'):
 
@@ -138,12 +137,13 @@ def main():
 
 		
 		ftp.dir('fcs_regions/', folder_name_selector)
-
 		print(list_regions)
 
-		print(len(list_regions))
+		print("\nПолучение файлов - fz44")
 
 		for region in list_regions:
+
+			print(region)
 
 			paths['fz44_notifications_currM'] = f'fcs_regions/{region}/notifications/currMonth/'
 			paths['fz44_notifications_prevM'] = f'fcs_regions/{region}/notifications/prevMonth/'

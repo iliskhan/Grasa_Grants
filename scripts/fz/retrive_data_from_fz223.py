@@ -122,7 +122,9 @@ def main():
 
     clean_fz223()
 
-    for i in tqdm(os.listdir(path)):
+    print('Добавление данных в БД - fz223')
+
+    for i in os.listdir(path):
         file_path = os.path.join(path, i)
 
         if i.endswith('.xml') and i.startswith('purchaseNotice'):

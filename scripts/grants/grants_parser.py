@@ -91,7 +91,12 @@ def cbias_parse(url):
 
     while True:
 
-        response = requests.get(f'{url}page/{page_number}/')
+        try:
+            response = requests.get(f'{url}page/{page_number}/')
+
+        except requests.exceptions.RequestException as e:
+            print(e)
+            break
         
         if response.status_code == 200:
 
@@ -341,11 +346,23 @@ def date_conversion(date):
 
 def main():
 
-    science_parse('https://4science.ru/finsupports') 
+    print('ПАРСИНГ 4SCIENCE')
+    science_parse('https://4science.ru/finsupports')
+
+    print('ПАРСИНГ CBIAS - start') 
     cbias_parse('http://www.cbias.ru/category/news/')
+    print('ПАРСИНГ CBIAS - end')
+    
+    print('ПАРСИНГ FCPIR') 
     fcpir_parse('http://www.fcpir.ru/events_and_publications/_contest/')
+
+    print('ПАРСИНГ MINOBRNAUKI') 
     minobrnauki_parse('https://www.minobrnauki.gov.ru/ru/documents/docs/index.php')
+
+    print('ПАРСИНГ RSCI') 
     rsci_parse('http://www.rsci.ru/grants/')
+
+    print('ПАРСИНГ EDU') 
     edu_parse('https://docs.edu.gov.ru/')  
 
 if __name__ == '__main__':

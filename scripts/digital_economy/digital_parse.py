@@ -97,6 +97,8 @@ def main():
 
     # clean_digitaleconomy()
 
+    print('ПАРСИНГ Digital Economy')
+
     url = 'https://digital.gov.ru/ru/documents/'
 
     digital_parse(url)

@@ -22,9 +22,7 @@ def get_223_fz(ftp, folder):
 	today_date = datetime.date.today()
 	lastdate = today_date - datetime.timedelta(days=1)
 
-	print("\nПолучение файлов 223 фз")
-
-	for i in tqdm(range(len(files_name))):
+	for i in range(len(files_name)):
 
 		if files_name[i].endswith('.xml.zip') and int(files_size[i]) >= 1000:
 			
@@ -40,9 +38,9 @@ def get_223_fz(ftp, folder):
 
 def del_empty_files(path_folder):
 
-	print('\nУдаление пустых файлов по 223фз')
+	print('\nУдаление пустых файлов - fz223')
 
-	for i in tqdm(os.listdir(path_folder)):
+	for i in os.listdir(path_folder):
 		file_path = os.path.join(path_folder, i)
 		file_size = os.path.getsize(file_path)
 		if i.endswith('.xml') and (file_size == 0):
@@ -53,9 +51,9 @@ def get_relevant_files(path_folder):
 	ns = {'xmlns':'http://zakupki.gov.ru/223fz/types/1',
 	      'ns2':'http://zakupki.gov.ru/223fz/purchase/1'}
 
-	print('\nУдаление не актуальных файлов по 223фз')
+	print('\nУдаление не актуальных файлов - fz223')
 
-	for i in tqdm(os.listdir(path_folder)):
+	for i in os.listdir(path_folder):
 		file_path = os.path.join(path_folder, i)
 
 		if i.endswith('.xml') and i.startswith('purchase'):
@@ -83,18 +81,18 @@ def get_relevant_files(path_folder):
 
 def clean_dir(path):
 
-	print("\nОчистка устаревших данных")
+	print("\nОчистка устаревших данных - fz223")
 
-	for file in tqdm(os.listdir(path)):
+	for file in os.listdir(path):
 		if file != '.gitkeep':
 			os.remove(os.path.join(path, file))
 
 
 def extract_files(folder):
 
-	print("\nРазархивирование файлов")
+	print("\nРазархивирование файлов - fz223")
 
-	for file_name in tqdm(os.listdir(folder)):
+	for file_name in os.listdir(folder):
 		if file_name.endswith('.zip'):
 
 			zip_file = os.path.join(folder, file_name)
@@ -109,6 +107,8 @@ def get_names_regions(url, LOG_PASS):
 	ftp.cwd('out/published')
 	list_regions = ftp.nlst()[:87]
 	list_regions.remove('Irkutskaya_obl_Ust-Ordynskii_Buriatskii_okrug')
+
+	ftp.close()
 
 	return list_regions
 
@@ -128,9 +128,12 @@ def main():
 		
 		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
+		print("\nПолучение файлов - fz223")
+
 		for region in list_regions:
 
-			
+			print(region)
+
 			folder_path = [
 				f'out/published/{region}/purchaseNotice/daily',
 				f'out/published/{region}/purchaseNoticeAE/daily/',

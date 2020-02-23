@@ -112,7 +112,9 @@ def main():
 
     main_url = "http://government.ru"
 
-    data = [content_finder(url, main_url) for url in tqdm(urls)]
+    print('ПАРСИНГ FCP')
+
+    data = [content_finder(url, main_url) for url in urls]
     
     category = Category.objects.filter(tab_name='Fcp').first()
     for t in data:
