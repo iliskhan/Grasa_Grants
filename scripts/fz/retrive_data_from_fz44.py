@@ -28,7 +28,7 @@ def retrieve_EA44_ZK_ZP(file_path, notification):
 
 	root = xmlData.getroot()
 	
-	name = file_path.split('_')[1].split('\\')[-1]
+	name = file_path.split('_')[1].split('/')[-1]
 
 	notification_name = notification.get(name)
 
@@ -110,7 +110,7 @@ def retrive_INM111_OK(file_path, notification):
 
 	root = xmlData.getroot()
 	
-	name = file_path.split('_')[1].split('\\')[-1]
+	name = file_path.split('_')[1].split('/')[-1]
 
 	notification_name = notification.get(name)
 

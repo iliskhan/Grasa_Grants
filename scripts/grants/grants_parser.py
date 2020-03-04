@@ -92,7 +92,7 @@ def cbias_parse(url):
     while True:
 
         try:
-            response = requests.get(f'{url}page/{page_number}/')
+            response = requests.get(f'{url}page/{page_number}/', timeout=1800)
 
         except requests.exceptions.RequestException as e:
             print(e)
