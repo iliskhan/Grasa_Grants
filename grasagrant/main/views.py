@@ -4,6 +4,11 @@ from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core import serializers
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.utils.encoding import iri_to_uri
 
@@ -18,7 +23,7 @@ class TypesList(View):
     def get(self, request, tab_name):
         category = Category.objects.get(tab_name=tab_name)
         types = Type.objects.filter(category=category)
-        
+
         return render(
             request, 
             'types_list.html',
@@ -77,6 +82,8 @@ def region_types_list(request, tab_name, region):
         context={f"types": types, "tab_name": tab_name, "region": region},
     )
 
+
+@user_passes_test(lambda user: user.groups.filter(name='subscribers').count() == 0, login_url='home')
 def regions_list(request, tab_name):
     regions = Region.objects.all()
     

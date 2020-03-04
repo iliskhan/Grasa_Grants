@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
-
+ 
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.index, name = "home"),
     path('types/<str:tab_name>/', views.TypesList.as_view(), name='types_list'),
     path('types/<str:tab_name>/regions_list/', views.regions_list, name='regions_list'),
     path('types/<str:tab_name>/<int:pk>/', views.subtypes_list, name='subtypes_list'),
