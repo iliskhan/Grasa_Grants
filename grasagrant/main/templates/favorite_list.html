@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% load filter %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+
+<section class="container">
+    {% for favorite in favorite_all %}
+    
+    <div class="info-card" onclick="location.href='{% url 'detailed' favorite|get_model_name  favorite.id %}'">
+        
+        {% if favorite.org_name %}
+          <h2>{{favorite.org_name}}</h2>
+        {% endif %}
+        {% if favorite.card_name %}
+          <h2>{{favorite.card_name}}</h2>
+        {% endif %}
+        {% if favorite.name %}
+          <h2>{{favorite.name}}</h2>
+        {% endif %}
+        {% if favorite.purchase_object %}
+          <h2>{{favorite.purchase_object}}</h2>
+        {% endif %}
+        {% if favorite.text %}
+          <h2>{{favorite.text}}</h2>
+        {% endif %}
+
+        {% if favorite.time %}
+          <h3>{{favorite.time|date:"d-m-Y"}}</h3>
+        {% endif %}
+        {% if favorite.date %}
+          <h3>{{favorite.date|date:"d-m-Y"}}</h3>
+        {% endif %}        
+        {% if favorite.create_date %}
+          <h3>{{favorite.create_date|date:"d-m-Y"}}</h3>
+        {% endif %}
+        
+      </div>
+    {% endfor %}
+</section>
+
+{% endblock %}

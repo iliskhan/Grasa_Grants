@@ -13,7 +13,7 @@ def clean_4science(type_grant):
         if grant.days:
             day = int(grant.days)
 
-            if day - 1 < 0:
+            if day - 1 == 0:
                 grant.delete()
             else:
                 grant.days = day - 1

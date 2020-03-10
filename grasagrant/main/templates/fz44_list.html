@@ -8,7 +8,7 @@
   <div class="info-card" onclick="location.href='{% url 'detailed' tab_name fz.id %}'">
     <h2>{{fz.org_name}}</h2>
     <h2>{{fz.purchase_object}}</h2>
-    <h3>{{fz.start_date}}</h3>
+    <h3>{{fz.create_date|date:"d-m-Y"}}</h3>
   </div>
   {% endfor %}
 </section>

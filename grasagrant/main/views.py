@@ -1,4 +1,9 @@
 from main.models import Type, Grant, Fcp, Fz44, Fz223, Category, Region, DigitalEconomy
+from accounts.models import User
+
+from itertools import chain
+
+from django.shortcuts import redirect
 
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
@@ -31,12 +36,55 @@ class TypesList(View):
         )
 
 def detailed(request, tab_name, pk):
+
+    is_favorite = False
+
     data = get_object_or_404(global_variables[tab_name], id=pk)
+
+    if data.favorite.filter(id=request.user.id).exists():
+        is_favorite = True
+
     return render(
         request,
         f'{tab_name.lower()}.html',
-        context = {'data': data},
+        context = {'data': data,
+                   'is_favorite':is_favorite},
     )
+
+
+def favorite_post(request, tab_name, pk):
+    post = get_object_or_404(global_variables[tab_name], id=pk)
+    
+    if request.user.is_authenticated:
+
+        if post.favorite.filter(id=request.user.id).exists():
+            post.favorite.remove(request.user)
+        else:
+            post.favorite.add(request.user)
+
+        return redirect(post.get_absolute_url())
+
+    else:
+        return redirect('/login/')
+
+    # return redirect(request.META['HTTP_REFERER'])
+
+def favorite_list(request):
+
+    user = request.user
+    
+    favorite_grant = user.grant_set.all()
+    favorite_digitaleconome = user.digitaleconomy_set.all()
+    favorite_fcp = user.fcp_set.all()
+    favorite_fz223 = user.fz223_set.all()
+    favorite_fz44 = user.fz44_set.all()
+
+    favorite_all = list(chain(favorite_grant, favorite_digitaleconome, favorite_fcp, favorite_fz223, favorite_fz44))
+
+    
+    # return HttpResponse(favorite_all[-1].__class__.__name__)
+    return render(request, 'favorite_list.html', context={'favorite_all': favorite_all})
+
 
 def subtypes_list(request, tab_name, pk):
 
@@ -94,3 +142,6 @@ def regions_list(request, tab_name):
         'regions_list.html',
         context = {'regions': regions, 'tab_name': tab_name},
     )
+
+
+

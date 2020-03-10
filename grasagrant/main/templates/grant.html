@@ -3,7 +3,21 @@
 {% block title %}Главная{% endblock %}
 
 {% block content %}
+
 <section class="container">
+
+  <div align="right" style="margin-top: 1ex;" id="favorite">
+    {% if is_favorite %}
+      <a href=" {% url 'favorite_post' "Grant" data.id %} "> 
+        <i style="color: #343a40" class="fas fa-bookmark fa-2x"></i>
+      </a>
+    {% else %}
+      <a href=" {% url 'favorite_post' "Grant" data.id %} "> 
+        <i style="color: #343a40" class="far fa-bookmark fa-2x"></i>
+      </a>
+    {% endif %}
+  </div>
+  
   {% if data.label %}
   <h2><strong>Категория </strong>{{ data.label }}</h2>
   {% endif %}
