@@ -51,23 +51,17 @@ def detailed(request, tab_name, pk):
                    'is_favorite':is_favorite},
     )
 
-
+@login_required
 def favorite_post(request, tab_name, pk):
     post = get_object_or_404(global_variables[tab_name], id=pk)
-    
-    if request.user.is_authenticated:
 
-        if post.favorite.filter(id=request.user.id).exists():
-            post.favorite.remove(request.user)
-        else:
-            post.favorite.add(request.user)
-
-        return redirect(post.get_absolute_url())
-
+    if post.favorite.filter(id=request.user.id).exists():
+        post.favorite.remove(request.user)
     else:
-        return redirect('/login/')
+        post.favorite.add(request.user)
 
-    # return redirect(request.META['HTTP_REFERER'])
+    return redirect(post.get_absolute_url())
+    
 
 def favorite_list(request):
 
