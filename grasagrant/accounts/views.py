@@ -10,6 +10,7 @@ from .tokens import account_activation_token
 from .models import User
 from django.core.mail import EmailMessage
 
+from django.contrib.auth.models import Group, Permission
 
 def signup(request):
     if request.method == 'POST':
@@ -49,7 +50,8 @@ def activate(request, uidb64, token):
         # return redirect('home')
         return HttpResponse('Ваша учетная запись подтверждена. Теперь вы можете войти в свой аккаунт.')
     else:
-        return HttpResponse('Ссылка на активацию аккаунта недействительна!')
+        return HttpResponse('Ссылка на активацию аккаунта недействительна!')   
+
 
 #from django.contrib.auth.forms import UserCreationForm
 #def signup(request):

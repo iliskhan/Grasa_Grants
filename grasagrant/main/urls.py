@@ -14,4 +14,8 @@ urlpatterns = [
     path('favorite_post/<str:tab_name>/<int:pk>/', views.favorite_post, name='favorite_post'),
     path('favorite_list/', views.favorite_list, name='favorite_list'),
 
+    path('subscription/', views.subscription, name='subscription'),
+    path('buy_subscription/', views.buy_subscription, name='buy_subscription'),
+
+
 ]
