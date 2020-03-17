@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+
+    <section class="container">
+    
+        <h2>У Вас нет подписки</h2>
+        <h3>Чтобы продолжить оформите подписку</h3>
+
+        <form style="margin-top: 5ex;" action="{% url 'buy_subscription' %}">
+            <input type="submit" value="Оформить подписку" />
+        </form>
+
+    </section>
+
+{% endblock %}
+

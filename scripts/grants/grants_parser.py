@@ -195,7 +195,7 @@ def minobrnauki_parse(url):
 
     while True:
 
-        response = requests.get(f'{url}?order_4=P_DATE&dir_4=DESC&page_4={page_number}', verify=False)
+        response = requests.get(f'{url}?order_4=P_DATE&dir_4=DESC&page_4={page_number}', verify=False, timeout=1800)
         
         if response.status_code == 200:
 
