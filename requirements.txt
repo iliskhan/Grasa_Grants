@@ -18,11 +18,7 @@ lazy-object-proxy==1.4.3
 lxml==4.4.2
 mccabe==0.6.1
 parse==1.12.1
-<<<<<<< HEAD
 psycopg2-binary==2.8.4
-=======
-psycopg2==2.8.4
->>>>>>> origin/access_control
 pydot==1.4.1
 pyee==6.0.0
 pylint==2.4.3
