@@ -1,7 +1,7 @@
 import os, sys
 from datetime import date, timedelta
 
-from main.models import Type, Grant, Fcp, Fz44, Fz223, DigitalEconomy, Category, Region
+from main.models import Type, Grant, Fz44, Fz223, DigitalEconomy, Category, Region
 
 
 def clean_4science(type_grant):

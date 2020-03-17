@@ -1,4 +1,4 @@
-from main.models import Type, Grant, Fcp, Fz44, Fz223, Category, Region, DigitalEconomy
+from main.models import Type, Grant, Fz44, Fz223, Category, Region, DigitalEconomy
 from accounts.models import User
 
 from itertools import chain
@@ -67,14 +67,12 @@ def favorite_list(request):
 
     favorite_grant = request.user.grant_set.all()
     favorite_digitaleconome = request.user.digitaleconomy_set.all()
-    favorite_fcp = request.user.fcp_set.all()
     favorite_fz223 = request.user.fz223_set.all()
     favorite_fz44 = request.user.fz44_set.all()
 
     return render(request, 'favorite_list.html', context={
                                                 'favorite_grant': favorite_grant, 
                                                 'favorite_digitaleconome': favorite_digitaleconome,
-                                                'favorite_fcp': favorite_fcp,
                                                 'favorite_fz223': favorite_fz223,
                                                 'favorite_fz44': favorite_fz44
                                             })

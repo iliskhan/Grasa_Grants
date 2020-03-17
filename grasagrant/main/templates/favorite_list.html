@@ -14,26 +14,11 @@
       Grant
     </button>
   </p>
-  <div class="collapse" id="grant">
+  <div class="collapse show" id="grant">
       {% for grant in favorite_grant %}
         <div class="info-card" onclick="location.href='{% url 'detailed' grant|get_model_name grant.id %}'">
           <h6>{{grant.text}}</h6>
           <p>{{grant.time|date:"d-m-Y"}}</p>
-        </div>
-      {% endfor %}
-  </div>
-    
-  <!-- FCP -->
-  <p>
-    <button style="background-color: #343a40;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#fcp" aria-expanded="false" aria-controls="collapseExample">
-      FCP
-    </button>
-  </p>
-  <div class="collapse" id="fcp">
-      {% for fcp in favorite_fcp %}
-        <div class="info-card" onclick="location.href='{% url 'detailed' fcp|get_model_name fcp.id %}'">
-          <h6>{{fcp.card_name}}</h6>
-          <p>{{fcp.time|date:"d-m-Y"}}</p>
         </div>
       {% endfor %}
   </div>
@@ -44,7 +29,7 @@
       Digital Economy
     </button>
   </p>
-  <div class="collapse" id="digitaleconomy">
+  <div class="collapse show" id="digitaleconomy">
       {% for digitaleconomy in favorite_digitaleconome %}
         <div class="info-card" onclick="location.href='{% url 'detailed' digitaleconomy|get_model_name digitaleconomy.id %}'">
           <h6>{{digitaleconomy.text}}</h6>
@@ -59,7 +44,7 @@
       ФЗ 223
     </button>
   </p>
-  <div class="collapse" id="fz223">
+  <div class="collapse show" id="fz223">
       {% for fz223 in favorite_fz223 %}
         <div class="info-card" onclick="location.href='{% url 'detailed' fz223|get_model_name fz223.id %}'">
           <h6>{{fz223.name}}</h6>
@@ -74,7 +59,7 @@
         ФЗ 44
     </button>
   </p>
-  <div class="collapse" id="fz44">
+  <div class="collapse show" id="fz44">
       {% for fz44 in favorite_fz44 %}
         <div class="info-card" onclick="location.href='{% url 'detailed' fz44|get_model_name fz44.id %}'">
           <h6>{{fz44.org_name}}</h6>
