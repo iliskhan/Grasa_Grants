@@ -85,24 +85,6 @@ class Fz44(models.Model):
     class Meta:
         ordering = ('-create_date', )   
 
-class Fcp(models.Model):
-
-    fcp_name = models.ForeignKey(Type, on_delete=models.CASCADE, related_name="fcp")
-    time = models.DateField()
-    card_name = models.TextField(null=True)
-    title = models.TextField(null=True)
-    lead = models.TextField(null=True)
-    link = models.TextField(null=True)
-    favorite = models.ManyToManyField(User)
-
-    def __str__(self):
-        return f'{self.fcp_name.__str__()}: {self.title}'
-
-    def get_absolute_url(self):
-        return reverse('detailed', kwargs={'tab_name': 'Fcp','pk': self.id})    
-
-    class Meta:
-        ordering = ('-time', )   
 
 class DigitalEconomy(models.Model):
     

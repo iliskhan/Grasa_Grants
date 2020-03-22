@@ -45,5 +45,8 @@
   {% if data.fond_link %}
   <h2><strong>URL фонда </strong>{{ data.fond_link }}</h2>
   {% endif %}
+  {% if data.link %}
+  <h2><strong><a href= {{ data.link }} >Ссылка на оригинал</a></strong></h2>
+  {% endif %}
 </section>
 {% endblock %}
