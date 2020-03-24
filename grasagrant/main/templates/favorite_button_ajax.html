@@ -1,0 +1,55 @@
+<div align="right" style="margin-top: 1ex;">
+    
+    {% if is_favorite %}
+      <div class="favorite" tab_name={{tab_name}} post_id={{post_id}}> 
+        <i id="favorite_icon" style="color: #343a40" class="fas fa-bookmark fa-2x"></i>
+      </div>
+    {% else %}
+      <div class="favorite" tab_name={{tab_name}} post_id={{post_id}}> 
+        <i id="favorite_icon" style="color: #343a40" class="far fa-bookmark fa-2x"></i>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <script type="text/javascript">
+  
+    $('.favorite').click(function(){
+
+      let tab_name = $(this).attr("tab_name");
+      let post_id = $(this).attr("post_id");
+      
+      $.ajax(
+        {
+          type: "GET",
+          url: "{% url 'favorite_post' %}", 
+          data: {
+              tab_name: tab_name,
+              post_id: post_id
+          },
+          success: function (data) {
+
+            if (data === '/login/'){
+
+              let u = window.location.pathname;
+              window.location.assign('/login/?next=' + u); 
+             
+            }
+            else{
+
+              if (data === 'True') {
+              $('#favorite_icon').removeClass('fas fa-bookmark fa-2x');
+              $('#favorite_icon').addClass('far fa-bookmark fa-2x');
+              return
+            }
+            else {
+              $('#favorite_icon').removeClass('far fa-bookmark fa-2x');
+              $('#favorite_icon').addClass('fas fa-bookmark fa-2x');
+            }
+          }
+
+            
+          }
+        });
+    });  
+  </script>

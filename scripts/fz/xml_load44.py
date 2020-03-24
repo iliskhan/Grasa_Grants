@@ -137,7 +137,7 @@ def main():
 
 		
 		ftp.dir('fcs_regions/', folder_name_selector)
-		print(list_regions)
+		# print(list_regions)
 
 		print("\nПолучение файлов - fz44")
 
