@@ -1,7 +1,13 @@
-{% extends "layout.html" %}
+
+{% extends "grant_list.html" %}
 
 {% block title %}Главная{% endblock %}
 
+
+  {% block grant %}
+    <li><a href="/types/Grant/15/">/{{ data.text }}</a></li>
+  {% endblock %}
+ 
 {% block content %}
 
 <section class="container">
