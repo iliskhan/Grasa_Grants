@@ -25,7 +25,6 @@ def retrieve_EA44_ZK_ZP(file_path, notification):
 		  'ns2':'http://zakupki.gov.ru/oos/export/1'}
 
 	xmlData = ET.parse(file_path)
-
 	root = xmlData.getroot()
 	
 	name = file_path.split('_')[1].split('/')[-1]
@@ -116,8 +115,7 @@ def retrive_INM111_OK(file_path, notification):
 
 	if notification_name:
 
-		fcsNotification = root.find(f'ns2:{notification_name[0]}', ns)				
-		
+		fcsNotification = root.find(f'ns2:{notification_name[0]}', ns)		
 		pk = Category.objects.get(tab_name='Fz44').pk
 		types = Type.objects.filter(category=pk)
 		
@@ -202,8 +200,8 @@ def region_definition(region_list, region_name):
 	region_name = [i.strip() for i in region_name if not i.strip().isdigit()]
 	region_name = [i.split() for i in region_name]
 	region_name = [item for sublist in region_name for item in sublist]
-	region_name = [i for i in region_name if 'Респ' not in i and 'Обл' not in i and 'Край' not in i]
-	
+	region_name = [i for i in region_name if 'респ' not in i.lower() and 'обл' not in i.lower() and 'край' not in i.lower()]
+
 	while not region_orm:
 		
 		for region in region_name:

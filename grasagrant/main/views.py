@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import Group, Permission
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core import serializers
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, permission_required
@@ -51,17 +51,28 @@ def detailed(request, tab_name, pk):
                    'is_favorite':is_favorite},
     )
 
-@login_required
-def favorite_post(request, tab_name, pk):
-    post = get_object_or_404(global_variables[tab_name], id=pk)
+# @login_required
+def favorite_post(request):    
 
-    if post.favorite.filter(id=request.user.id).exists():
-        post.favorite.remove(request.user)
+    if request.user.is_authenticated:
+
+        if request.method == 'GET':
+            
+            tab_name = request.GET['tab_name']
+            post_id = request.GET['post_id']
+        
+            post = get_object_or_404(global_variables[tab_name], id=post_id)
+
+            if post.favorite.filter(id=request.user.id).exists():
+                post.favorite.remove(request.user)
+                return HttpResponse(True)
+
+            post.favorite.add(request.user)
+            return HttpResponse(False)
+
     else:
-        post.favorite.add(request.user)
-
-    return redirect(post.get_absolute_url())
-
+        return HttpResponse('/login/')
+    
 
 def favorite_list(request):
 

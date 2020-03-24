@@ -5,19 +5,12 @@
 {% block title %}Главная{% endblock %}
 
 {% block content %}
+
+{% load filter %}
+
 <section class="container">
 
-  <div align="right" style="margin-top: 1ex;" id="favorite">
-    {% if is_favorite %}
-      <a href=" {% url 'favorite_post' "Fz44" data.id %} "> 
-        <i style="color: #343a40" class="fas fa-bookmark fa-2x"></i>
-      </a>
-    {% else %}
-      <a href=" {% url 'favorite_post' "Fz44" data.id %} "> 
-        <i style="color: #343a40" class="far fa-bookmark fa-2x"></i>
-      </a>
-    {% endif %}
-  </div>
+  {% include 'favorite_button_ajax.html' with tab_name=data|get_model_name post_id=data.pk is_favorite=is_favorite%}
 
   {% if data.fz44id %}
   <h2><strong>Идентификатор </strong>{{ data.fz44id }}</h2>
@@ -60,4 +53,5 @@
   <h2><strong>Место доставки </strong>{{ data.delivery_place }}</h2>
   {% endif %}
 </section>
+
 {% endblock %}
