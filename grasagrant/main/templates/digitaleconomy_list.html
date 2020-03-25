@@ -2,6 +2,12 @@
 
 {% block title %}Главная{% endblock %}
 
+{% block digital_economy_list %}
+  <li><a href="/types/DigitalEconomy/">Цифровая экономика</a></li>
+  {% block digital_economy %}
+  {% endblock %}
+{% endblock %}
+
 {% block content %}
 <section class="container">
   {% for digitaleconomy in digitaleconomys %}

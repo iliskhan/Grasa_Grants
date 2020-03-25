@@ -73,10 +73,13 @@
     <div class='container'> 
       <ol class='breadcrumb'>
           <!-- <li><a href='/'>Главная</a></li> -->
-          {% block grant_list %}
-            {% block grant %}
-            {% endblock %} 
+          {% block grant_list %} 
           {% endblock %}
+
+          {% block digital_economy_list %}
+          {% endblock %}
+
+          
       </ol>
     {% block content %}
     {% endblock %}

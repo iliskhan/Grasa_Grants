@@ -1,6 +1,10 @@
-{% extends "layout.html" %}
+{% extends "digitaleconomy_list.html" %}
 
 {% block title %}Главная{% endblock %}
+
+{% block digital_economy %}
+  <li><a href="types/DigitalEconomy/32/">/{{ data.text }}</a></li>
+{% endblock %}
 
 {% block content %}
 <section class="container">
