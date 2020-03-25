@@ -4,6 +4,7 @@
 
 {% block content %}
 <section class="container">
+  <input class="form-control col-sm 3" id='user_input'  placeholder="Поиск по грантам" type="text">
   {% for grant in grants %}
   <div class="info-card" onclick="location.href='{% url 'detailed' tab_name grant.id %}'">
     <h2>{{grant.text}}</h2>
@@ -11,4 +12,8 @@
   </div>
   {% endfor %}
 </section>
+
+{% load static %}
+  <script src="{% static 'js/cards_filter.js' %}"></script>
+
 {% endblock %}
