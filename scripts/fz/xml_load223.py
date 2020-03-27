@@ -107,6 +107,7 @@ def get_names_regions(url, LOG_PASS):
 	ftp.cwd('out/published')
 	list_regions = ftp.nlst()[:87]
 	list_regions.remove('Irkutskaya_obl_Ust-Ordynskii_Buriatskii_okrug')
+	list_regions.remove('Baikonur_g')
 
 	ftp.close()
 

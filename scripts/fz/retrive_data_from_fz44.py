@@ -202,16 +202,15 @@ def region_definition(region_list, region_name):
 	region_name = [item for sublist in region_name for item in sublist]
 	region_name = [i for i in region_name if 'респ' not in i.lower() and 'обл' not in i.lower() and 'край' not in i.lower()]
 
-	while not region_orm:
 		
-		for region in region_name:
+	for region in region_name:
+		
+		for reg in region_list:
 			
-			for reg in region_list:
-				
-				if region in reg:
-					region_orm = reg
-					break
-				
+			if region in reg:
+				region_orm = reg
+				break
+			
 	return region_orm
 
 

@@ -127,7 +127,7 @@ def main():
 		ftp.login(user=LOG_PASS, passwd=LOG_PASS)
 
 		list_regions = []
-		unnecessary_folders = ["PG-PZ", "_logs", "control99docs", "fcs_undefined"]
+		unnecessary_folders = ["PG-PZ", "_logs", "control99docs", "fcs_undefined", "Bajkonur_g"]
 
 		def folder_name_selector(some_str):
 			if some_str.startswith('d'):

@@ -99,15 +99,14 @@ def retrieve(file_path):
     region_list = [i.name for i in Region.objects.all()]
     region_orm = ''
     
-    while not region_orm:
         
-        for region in region_name:
+    for region in region_name:
+        
+        for reg in region_list:
             
-            for reg in region_list:
-                
-                if region in reg:
-                    region_orm = reg
-                    break
+            if region in reg:
+                region_orm = reg
+                break
 
     region = Region.objects.get(name=region_orm)
     fz223.region = region
