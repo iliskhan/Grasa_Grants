@@ -94,8 +94,9 @@ def retrieve(file_path):
     region_name = purchaseNotice.find('ns2:customer/'
                                          'xmlns:mainInfo/'
                                          'xmlns:legalAddress', ns).text.split(',')[1].strip().title().split()
-    
-    region_name = [i for i in region_name if 'респ' not in i.lower() and 'обл' not in i.lower() and 'край' not in i.lower()]
+                               
+    remove_words = ['респ', 'обл' 'край', 'г', 'город']
+    region_name = [i for i in region_name if i.lower() not in remove_words]
     region_list = [i.name for i in Region.objects.all()]
     region_orm = ''
     
@@ -107,6 +108,9 @@ def retrieve(file_path):
             if region in reg:
                 region_orm = reg
                 break
+
+    if  not region_orm:
+        return
 
     region = Region.objects.get(name=region_orm)
     fz223.region = region
