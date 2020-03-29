@@ -90,9 +90,13 @@ def retrieve_EA44_ZK_ZP(file_path, notification):
 												'xmlns:factAddress', ns).text.split(',')[1:3]
 
 		region_list = [i.name for i in Region.objects.all()]
+
+		region_orm = region_definition(region_list, region_name)
 		
-		region = Region.objects.get(name=region_definition(region_list, region_name))
+		if not region_orm:
+			return
 		
+		region = Region.objects.get(name=region_orm)
 		fz44.region = region
 
 		fz44.save()												 
@@ -187,8 +191,12 @@ def retrive_INM111_OK(file_path, notification):
 
 		region_list = [i.name for i in Region.objects.all()]
 
-		region = Region.objects.get(name=region_definition(region_list, region_name))
-		
+		region_orm = region_definition(region_list, region_name)
+
+		if not region_orm:
+			return
+
+		region = Region.objects.get(name=region_orm)
 		fz44.region = region	
 
 		fz44.save()
@@ -200,9 +208,10 @@ def region_definition(region_list, region_name):
 	region_name = [i.strip() for i in region_name if not i.strip().isdigit()]
 	region_name = [i.split() for i in region_name]
 	region_name = [item for sublist in region_name for item in sublist]
-	region_name = [i for i in region_name if 'респ' not in i.lower() and 'обл' not in i.lower() and 'край' not in i.lower()]
 
-		
+	remove_words = ['респ', 'обл' 'край', 'г', 'город']
+	region_name = [i for i in region_name if i.lower() not in remove_words]
+
 	for region in region_name:
 		
 		for reg in region_list:
