@@ -35,7 +35,7 @@ class Fz223(models.Model):
     name = models.TextField()
     full_name = models.TextField()
     legal_address = models.TextField()
-    purchase_code_name = models.CharField(max_length=250)
+    purchase_code_name = models.TextField()
     place = models.TextField(null=True)
     currency = models.CharField(max_length=50)
     initial_sum = models.CharField(max_length=50, null=True)
