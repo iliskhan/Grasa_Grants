@@ -12,12 +12,14 @@ def clean_4science(type_grant):
 
         if grant.days:
             day = int(grant.days)
+            day -= 1
 
-            if day - 1 == 0:
+            if day <= 0:
                 grant.delete()
             else:
-                grant.days = day - 1
+                grant.days = day
                 grant.save()
+                
         else:
             if grant.time + timedelta(days=183) < date.today():
                 grant.delete()
