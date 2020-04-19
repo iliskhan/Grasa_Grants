@@ -2,6 +2,12 @@
 
 {% block title %}Главная{% endblock %}
 
+{% block digital_economy_list %}
+  <li><a href="/types/DigitalEconomy/">Цифровая экономика</a></li>
+  {% block digital_economy %}
+  {% endblock %}
+{% endblock %}
+
 {% block content %}
 <section class="container">
   <input class="form-control col-sm 3" id='user_input'  placeholder="Поиск" type="text">

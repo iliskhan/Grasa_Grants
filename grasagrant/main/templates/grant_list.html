@@ -2,7 +2,15 @@
 
 {% block title %}Главная{% endblock %}
 
+
+{% block grant_list %}
+  <li><a href="/types/Grant/">Гранты</a></li>
+  {% block grant %}
+  {% endblock %}
+{% endblock %}
+  
 {% block content %}
+
 <section class="container">
   <input class="form-control col-sm 3" id='user_input'  placeholder="Поиск по грантам" type="text">
   {% for grant in grants %}

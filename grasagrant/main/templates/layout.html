@@ -69,7 +69,29 @@
         </div>
       </nav>
     </header>
+    
+    
+    <div class='container'> 
+      <ol class='breadcrumb'>
+          <!-- <li><a href='/'>Главная</a></li> -->
+          {% block grant_list %} 
+          {% endblock %}
+
+          {% block digital_economy_list %}
+          {% endblock %}
+          
+
+
+          {% block favorite_list %}
+          {% endblock %}
+
+          {% block regions_list %}
+          {% endblock %}
+
+          
+      </ol>
     {% block content %}
     {% endblock %}
+  </div>
   </body>
 </html>

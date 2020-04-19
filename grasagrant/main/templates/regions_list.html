@@ -2,6 +2,13 @@
 
 {% block title %}Главная{% endblock %}
 
+{% block regions_list %}
+  <li><a href="/">ФЗ{{ tab_name|slice:"2:" }}</a></li>
+  {% block fz %}
+  {% endblock %}
+{% endblock %}
+
+
 {% block content %}
 
 <section class="container">

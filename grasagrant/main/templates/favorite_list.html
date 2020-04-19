@@ -4,6 +4,14 @@
 
 {% block title %}Главная{% endblock %}
 
+
+{% block grant_list %}
+  <li><a href="/favorite_list/">Избранное</a></li>
+  {% block grant %}
+  {% endblock %}
+{% endblock %}
+
+
 {% block content %}
 
 <section class="container">
