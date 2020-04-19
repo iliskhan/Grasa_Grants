@@ -92,7 +92,7 @@ def cbias_parse(url):
     while True:
 
         try:
-            response = requests.get(f'{url}page/{page_number}/', timeout=1800)
+            response = requests.get(f'{url}page/{page_number}/', timeout=120)
 
         except requests.exceptions.RequestException as e:
             print(e)
@@ -195,7 +195,7 @@ def minobrnauki_parse(url):
 
     while True:
 
-        response = requests.get(f'{url}?order_4=P_DATE&dir_4=DESC&page_4={page_number}', verify=False, timeout=1800)
+        response = requests.get(f'{url}?order_4=P_DATE&dir_4=DESC&page_4={page_number}', verify=False, timeout=120)
         
         if response.status_code == 200:
 

@@ -39,25 +39,21 @@ def clean_grant(type_grant):
 def clean_fz44():
 
     all_fz = Fz44.objects.all()
-
-    for fz in all_fz:
+    
+    for fz in all_fz.iterator():
         
-        if fz.create_date:
-
-            if fz.create_date + timedelta(days=183) < date.today():                    
-                fz.delete()
+        if fz.create_date and fz.create_date + timedelta(days=183) < date.today():                    
+            fz.delete()
     
 
 def clean_fz223():
 
     all_fz = Fz223.objects.all()
 
-    for fz in all_fz:
+    for fz in all_fz.iterator():
         
-        if fz.create_date:
-
-            if fz.create_date + timedelta(days=183) < date.today():                    
-                fz.delete()
+        if fz.create_date and fz.create_date + timedelta(days=183) < date.today():                    
+            fz.delete()
         
 
 # def clean_digitaleconomy():
