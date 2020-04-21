@@ -208,10 +208,8 @@ def region_definition(region_list, region_name):
 	region_name = [i.strip() for i in region_name if not i.strip().isdigit()]
 	region_name = [i.split() for i in region_name]
 	region_name = [item for sublist in region_name for item in sublist]
-
-	remove_words = ['респ', 'обл' 'край', 'г', 'город']
+	remove_words = ['респ', 'республика', 'обл', 'область', 'край', 'г', 'город']
 	region_name = [i for i in region_name if i.lower() not in remove_words]
-
 	for region in region_name:
 		
 		for reg in region_list:
