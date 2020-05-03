@@ -95,7 +95,7 @@ def retrieve(file_path):
                                          'xmlns:mainInfo/'
                                          'xmlns:legalAddress', ns).text.split(',')[1].strip().title().split()
                                
-    remove_words = ['респ', 'обл' 'край', 'г', 'город']
+    remove_words = ['респ', 'республика', 'обл', 'область', 'край', 'г', 'город']
     region_name = [i for i in region_name if i.lower() not in remove_words]
     region_list = [i.name for i in Region.objects.all()]
     region_orm = ''
