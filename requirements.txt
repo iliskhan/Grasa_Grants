@@ -15,7 +15,7 @@ html5lib==1.0.1
 idna==2.8
 isort==4.3.21
 lazy-object-proxy==1.4.3
-lxml==4.4.2
+lxml==4.6.3
 mccabe==0.6.1
 parse==1.12.1
 psycopg2-binary==2.8.4
